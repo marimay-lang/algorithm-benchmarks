@@ -1,0 +1,20 @@
+{
+  "schema": "ruda.tier1-performance-baselines/1",
+  "protocol_sha256": "0b43886b4e02ee72e8ea4be8eca6c3fb228336bcf525522723a4b40c3b862b19",
+  "required_targets": [
+    "linux-x86_64",
+    "linux-arm64",
+    "macos-arm64",
+    "macos-x86_64",
+    "windows-x86_64"
+  ],
+  "baselines": [
+    {
+      "target": "macos-arm64",
+      "platform_id": "macos-arm64-apple-m2",
+      "probes": "benchmarks/results/cp21-probes-macos-arm64-apple-m2.json",
+      "algorithms": "benchmarks/results/cp21-algorithms-macos-arm64-apple-m2.json",
+      "budget": "benchmarks/budgets/cp21-macos-arm64-apple-m2.json"
+    }
+  ]
+}

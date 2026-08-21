@@ -36,6 +36,15 @@ RUDA=/absolute/path/to/release/ruda \
   benchmarks/results/cp21-algorithms-PLATFORM.json
 ```
 
+После review каждого platform budget он добавляется в
+[`tier1-baselines.json`](tier1-baselines.json). Единственный aggregate completion
+gate — `./benchmarks/validate_tier1_baselines.py` (или `make
+benchmark-validate`): он требует ровно по одной совместимой baseline для Linux
+x86_64, Linux arm64, macOS arm64, macOS x86_64 и Windows x86_64, повторно
+проверяет raw schema/current manifests и связывает budget с точными result
+paths/SHA-256. Неполный registry намеренно не проходит этот gate; отдельную уже
+зарегистрированную платформу можно проверить `make benchmark-validate-platform`.
+
 По умолчанию используется `../Ma/build/release/ruda`. После checkpoint 13
 requested output profile выбирает согласованный release runtime независимо от
 build profile compiler executable. Harness проверяет release runtime manifest,
@@ -94,6 +103,9 @@ Checkpoint-21 macOS arm64/Apple M2 baseline находится в
 и [`results/cp21-probes-macos-arm64-apple-m2.json`](results/cp21-probes-macos-arm64-apple-m2.json).
 Reviewed thresholds находятся в
 [`budgets/cp21-macos-arm64-apple-m2.json`](budgets/cp21-macos-arm64-apple-m2.json).
+Registry пока содержит только доступную macOS arm64 baseline; aggregate Tier 1
+gate перечисляет отсутствующие платформы и остаётся красным до их измерения и
+review.
 
 Legacy `results/latest.*`, debug-runtime baseline и checkpoint-20 smoke —
 historical local evidence; они не проходят checkpoint-21 schema. Именованные

@@ -89,7 +89,10 @@ python3 -m py_compile \
   "$repository_root/benchmarks/test_perf_environment.py" \
   "$repository_root/benchmarks/test_perf_protocol.py" \
   "$repository_root/benchmarks/test_probe_manifest.py" \
+  "$repository_root/benchmarks/test_tier1_baselines.py" \
+  "$repository_root/benchmarks/tier1_baselines.py" \
   "$repository_root/benchmarks/validate_equivalence.py" \
-  "$repository_root/benchmarks/validate_results.py"
+  "$repository_root/benchmarks/validate_results.py" \
+  "$repository_root/benchmarks/validate_tier1_baselines.py"
 
 echo "All supported checks passed."
