@@ -1,0 +1,87 @@
+name: Checkpoint 21 Linux x86_64 baseline
+
+on:
+  push:
+    paths:
+      - ".gitea/workflows/cp21-baseline.yml"
+      - "benchmarks/**"
+      - "go/**"
+      - "ruda/**"
+      - "rust/**"
+      - "verify.sh"
+  workflow_dispatch:
+
+jobs:
+  baseline:
+    name: Linux x86_64 raw baseline
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Check out benchmark corpus
+        uses: actions/checkout@v4
+        with:
+          path: ruda-algotithms
+          persist-credentials: false
+
+      - name: Check out Ruda compiler
+        uses: actions/checkout@v4
+        with:
+          repository: OS/Ruda
+          path: Ma
+          persist-credentials: false
+
+      - name: Install toolchains
+        run: |
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
+            build-essential cargo clang cmake golang-go python3 rustc
+
+      - name: Build release Ruda compiler and runtime
+        run: |
+          cmake -S Ma -B Ma/build/release \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_C_COMPILER=clang \
+            -DRUDA_WARNINGS_AS_ERRORS=ON
+          cmake --build Ma/build/release --parallel
+
+      - name: Verify faithful corpus and harness tests
+        working-directory: ruda-algotithms
+        run: RUDA="$(cd ../Ma && pwd)/build/release/ruda" ./verify.sh
+
+      - name: Collect focused probes
+        working-directory: ruda-algotithms
+        run: >-
+          RUDA="$(cd ../Ma && pwd)/build/release/ruda"
+          ./benchmarks/probes.py
+          --samples 11
+          --warmups 3
+          --output benchmarks/results/cp21-probes-linux-x86_64.json
+
+      - name: Collect algorithm corpus
+        working-directory: ruda-algotithms
+        run: >-
+          RUDA="$(cd ../Ma && pwd)/build/release/ruda"
+          ./benchmarks/run.py
+          --languages ruda,go,rust
+          --samples 11
+          --warmups 3
+          --output benchmarks/results/cp21-algorithms-linux-x86_64.md
+
+      - name: Validate reports and derive review candidate
+        working-directory: ruda-algotithms
+        run: >-
+          ./benchmarks/derive_budget.py
+          benchmarks/results/cp21-probes-linux-x86_64.json
+          benchmarks/results/cp21-algorithms-linux-x86_64.json
+          --output benchmarks/budgets/cp21-linux-x86_64.json
+
+      - name: Preserve every raw sample and candidate budget
+        uses: actions/upload-artifact@v3
+        with:
+          name: cp21-linux-x86_64-${{ gitea.sha }}
+          path: |
+            ruda-algotithms/benchmarks/results/cp21-probes-linux-x86_64.json
+            ruda-algotithms/benchmarks/results/cp21-algorithms-linux-x86_64.json
+            ruda-algotithms/benchmarks/results/cp21-algorithms-linux-x86_64.md
+            ruda-algotithms/benchmarks/budgets/cp21-linux-x86_64.json
+          if-no-files-found: error
