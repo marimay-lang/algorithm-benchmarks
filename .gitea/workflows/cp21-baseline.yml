@@ -44,7 +44,7 @@ jobs:
         run: |
           apt-get update
           DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
-            build-essential cargo clang cmake python3 rustc
+            build-essential cargo clang cmake python3 rust-clippy rustc rustfmt
 
       - name: Install Go 1.26 toolchain
         uses: actions/setup-go@v5
