@@ -4,9 +4,9 @@
   "platform_id": "linux-x86_64",
   "created_at": "2026-08-21T19:36:51+00:00",
   "review": {
-    "status": "candidate",
-    "reviewed_at": "pending",
-    "rationale": "pending engineering review of raw samples and noise"
+    "status": "reviewed",
+    "reviewed_at": "2026-08-22T02:39:00+07:00",
+    "rationale": "All 17 raw Ruda distributions contain 11 retained samples from committed corpus 22be069, pass exact order/checksum/metadata/hash validation, remain below 3.8% measured Ruda noise (12.9% across the complete comparison matrix), and receive the reviewed 10% workload-local median budget."
   },
   "baseline": {
     "probe_result": "benchmarks/results/cp21-probes-linux-x86_64.json",

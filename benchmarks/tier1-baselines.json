@@ -10,6 +10,13 @@
   ],
   "baselines": [
     {
+      "target": "linux-x86_64",
+      "platform_id": "linux-x86_64",
+      "probes": "benchmarks/results/cp21-probes-linux-x86_64.json",
+      "algorithms": "benchmarks/results/cp21-algorithms-linux-x86_64.json",
+      "budget": "benchmarks/budgets/cp21-linux-x86_64.json"
+    },
+    {
       "target": "macos-arm64",
       "platform_id": "macos-arm64-apple-m2",
       "probes": "benchmarks/results/cp21-probes-macos-arm64-apple-m2.json",
