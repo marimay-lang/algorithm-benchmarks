@@ -1,4 +1,5 @@
-.PHONY: benchmark benchmark-probes benchmark-validate benchmark-validate-platform verify
+.PHONY: benchmark benchmark-probes benchmark-validate
+.PHONY: benchmark-validate-public-alpha benchmark-validate-platform verify
 
 benchmark:
 	./benchmarks/run.py
@@ -8,11 +9,14 @@ benchmark-probes:
 
 benchmark-validate-platform:
 	./benchmarks/validate_results.py \
-		benchmarks/results/cp21-probes-macos-arm64-apple-m2.json \
-		benchmarks/results/cp21-algorithms-macos-arm64-apple-m2.json
+		benchmarks/results/cp21-probes-linux-x86_64.json \
+		benchmarks/results/cp21-algorithms-linux-x86_64.json
 
 benchmark-validate:
-	./benchmarks/validate_tier1_baselines.py
+	./benchmarks/validate_tier1_baselines.py --gate checkpoint-21
+
+benchmark-validate-public-alpha:
+	./benchmarks/validate_tier1_baselines.py --gate public-alpha
 
 verify:
 	./verify.sh

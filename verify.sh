@@ -36,6 +36,8 @@ expect_stdout() {
 
 python3 "$repository_root/benchmarks/validate_equivalence.py"
 python3 -m unittest discover -s "$repository_root/benchmarks" -p 'test_*.py'
+python3 "$repository_root/benchmarks/validate_tier1_baselines.py" \
+  --gate checkpoint-21
 
 echo "== Ruda =="
 "$ruda_binary" fmt "$repository_root/ruda" --check

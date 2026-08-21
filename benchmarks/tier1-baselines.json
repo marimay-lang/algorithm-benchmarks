@@ -1,7 +1,10 @@
 {
-  "schema": "ruda.tier1-performance-baselines/1",
+  "schema": "ruda.tier1-performance-baselines/2",
   "protocol_sha256": "0b43886b4e02ee72e8ea4be8eca6c3fb228336bcf525522723a4b40c3b862b19",
-  "required_targets": [
+  "checkpoint_21_targets": [
+    "linux-x86_64"
+  ],
+  "public_alpha_targets": [
     "linux-x86_64",
     "linux-arm64",
     "macos-arm64",

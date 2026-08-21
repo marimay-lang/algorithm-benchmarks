@@ -16,8 +16,17 @@ from perf_protocol import (
 )
 from validate_results import result_pair
 
-REGISTRY_SCHEMA = "ruda.tier1-performance-baselines/1"
-REGISTRY_FIELDS = {"schema", "protocol_sha256", "required_targets", "baselines"}
+REGISTRY_SCHEMA = "ruda.tier1-performance-baselines/2"
+CHECKPOINT_21_GATE = "checkpoint-21"
+PUBLIC_ALPHA_GATE = "public-alpha"
+CHECKPOINT_21_TARGETS = ("linux-x86_64",)
+REGISTRY_FIELDS = {
+    "schema",
+    "protocol_sha256",
+    "checkpoint_21_targets",
+    "public_alpha_targets",
+    "baselines",
+}
 ENTRY_FIELDS = {"target", "platform_id", "probes", "algorithms", "budget"}
 
 
@@ -32,8 +41,24 @@ def _string(mapping: Mapping[str, Any], key: str) -> str:
     return value
 
 
+def required_targets_for_gate(
+    registry: Mapping[str, Any], gate: str
+) -> tuple[str, ...]:
+    checkpoint_targets = registry.get("checkpoint_21_targets")
+    if checkpoint_targets != list(CHECKPOINT_21_TARGETS):
+        raise ProtocolError("checkpoint 21 target contract drifted")
+    public_alpha_targets = registry.get("public_alpha_targets")
+    if public_alpha_targets != list(TIER1_TARGETS):
+        raise ProtocolError("public alpha target contract drifted")
+    if gate == CHECKPOINT_21_GATE:
+        return CHECKPOINT_21_TARGETS
+    if gate == PUBLIC_ALPHA_GATE:
+        return TIER1_TARGETS
+    raise ProtocolError(f"unsupported performance baseline gate: {gate}")
+
+
 def validate_registry_shape(
-    registry: Mapping[str, Any], *, require_complete: bool
+    registry: Mapping[str, Any], *, gate: str
 ) -> list[Mapping[str, Any]]:
     if set(registry) != REGISTRY_FIELDS:
         raise ProtocolError("Tier 1 registry fields are incomplete or unknown")
@@ -44,9 +69,7 @@ def validate_registry_shape(
         character not in "0123456789abcdef" for character in protocol_hash
     ):
         raise ProtocolError("Tier 1 registry protocol hash is not a SHA-256")
-    required = registry.get("required_targets")
-    if required != list(TIER1_TARGETS):
-        raise ProtocolError("Tier 1 registry target contract drifted")
+    required_targets = required_targets_for_gate(registry, gate)
     entries = registry.get("baselines")
     if not isinstance(entries, list):
         raise ProtocolError("Tier 1 registry baselines must be a list")
@@ -71,10 +94,11 @@ def validate_registry_shape(
         seen_targets.add(target)
         seen_platforms.add(platform_id)
         checked.append(value)
-    missing = [target for target in TIER1_TARGETS if target not in seen_targets]
-    if require_complete and missing:
+    missing = [target for target in required_targets if target not in seen_targets]
+    if missing:
         raise ProtocolError(
-            "Tier 1 baseline registry is incomplete; missing: " + ", ".join(missing)
+            f"{gate} performance baseline registry is incomplete; missing: "
+            + ", ".join(missing)
         )
     return checked
 
@@ -99,13 +123,13 @@ def resolve_registry_path(
 
 
 def validate_tier1_registry(
-    repository: pathlib.Path, *, require_complete: bool = True
+    repository: pathlib.Path, *, gate: str = CHECKPOINT_21_GATE
 ) -> tuple[int, list[str]]:
     repository = repository.resolve()
     protocol_file, protocol = load_protocol(repository)
     protocol_sha = sha256_file(protocol_file)
     registry = load_json(registry_path(repository))
-    entries = validate_registry_shape(registry, require_complete=require_complete)
+    entries = validate_registry_shape(registry, gate=gate)
     if registry["protocol_sha256"] != protocol_sha:
         raise ProtocolError("Tier 1 registry references an incompatible protocol")
     targets: list[str] = []
