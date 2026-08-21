@@ -3,29 +3,40 @@
 from __future__ import annotations
 
 import argparse
-import datetime as dt
 import json
 import os
 import pathlib
-import platform
 import shutil
-import statistics
 import subprocess
 import sys
 import time
 from typing import Sequence
 
 from equivalence import load_and_validate, manifest_sha256
+from perf_environment import capture_metadata, finish_metadata, git_revision
+from perf_protocol import (
+    ALGORITHM_RESULT_SCHEMA,
+    ProtocolError,
+    load_protocol,
+    measure_matrix,
+    sha256_file,
+    summarize_matrix,
+    validate_result,
+    validate_run_shape,
+)
 
 LANGUAGES = ["ruda", "go", "rust"]
 
 
-def parse_args() -> argparse.Namespace:
+def parse_args(protocol: dict[str, object]) -> argparse.Namespace:
+    measurement = protocol["measurement"]
+    assert isinstance(measurement, dict)
     parser = argparse.ArgumentParser(
         description="Build and time identical Ruda, Go, and Rust workloads."
     )
-    parser.add_argument("--samples", type=int, default=3)
-    parser.add_argument("--warmups", type=int, default=1)
+    parser.add_argument("--samples", type=int, default=measurement["minimum_samples"])
+    parser.add_argument("--warmups", type=int, default=measurement["minimum_warmups"])
+    parser.add_argument("--timeout", type=int, default=measurement["timeout_seconds"])
     parser.add_argument(
         "--languages",
         default=",".join(LANGUAGES),
@@ -38,11 +49,17 @@ def parse_args() -> argparse.Namespace:
         default=pathlib.Path("benchmarks/results/latest.md"),
     )
     args = parser.parse_args()
-    if args.samples < 1 or args.warmups < 0:
-        parser.error("samples must be positive and warmups must be non-negative")
+    try:
+        validate_run_shape(protocol, args.warmups, args.samples)
+    except ProtocolError as error:
+        parser.error(str(error))
+    if args.timeout != measurement["timeout_seconds"]:
+        parser.error("Tier 1 benchmark timeout must match performance_protocol.json")
     selected = [item.strip() for item in args.languages.split(",") if item.strip()]
     if not selected or any(item not in LANGUAGES for item in selected):
         parser.error("languages must be a comma-separated subset of ruda,go,rust")
+    if selected != LANGUAGES:
+        parser.error("Tier 1 algorithm results require ruda,go,rust in protocol order")
     args.languages = selected
     return args
 
@@ -73,32 +90,13 @@ def tool_version(command: Sequence[str], cwd: pathlib.Path) -> str:
     return text.splitlines()[0] if text else "unknown"
 
 
-def cpu_name() -> str:
-    if sys.platform == "darwin":
-        try:
-            return subprocess.check_output(
-                ["sysctl", "-n", "machdep.cpu.brand_string"], text=True
-            ).strip()
-        except (OSError, subprocess.SubprocessError):
-            pass
-    return platform.processor() or platform.machine()
-
-
-def source_revision(executable: pathlib.Path, cwd: pathlib.Path) -> str:
-    for candidate in executable.parents:
-        if (candidate / ".git").exists():
-            return tool_version(
-                ["git", "-C", str(candidate), "rev-parse", "HEAD"], cwd
-            )
-    return "unavailable"
-
-
 def build_binaries(
     repository: pathlib.Path,
     build_dir: pathlib.Path,
     languages: Sequence[str],
     ruda_binary: pathlib.Path,
     benchmark_names: Sequence[str],
+    max_heap_bytes: int,
 ) -> dict[str, dict[str, list[str]]]:
     commands: dict[str, dict[str, list[str]]] = {language: {} for language in languages}
     if "go" in languages:
@@ -146,6 +144,8 @@ def build_binaries(
                     "build",
                     str(ruda_root / "benchmarks" / directory_names[name]),
                     "--release",
+                    "--max-heap-bytes",
+                    str(max_heap_bytes),
                     "--output",
                     str(output),
                 ],
@@ -180,14 +180,26 @@ def existing_commands(
     return commands
 
 
-def measured_run(command: Sequence[str], expected: str, cwd: pathlib.Path) -> float:
+def measured_run(
+    command: Sequence[str], expected: str, cwd: pathlib.Path, timeout: int
+) -> float:
     started = time.perf_counter_ns()
-    completed = run_checked(command, cwd=cwd, timeout=180)
+    try:
+        completed = run_checked(command, cwd=cwd, timeout=timeout)
+    except subprocess.TimeoutExpired as error:
+        raise ProtocolError(
+            f"benchmark timed out after {timeout} seconds: {' '.join(command)}"
+        ) from error
+    except subprocess.CalledProcessError as error:
+        raise ProtocolError(
+            f"benchmark exited {error.returncode}: {' '.join(command)}\n{error.stderr}"
+        ) from error
     elapsed_ms = (time.perf_counter_ns() - started) / 1_000_000
-    actual = completed.stdout.strip()
-    if actual != expected:
-        raise RuntimeError(
-            f"checksum output mismatch for {' '.join(command)}: {actual!r} != {expected!r}"
+    if completed.stdout != expected or completed.stderr != "":
+        raise ProtocolError(
+            f"checksum observation mismatch for {' '.join(command)}: "
+            f"stdout={completed.stdout!r}, stderr={completed.stderr!r}, "
+            f"expected stdout={expected!r}"
         )
     return elapsed_ms
 
@@ -198,44 +210,25 @@ def measure(
     languages: Sequence[str],
     warmups: int,
     samples: int,
+    timeout: int,
     workloads: Sequence[dict[str, object]],
-) -> dict[str, dict[str, list[float]]]:
-    raw: dict[str, dict[str, list[float]]] = {
-        str(workload["id"]): {language: [] for language in languages}
+) -> tuple[dict[str, dict[str, list[float]]], list[dict[str, object]]]:
+    names = [str(workload["id"]) for workload in workloads]
+    expected = {
+        str(workload["id"]): (
+            f"{workload['id']} {workload['expected_checksum']}\n"
+        )
         for workload in workloads
     }
-    for workload in workloads:
-        name = str(workload["id"])
-        expected = f"{name} {workload['expected_checksum']}"
-        for _ in range(warmups):
-            for language in languages:
-                measured_run(commands[language][name], expected, repository)
-        for sample in range(samples):
-            offset = sample % len(languages)
-            order = list(languages[offset:]) + list(languages[:offset])
-            for language in order:
-                elapsed = measured_run(commands[language][name], expected, repository)
-                raw[name][language].append(elapsed)
-        medians = ", ".join(
-            f"{language}={statistics.median(raw[name][language]):.2f} ms"
-            for language in languages
-        )
-        print(f"{name}: {medians}", flush=True)
-    return raw
-
-
-def summary(raw: dict[str, dict[str, list[float]]]) -> dict[str, dict[str, dict[str, float]]]:
-    return {
-        name: {
-            language: {
-                "median_ms": statistics.median(samples),
-                "min_ms": min(samples),
-                "max_ms": max(samples),
-            }
-            for language, samples in language_samples.items()
-        }
-        for name, language_samples in raw.items()
-    }
+    return measure_matrix(
+        commands,
+        expected,
+        languages,
+        names,
+        warmups,
+        samples,
+        lambda command, stdout: measured_run(command, stdout, repository, timeout),
+    )
 
 
 def markdown_report(
@@ -262,16 +255,17 @@ def markdown_report(
         "",
         f"Generated: `{metadata['generated_at']}`",
         "",
-        f"Host: `{metadata['platform']}`; CPU: `{metadata['cpu']}`.",
+        f"Host: `{metadata['platform']['system']} {metadata['platform']['release']} "
+        f"{metadata['platform']['machine']}`; CPU: `{metadata['platform']['cpu']}`.",
         "",
-        f"Ruda compiler executable: `{metadata['ruda_compiler']}`.",
+        f"Ruda compiler executable: `{metadata['artifacts']['ruda_compiler']['path']}`.",
         "",
-        f"Ruda source revision: `{metadata['ruda_revision']}`.",
+        f"Ruda source revision: `{metadata['artifacts']['ruda_compiler']['revision']}`.",
         "",
         f"Algorithm corpus revision: `{metadata['corpus_revision']}`.",
         "",
-        f"Equivalence manifest: `{metadata['equivalence_manifest']}` "
-        f"(`{metadata['equivalence_sha256']}`).",
+        f"Equivalence manifest: `{metadata['equivalence_manifest']['path']}` "
+        f"(`{metadata['equivalence_manifest']['sha256']}`).",
         "",
         f"Samples: {metadata['samples']} measured after {metadata['warmups']} {warmup_label}. "
         "Reported times include process startup and one fixed checksum line; compilation is excluded.",
@@ -340,8 +334,9 @@ def markdown_report(
 
 
 def main() -> None:
-    args = parse_args()
     repository = pathlib.Path(__file__).resolve().parents[1]
+    protocol_file, protocol = load_protocol(repository)
+    args = parse_args(protocol)
     manifest_path, manifest = load_and_validate(repository)
     workloads = manifest["workloads"]
     benchmark_names = [str(workload["id"]) for workload in workloads]
@@ -352,6 +347,7 @@ def main() -> None:
     build_dir.mkdir(parents=True, exist_ok=True)
     default_ruda = repository.parent / "Ma" / "build" / "release" / "ruda"
     ruda_binary = pathlib.Path(os.environ.get("RUDA", str(default_ruda))).resolve()
+    max_heap_bytes = protocol["resource"]["max_heap_bytes"]
     if args.skip_build:
         commands = existing_commands(
             repository, build_dir, args.languages, benchmark_names
@@ -363,38 +359,74 @@ def main() -> None:
             args.languages,
             ruda_binary,
             benchmark_names,
+            max_heap_bytes,
         )
 
-    raw = measure(
+    metadata = capture_metadata(
+        repository,
+        ruda_binary,
+        warmups=args.warmups,
+        samples=args.samples,
+        timeout_seconds=args.timeout,
+        max_heap_bytes=max_heap_bytes,
+        command=sys.argv,
+    )
+    metadata["corpus_revision"] = git_revision(repository, repository)
+    metadata["equivalence_manifest"] = {
+        "path": str(manifest_path.relative_to(repository)),
+        "schema": manifest["schema"],
+        "sha256": manifest_sha256(manifest_path),
+    }
+    raw, order = measure(
         repository,
         commands,
         args.languages,
         args.warmups,
         args.samples,
+        args.timeout,
         workloads,
     )
-    summarized = summary(raw)
-    metadata: dict[str, object] = {
-        "generated_at": dt.datetime.now().astimezone().isoformat(timespec="seconds"),
-        "platform": platform.platform(),
-        "cpu": cpu_name(),
-        "samples": args.samples,
-        "warmups": args.warmups,
-        "languages": args.languages,
-        "ruda_compiler": str(ruda_binary),
-        "ruda_revision": source_revision(ruda_binary, repository),
-        "corpus_revision": tool_version(
-            ["git", "-C", str(repository), "rev-parse", "HEAD"], repository
-        ),
-        "equivalence_manifest": str(manifest_path.relative_to(repository)),
-        "equivalence_schema": manifest["schema"],
-        "equivalence_sha256": manifest_sha256(manifest_path),
-        "toolchains": {
-            "Ruda": tool_version([str(ruda_binary), "--version"], repository),
-            "Go": tool_version(["go", "version"], repository),
-            "Rust": tool_version(["rustc", "--version"], repository),
-        },
+    finish_metadata(metadata)
+    metadata["languages"] = args.languages
+    summarized = summarize_matrix(raw)
+    expected = {
+        str(workload["id"]): (
+            f"{workload['id']} {workload['expected_checksum']}\n"
+        )
+        for workload in workloads
     }
+    result_workloads = {
+        str(workload["id"]): {
+            "description": workload["description"],
+            "expected_checksum": workload["expected_checksum"],
+            "expected_stdout": expected[str(workload["id"])],
+            "commands": {
+                language: commands[language][str(workload["id"])]
+                for language in args.languages
+            },
+            "raw_ms": raw[str(workload["id"])],
+            "summary": summarized[str(workload["id"])],
+        }
+        for workload in workloads
+    }
+    result = {
+        "schema": ALGORITHM_RESULT_SCHEMA,
+        "protocol": {
+            "schema": protocol["schema"],
+            "path": str(protocol_file.relative_to(repository)),
+            "sha256": sha256_file(protocol_file),
+        },
+        "metadata": metadata,
+        "workloads": result_workloads,
+        "order": order,
+    }
+    validate_result(result, protocol, sha256_file(protocol_file))
+    for name in benchmark_names:
+        medians = ", ".join(
+            f"{language}={summarized[name][language]['median_ms']:.2f} ms"
+            for language in args.languages
+        )
+        print(f"{name}: {medians}", flush=True)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(
         markdown_report(metadata, summarized, args.languages, workloads),
@@ -403,7 +435,7 @@ def main() -> None:
     json_output = output.with_suffix(".json")
     json_output.write_text(
         json.dumps(
-            {"metadata": metadata, "summary": summarized, "raw_ms": raw},
+            result,
             ensure_ascii=False,
             indent=2,
         )
@@ -415,4 +447,7 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except ProtocolError as error:
+        raise SystemExit(f"performance protocol error: {error}") from error

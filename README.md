@@ -14,6 +14,7 @@ ruda-algotithms/
     structures/{stack,queue,heap,dsu}.ruda
     graphs/{bfs,dijkstra}.ruda
     benchmarks/{core,insertion,heap_sort,stack,queue,min_heap,dsu,bfs,dijkstra}/
+    probes/{core,scalar_get,scalar_set,proven_bounds,unproven_bounds,growth,reserved_growth,density,nested_traversal,checked_loop}/
     algorithms_test.ruda
   go/
     sorting/
@@ -23,7 +24,7 @@ ruda-algotithms/
   rust/
     src/{sorting,structures,graphs}/
     tests/algorithms_test.rs
-  benchmarks/{run.py,results/}
+  benchmarks/{run.py,probes.py,validate_results.py,results/,budgets/}
   verify.sh
 ```
 
@@ -88,8 +89,11 @@ make benchmark
 workload, описания и ожидаемые checksum. Источник Ruda compiler, revision
 corpus и SHA-256 manifest записываются в Markdown и raw JSON отчёты.
 
-Текущая таблица: [`benchmarks/results/latest.md`](benchmarks/results/latest.md).
-Методика и параметры: [`benchmarks/README.md`](benchmarks/README.md).
+Воспроизводимый checkpoint-21 baseline, focused array probes, raw samples,
+artifact hashes и reviewed macOS arm64 budget находятся в
+[`benchmarks/results/`](benchmarks/results/) и
+[`benchmarks/budgets/`](benchmarks/budgets/). Методика, schema, retry и
+validation commands: [`benchmarks/README.md`](benchmarks/README.md).
 
 Развёрнутые выводы и места оптимизации зафиксированы в основном Ruda-репозитории:
 [`algorithm-benchmark-findings.md`](../Ma/docs/research/algorithm-benchmark-findings.md).
@@ -132,5 +136,6 @@ corpus и SHA-256 manifest записываются в Markdown и raw JSON от
    interval; Rust использует `usize` для индексов, поэтому отрицательный индекс
    там не представим, а не принимается.
 
-Последние локальные цифры остаются измерением Stage 0, а не обещанием скорости
-языка или release performance budget.
+Checkpoint-21 budget блокирует workload-local регрессии на конкретном
+зарегистрированном runner; он не превращает локальные цифры в обещание общей
+скорости языка или cross-language ranking.

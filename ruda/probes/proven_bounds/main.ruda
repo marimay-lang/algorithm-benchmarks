@@ -1,0 +1,11 @@
+import { Error as IoError, println } from "std/io";
+
+import { probeProvenBounds } from "study/algorithms/probes/core";
+
+fn main(): Result<void, IoError> {
+  if probeProvenBounds() != 48334393 {
+    panic("proven-bounds probe checksum mismatch");
+  }
+  println("proven-bounds 48334393")?;
+  return Ok();
+}

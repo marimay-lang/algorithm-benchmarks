@@ -1,0 +1,147 @@
+fn addChecksum(checksum: int, value: int): int {
+  const modulus = 1_000_000_007;
+  let normalized = value % modulus;
+  if normalized < 0 {
+    normalized += modulus;
+  }
+  return (checksum + normalized) % modulus;
+}
+
+fn scalarValues(size: int): []int {
+  let values: []int = [];
+  values.reserve(size);
+  for let index = 0; index < size; index += 1 {
+    values.push((index * 17 + 3) % 1009);
+  }
+  return values;
+}
+
+fn denseValues(size: int): []int {
+  let values: []int = [];
+  values.reserve(size);
+  for let index = 0; index < size; index += 1 {
+    values.push(index % 251);
+  }
+  return values;
+}
+
+public fn probeScalarGet(): int {
+  const size = 4096;
+  const values = scalarValues(size);
+  let checksum = 0;
+  for let iteration = 0; iteration < 4_000_000; iteration += 1 {
+    const index = (iteration * 17 + 3) % size;
+    checksum = addChecksum(checksum, values[index]);
+  }
+  return checksum;
+}
+
+public fn probeScalarSet(): int {
+  const size = 4096;
+  let values: []int = [];
+  values.reserve(size);
+  for let index = 0; index < size; index += 1 {
+    values.push(0);
+  }
+  for let iteration = 0; iteration < 4_000_000; iteration += 1 {
+    const index = (iteration * 17 + 3) % size;
+    values[index] = iteration % 1009;
+  }
+  let checksum = 0;
+  for const value of values {
+    checksum = addChecksum(checksum, value);
+  }
+  return checksum;
+}
+
+public fn probeProvenBounds(): int {
+  const values = denseValues(262_144);
+  let checksum = 0;
+  for let repeat = 0; repeat < 32; repeat += 1 {
+    for let index = 0; index < values.length(); index += 1 {
+      checksum = addChecksum(checksum, values[index] % 251);
+    }
+  }
+  return checksum;
+}
+
+public fn probeUnprovenBounds(): int {
+  const size = 262_144;
+  const values = denseValues(size);
+  let checksum = 0;
+  for let iteration = 0; iteration < 8_000_000; iteration += 1 {
+    const index = (iteration * 17 + 3) % size;
+    checksum = addChecksum(checksum, values[index] % 251);
+  }
+  return checksum;
+}
+
+fn growthChecksum(reserved: bool): int {
+  const size = 1_000_000;
+  let values: []int = [];
+  if reserved {
+    values.reserve(size);
+  }
+  for let index = 0; index < size; index += 1 {
+    values.push(index % 251);
+  }
+  let checksum = 0;
+  for let index = 0; index < size; index += 997 {
+    checksum = addChecksum(checksum, values[index]);
+  }
+  return checksum;
+}
+
+public fn probeGrowth(): int {
+  return growthChecksum(false);
+}
+
+public fn probeReservedGrowth(): int {
+  return growthChecksum(true);
+}
+
+public fn probeDensity(): int {
+  const values = denseValues(1_000_000);
+  let checksum = 0;
+  for let repeat = 0; repeat < 12; repeat += 1 {
+    for let index = 0; index < values.length(); index += 1 {
+      checksum = addChecksum(checksum, values[index] % 251);
+    }
+  }
+  return checksum;
+}
+
+public fn probeNestedTraversal(): int {
+  const rowCount = 2048;
+  const columnCount = 256;
+  let rows: [][]int = [];
+  rows.reserve(rowCount);
+  for let rowIndex = 0; rowIndex < rowCount; rowIndex += 1 {
+    let row: []int = [];
+    row.reserve(columnCount);
+    for let columnIndex = 0; columnIndex < columnCount; columnIndex += 1 {
+      row.push((rowIndex * columnCount + columnIndex) % 251);
+    }
+    rows.push(row);
+  }
+  let checksum = 0;
+  for let repeat = 0; repeat < 12; repeat += 1 {
+    for let rowIndex = 0; rowIndex < rows.length(); rowIndex += 1 {
+      const row = rows[rowIndex];
+      for let columnIndex = 0; columnIndex < row.length(); columnIndex += 1 {
+        checksum = addChecksum(checksum, row[columnIndex]);
+      }
+    }
+  }
+  return checksum;
+}
+
+public fn probeCheckedLoop(): int {
+  let state = 7;
+  let checksum = 0;
+  for let iteration = 0; iteration < 20_000_000; iteration += 1 {
+    state = (state * 25173 + 13849) % 65536;
+    checksum = addChecksum(checksum, state % 1009);
+  }
+  return checksum;
+}

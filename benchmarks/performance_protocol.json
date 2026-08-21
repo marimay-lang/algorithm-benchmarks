@@ -1,0 +1,42 @@
+{
+  "schema": "ruda.performance-protocol/1",
+  "measurement": {
+    "clock": "perf_counter_ns",
+    "minimum_warmups": 3,
+    "minimum_samples": 11,
+    "require_odd_samples": true,
+    "timeout_seconds": 300,
+    "order": "rotating-balanced-v1",
+    "host_isolation": [
+      "dedicated runner with no concurrent repository jobs",
+      "mains power or fixed-performance runner policy",
+      "automatic sleep disabled for the measurement interval",
+      "cool-down before a retry",
+      "no result selection or discarded valid samples"
+    ]
+  },
+  "statistics": {
+    "location": "median",
+    "dispersion": [
+      "mad",
+      "iqr"
+    ],
+    "quartiles": "tukey-hinges",
+    "noise_fraction": "max(0.02, 3 * MAD / median, IQR / median)",
+    "maximum_baseline_noise_fraction": 0.30
+  },
+  "regression": {
+    "minimum_budget_fraction": 0.10,
+    "noise_multiplier": 1.0,
+    "adjudication": "one complete retry after cool-down; both original and retry medians must exceed their workload budget",
+    "cross_language_budgets": false
+  },
+  "resource": {
+    "max_heap_bytes": 67108864
+  },
+  "result_schemas": {
+    "probes": "ruda.array-probes/1",
+    "algorithms": "ruda.algorithm-benchmark/2",
+    "budgets": "ruda.performance-budgets/1"
+  }
+}

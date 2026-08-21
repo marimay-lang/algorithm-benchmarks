@@ -1,0 +1,78 @@
+{
+  "schema": "ruda.array-probes-manifest/1",
+  "core_source": "ruda/probes/core/probes.ruda",
+  "probes": [
+    {
+      "id": "scalar-get",
+      "category": "access",
+      "description": "cache-hot scalar reads with runtime-selected indices",
+      "function": "probeScalarGet",
+      "source_directory": "ruda/probes/scalar_get",
+      "expected_checksum": 16031036
+    },
+    {
+      "id": "scalar-set",
+      "category": "access",
+      "description": "cache-hot scalar writes with runtime-selected indices",
+      "function": "probeScalarSet",
+      "source_directory": "ruda/probes/scalar_set",
+      "expected_checksum": 2051754
+    },
+    {
+      "id": "proven-bounds",
+      "category": "bounds",
+      "description": "sequential length-guarded traversal for future MIR range proofs",
+      "function": "probeProvenBounds",
+      "source_directory": "ruda/probes/proven_bounds",
+      "expected_checksum": 48334393
+    },
+    {
+      "id": "unproven-bounds",
+      "category": "bounds",
+      "description": "runtime modulo indices that retain dynamic bounds checks",
+      "function": "probeUnprovenBounds",
+      "source_directory": "ruda/probes/unproven_bounds",
+      "expected_checksum": 999770104
+    },
+    {
+      "id": "growth",
+      "category": "growth",
+      "description": "failure-atomic array growth from empty storage",
+      "function": "probeGrowth",
+      "source_directory": "ruda/probes/growth",
+      "expected_checksum": 125500
+    },
+    {
+      "id": "reserved-growth",
+      "category": "growth",
+      "description": "the same pushes after one non-observable reserve",
+      "function": "probeReservedGrowth",
+      "source_directory": "ruda/probes/reserved_growth",
+      "expected_checksum": 125500
+    },
+    {
+      "id": "density",
+      "category": "storage",
+      "description": "repeated sequential traversal of one million scalar cells",
+      "function": "probeDensity",
+      "source_directory": "ruda/probes/density",
+      "expected_checksum": 499977433
+    },
+    {
+      "id": "nested-traversal",
+      "category": "nested",
+      "description": "repeated row-major traversal through managed nested arrays",
+      "function": "probeNestedTraversal",
+      "source_directory": "ruda/probes/nested_traversal",
+      "expected_checksum": 786370800
+    },
+    {
+      "id": "checked-loop",
+      "category": "checked-arithmetic",
+      "description": "pure checked integer recurrence without array accesses",
+      "function": "probeCheckedLoop",
+      "source_directory": "ruda/probes/checked_loop",
+      "expected_checksum": 72846317
+    }
+  ]
+}

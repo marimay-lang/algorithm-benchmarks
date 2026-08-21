@@ -1,0 +1,11 @@
+import { Error as IoError, println } from "std/io";
+
+import { probeScalarSet } from "study/algorithms/probes/core";
+
+fn main(): Result<void, IoError> {
+  if probeScalarSet() != 2051754 {
+    panic("scalar-set probe checksum mismatch");
+  }
+  println("scalar-set 2051754")?;
+  return Ok();
+}

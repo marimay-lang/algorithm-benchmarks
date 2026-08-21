@@ -1,0 +1,11 @@
+import { Error as IoError, println } from "std/io";
+
+import { probeGrowth } from "study/algorithms/probes/core";
+
+fn main(): Result<void, IoError> {
+  if probeGrowth() != 125500 {
+    panic("growth probe checksum mismatch");
+  }
+  println("growth 125500")?;
+  return Ok();
+}

@@ -1,0 +1,11 @@
+import { Error as IoError, println } from "std/io";
+
+import { probeNestedTraversal } from "study/algorithms/probes/core";
+
+fn main(): Result<void, IoError> {
+  if probeNestedTraversal() != 786370800 {
+    panic("nested-traversal probe checksum mismatch");
+  }
+  println("nested-traversal 786370800")?;
+  return Ok();
+}

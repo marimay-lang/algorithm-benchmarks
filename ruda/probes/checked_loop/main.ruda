@@ -1,0 +1,11 @@
+import { Error as IoError, println } from "std/io";
+
+import { probeCheckedLoop } from "study/algorithms/probes/core";
+
+fn main(): Result<void, IoError> {
+  if probeCheckedLoop() != 72846317 {
+    panic("checked-loop probe checksum mismatch");
+  }
+  println("checked-loop 72846317")?;
+  return Ok();
+}

@@ -1,0 +1,11 @@
+import { Error as IoError, println } from "std/io";
+
+import { probeDensity } from "study/algorithms/probes/core";
+
+fn main(): Result<void, IoError> {
+  if probeDensity() != 499977433 {
+    panic("density probe checksum mismatch");
+  }
+  println("density 499977433")?;
+  return Ok();
+}
