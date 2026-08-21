@@ -2,6 +2,8 @@ name: Checkpoint 21 Linux x86_64 baseline
 
 on:
   push:
+    branches:
+      - main
     paths:
       - ".gitea/workflows/cp21-baseline.yml"
       - "benchmarks/**"
@@ -10,6 +12,9 @@ on:
       - "rust/**"
       - "verify.sh"
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   baseline:
@@ -21,7 +26,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: ruda-algotithms
-          persist-credentials: false
+          persist-credentials: true
 
       - name: Check out Ruda compiler
         env:
@@ -107,3 +112,19 @@ jobs:
             ruda-algotithms/benchmarks/results/cp21-algorithms-linux-x86_64.md
             ruda-algotithms/benchmarks/budgets/cp21-linux-x86_64.json
           if-no-files-found: error
+
+      - name: Publish candidate evidence branch
+        working-directory: ruda-algotithms
+        env:
+          EVIDENCE_BRANCH: evidence/cp21-linux-x86_64-${{ gitea.sha }}
+        run: |
+          git config user.name "Gitea Actions"
+          git config user.email "actions@marimay.invalid"
+          git switch -c "$EVIDENCE_BRANCH"
+          git add \
+            benchmarks/results/cp21-probes-linux-x86_64.json \
+            benchmarks/results/cp21-algorithms-linux-x86_64.json \
+            benchmarks/results/cp21-algorithms-linux-x86_64.md \
+            benchmarks/budgets/cp21-linux-x86_64.json
+          git commit -m "Collect checkpoint 21 Linux x86_64 candidate"
+          git push origin "HEAD:refs/heads/$EVIDENCE_BRANCH"
