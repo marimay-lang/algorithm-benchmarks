@@ -1,0 +1,11 @@
+import { Error as IoError, println } from "std/io";
+
+import { benchmarkDsu } from "study/algorithms/benchmarks/core";
+
+fn main(): Result<void, IoError> {
+  if benchmarkDsu() != 21343152 {
+    panic("dsu checksum mismatch");
+  }
+  println("dsu 21343152")?;
+  return Ok();
+}

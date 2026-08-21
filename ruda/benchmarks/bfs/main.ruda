@@ -1,0 +1,11 @@
+import { Error as IoError, println } from "std/io";
+
+import { benchmarkBfs } from "study/algorithms/benchmarks/core";
+
+fn main(): Result<void, IoError> {
+  if benchmarkBfs() != 715800 {
+    panic("bfs checksum mismatch");
+  }
+  println("bfs 715800")?;
+  return Ok();
+}

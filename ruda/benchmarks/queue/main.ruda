@@ -1,0 +1,11 @@
+import { Error as IoError, println } from "std/io";
+
+import { benchmarkQueue } from "study/algorithms/benchmarks/core";
+
+fn main(): Result<void, IoError> {
+  if benchmarkQueue() != 498106199 {
+    panic("queue checksum mismatch");
+  }
+  println("queue 498106199")?;
+  return Ok();
+}

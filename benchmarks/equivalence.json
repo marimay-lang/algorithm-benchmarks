@@ -1,0 +1,371 @@
+{
+  "schema": "ruda.algorithm-equivalence/1",
+  "languages": [
+    "ruda",
+    "go",
+    "rust"
+  ],
+  "generator": {
+    "kind": "lcg",
+    "state_initialization": "workload seed",
+    "step": "state = (state * 25173 + 13849) % 65536",
+    "multiplier": 25173,
+    "increment": 13849,
+    "modulus": 65536
+  },
+  "checksum": {
+    "modulus": 1000000007,
+    "normalization": "each selected signed value is reduced modulo 1000000007 and made non-negative before addition",
+    "stdout": "{id} {checksum}\n"
+  },
+  "measurement": {
+    "includes": [
+      "process startup",
+      "input construction",
+      "reusable API calls",
+      "selected-result validation",
+      "checksum calculation",
+      "one stdout line"
+    ],
+    "excludes": [
+      "compilation",
+      "ruda run and VM execution",
+      "debug-runtime archive measurements",
+      "invalid-input probes"
+    ]
+  },
+  "invalid_input_policy": {
+    "timed_workloads": "all timed inputs satisfy the reusable API preconditions",
+    "correctness_tests": "out-of-range starts/endpoints and negative Dijkstra weights are rejected in every language; signed negative indices are additionally tested where the host type admits them",
+    "language_boundary": "Rust graph indices use usize, so a negative index is unrepresentable rather than accepted"
+  },
+  "global_source_contracts": {
+    "ruda": {
+      "path": "ruda/benchmarks/core/benchmarks.ruda",
+      "required_fragments": [
+        "import * as graphs from \"study/algorithms/graphs\";",
+        "import * as sorting from \"study/algorithms/sorting\";",
+        "import * as structures from \"study/algorithms/structures\";"
+      ],
+      "forbidden_fragments": [
+        "type IntOption",
+        "type SearchResult",
+        "sizeValue:",
+        "targets:",
+        "weights:",
+        "fn insertionSort(",
+        "fn heapSort("
+      ]
+    },
+    "go": {
+      "path": "go/cmd/benchmark/main.go",
+      "required_fragments": [
+        "example.com/ruda-algorithms/graphs",
+        "example.com/ruda-algorithms/sorting",
+        "example.com/ruda-algorithms/structures"
+      ],
+      "forbidden_fragments": [
+        "func insertionSort(",
+        "func heapSort(",
+        "type IntOption",
+        "type SearchResult"
+      ]
+    },
+    "rust": {
+      "path": "rust/src/bin/benchmark.rs",
+      "required_fragments": [
+        "use ruda_algorithms::graphs::{self, Edge};",
+        "use ruda_algorithms::sorting;",
+        "use ruda_algorithms::structures::{Dsu, MinHeap, Queue, Stack};"
+      ],
+      "forbidden_fragments": [
+        "fn insertion_sort(",
+        "fn heap_sort(",
+        "struct IntOption",
+        "struct SearchResult"
+      ]
+    }
+  },
+  "workloads": [
+    {
+      "id": "insertion",
+      "description": "50 × 2,500 generated integers",
+      "expected_checksum": 999956059,
+      "input": "for repeat 0..49 generate 2,500 values with seed repeat + 1; map state to state % 20001 - 10000",
+      "operations": "call reusable insertion sort once per generated array",
+      "representation": "one contiguous logical array of signed integers",
+      "checks": "checksum the first, middle, and last sorted values after every call",
+      "implementations": {
+        "ruda": {
+          "required_fragments": [
+            "repeat < 50",
+            "generatedValues(2500, repeat + 1)",
+            "sorting.insertionSort(values);"
+          ]
+        },
+        "go": {
+          "required_fragments": [
+            "repeat < 50",
+            "generatedValues(2500, repeat+1)",
+            "sorting.InsertionSort(values)"
+          ]
+        },
+        "rust": {
+          "required_fragments": [
+            "for repeat in 0..50",
+            "generated_values(2_500, repeat + 1)",
+            "sorting::insertion_sort(&mut values);"
+          ]
+        }
+      }
+    },
+    {
+      "id": "heap-sort",
+      "description": "5 × 100,000 generated integers",
+      "expected_checksum": 999995320,
+      "input": "for repeat 0..4 generate 100,000 values with seed repeat + 101; map state to state % 20001 - 10000",
+      "operations": "call reusable in-place binary heap sort once per generated array",
+      "representation": "one contiguous logical array of signed integers",
+      "checks": "checksum the first, middle, and last sorted values after every call",
+      "implementations": {
+        "ruda": {
+          "required_fragments": [
+            "repeat < 5",
+            "generatedValues(100_000, repeat + 101)",
+            "sorting.heapSort(values);"
+          ]
+        },
+        "go": {
+          "required_fragments": [
+            "repeat < 5",
+            "generatedValues(100_000, repeat+101)",
+            "sorting.HeapSort(values)"
+          ]
+        },
+        "rust": {
+          "required_fragments": [
+            "for repeat in 0..5",
+            "generated_values(100_000, repeat + 101)",
+            "sorting::heap_sort(&mut values);"
+          ]
+        }
+      }
+    },
+    {
+      "id": "stack",
+      "description": "1,000,000 push + pop",
+      "expected_checksum": 498055372,
+      "input": "generate 1,000,000 values from seed 7 and map state to state % 1001",
+      "operations": "push every value through the reusable stack API, then pop until empty",
+      "representation": "package-owned stack over one growable signed-integer array with no shadow logical size",
+      "checks": "checksum every value in LIFO removal order",
+      "implementations": {
+        "ruda": {
+          "required_fragments": [
+            "index < 1_000_000",
+            "structures.newStack()",
+            "stack.push(state % 1001);",
+            "stack.pop()"
+          ]
+        },
+        "go": {
+          "required_fragments": [
+            "index < 1_000_000",
+            "structures.NewStack()",
+            "stack.Push(state % 1001)",
+            "stack.Pop()"
+          ]
+        },
+        "rust": {
+          "required_fragments": [
+            "for _ in 0..1_000_000",
+            "Stack::new()",
+            "stack.push(state % 1_001);",
+            "stack.pop()"
+          ]
+        }
+      }
+    },
+    {
+      "id": "queue",
+      "description": "1,000,000 enqueue + dequeue",
+      "expected_checksum": 498106199,
+      "input": "generate 1,000,000 values from seed 11 and map state to state % 1001",
+      "operations": "enqueue every value through the reusable queue API, then dequeue until empty",
+      "representation": "package-owned FIFO queue over one growable signed-integer array and a logical head index",
+      "checks": "checksum every value in FIFO removal order",
+      "implementations": {
+        "ruda": {
+          "required_fragments": [
+            "index < 1_000_000",
+            "structures.newQueue()",
+            "queue.enqueue(state % 1001);",
+            "queue.dequeue()"
+          ]
+        },
+        "go": {
+          "required_fragments": [
+            "index < 1_000_000",
+            "structures.NewQueue()",
+            "queue.Enqueue(state % 1001)",
+            "queue.Dequeue()"
+          ]
+        },
+        "rust": {
+          "required_fragments": [
+            "for _ in 0..1_000_000",
+            "Queue::new()",
+            "queue.enqueue(state % 1_001);",
+            "queue.dequeue()"
+          ]
+        }
+      }
+    },
+    {
+      "id": "min-heap",
+      "description": "500,000 insert + remove-min",
+      "expected_checksum": 405398755,
+      "input": "generate 500,000 values from seed 13 and map state to state % 10001",
+      "operations": "push every value through the reusable binary min-heap API, then pop until empty",
+      "representation": "package-owned binary min-heap over one growable signed-integer array with no shadow logical size",
+      "checks": "checksum every value in ascending removal order",
+      "implementations": {
+        "ruda": {
+          "required_fragments": [
+            "index < 500_000",
+            "structures.newMinHeap()",
+            "heap.push(state % 10001);",
+            "heap.pop()"
+          ]
+        },
+        "go": {
+          "required_fragments": [
+            "index < 500_000",
+            "structures.NewMinHeap()",
+            "heap.Push(state % 10001)",
+            "heap.Pop()"
+          ]
+        },
+        "rust": {
+          "required_fragments": [
+            "for _ in 0..500_000",
+            "MinHeap::new()",
+            "heap.push(state % 10_001);",
+            "heap.pop()"
+          ]
+        }
+      }
+    },
+    {
+      "id": "dsu",
+      "description": "100,000 nodes; 5,000,000 unions",
+      "expected_checksum": 21343152,
+      "input": "create 100,000 singleton nodes; for operation 0..4,999,999 union operation % size with (operation * 17 + 3) % size",
+      "operations": "call reusable union by rank with path-compressing find for every union, then find every 97th node",
+      "representation": "package-owned parent and rank arrays plus a component count",
+      "checks": "start with the final component count and checksum every 97th representative",
+      "implementations": {
+        "ruda": {
+          "required_fragments": [
+            "const size = 100_000;",
+            "operation < 5_000_000",
+            "structures.newDsu(size)",
+            "dsu.union(left, right);",
+            "index += 97"
+          ]
+        },
+        "go": {
+          "required_fragments": [
+            "const size = 100_000",
+            "operation < 5_000_000",
+            "structures.NewDSU(size)",
+            "dsu.Union(left, right)",
+            "index += 97"
+          ]
+        },
+        "rust": {
+          "required_fragments": [
+            "const SIZE: usize = 100_000;",
+            "for operation in 0..5_000_000",
+            "Dsu::new(SIZE)",
+            "dsu.union(left, right);",
+            "step_by(97)"
+          ]
+        }
+      }
+    },
+    {
+      "id": "bfs",
+      "description": "300 × 20,000 nodes, degree 4",
+      "expected_checksum": 715800,
+      "input": "create 20,000 nested adjacency arrays; each node links to ±1 and ±7 modulo size; run starts 0..299",
+      "operations": "call reusable BFS for every start and traverse with a FIFO head index",
+      "representation": "nested integer arrays with four neighbors per node; Option/pair reports invalid input",
+      "checks": "checksum distances at (start + size / 2) % size and (start + size / 3) % size",
+      "implementations": {
+        "ruda": {
+          "required_fragments": [
+            "const size = 20_000;",
+            "repeat < 300",
+            "graphs.bfs(adjacency, repeat)",
+            "(node + size - 7) % size"
+          ]
+        },
+        "go": {
+          "required_fragments": [
+            "const size = 20_000",
+            "repeat < 300",
+            "graphs.BFS(adjacency, repeat)",
+            "(node + size - 7) % size"
+          ]
+        },
+        "rust": {
+          "required_fragments": [
+            "const SIZE: usize = 20_000;",
+            "for repeat in 0..300",
+            "graphs::bfs(&adjacency, repeat)",
+            "(node + SIZE - 7) % SIZE"
+          ]
+        }
+      }
+    },
+    {
+      "id": "dijkstra",
+      "description": "80 × 800 nodes, O(V²)",
+      "expected_checksum": 38672,
+      "input": "create 800 nested edge-record arrays with forward +1/weight 1 and +7/weight 3 edges where in range; run starts 0..79",
+      "operations": "call reusable O(V²) Dijkstra for every start; each iteration linearly selects the unvisited minimum and relaxes its edge records",
+      "representation": "nested arrays of records with target and signed weight fields; Option/pair reports invalid input",
+      "checks": "checksum distances to node size - 1 and node size / 2",
+      "implementations": {
+        "ruda": {
+          "required_fragments": [
+            "const size = 800;",
+            "repeat < 80",
+            "let adjacency: [][]graphs.Edge = [];",
+            "edges.push(graphs.edge(node + 7, 3));",
+            "graphs.dijkstra(adjacency, repeat)"
+          ]
+        },
+        "go": {
+          "required_fragments": [
+            "const size = 800",
+            "repeat < 80",
+            "make([][]graphs.Edge, size)",
+            "graphs.Edge{To: node + 7, Weight: 3}",
+            "graphs.Dijkstra(adjacency, repeat)"
+          ]
+        },
+        "rust": {
+          "required_fragments": [
+            "const SIZE: usize = 800;",
+            "for repeat in 0..80",
+            "let adjacency: Vec<Vec<Edge>>",
+            "weight: 3,",
+            "graphs::dijkstra(&adjacency, repeat)"
+          ]
+        }
+      }
+    }
+  ]
+}

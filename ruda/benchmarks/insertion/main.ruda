@@ -1,0 +1,11 @@
+import { Error as IoError, println } from "std/io";
+
+import { benchmarkInsertion } from "study/algorithms/benchmarks/core";
+
+fn main(): Result<void, IoError> {
+  if benchmarkInsertion() != 999956059 {
+    panic("insertion checksum mismatch");
+  }
+  println("insertion 999956059")?;
+  return Ok();
+}

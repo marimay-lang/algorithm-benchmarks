@@ -1,0 +1,11 @@
+import { Error as IoError, println } from "std/io";
+
+import { benchmarkHeapSort } from "study/algorithms/benchmarks/core";
+
+fn main(): Result<void, IoError> {
+  if benchmarkHeapSort() != 999995320 {
+    panic("heap-sort checksum mismatch");
+  }
+  println("heap-sort 999995320")?;
+  return Ok();
+}

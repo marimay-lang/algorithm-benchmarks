@@ -1,0 +1,11 @@
+import { Error as IoError, println } from "std/io";
+
+import { benchmarkMinHeap } from "study/algorithms/benchmarks/core";
+
+fn main(): Result<void, IoError> {
+  if benchmarkMinHeap() != 405398755 {
+    panic("min-heap checksum mismatch");
+  }
+  println("min-heap 405398755")?;
+  return Ok();
+}

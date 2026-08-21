@@ -1,0 +1,30 @@
+public type IntAdjacency = [][]int;
+
+public fn bfs(adjacency: IntAdjacency, start: int): Option<[]int> {
+  const nodeCount = length(adjacency);
+  if start < 0 || start >= nodeCount {
+    return None<[]int>();
+  }
+  let distances = arrayOf<int>();
+  for let index = 0; index < nodeCount; index += 1 {
+    push(distances, -1);
+  }
+  let queue = arrayOf<int>();
+  push(queue, start);
+  distances[start] = 0;
+  let head = 0;
+  while head < length(queue) {
+    const node = queue[head];
+    head += 1;
+    for const neighbor of adjacency[node] {
+      if neighbor < 0 || neighbor >= nodeCount {
+        return None<[]int>();
+      }
+      if distances[neighbor] == -1 {
+        distances[neighbor] = distances[node] + 1;
+        push(queue, neighbor);
+      }
+    }
+  }
+  return Some(distances);
+}

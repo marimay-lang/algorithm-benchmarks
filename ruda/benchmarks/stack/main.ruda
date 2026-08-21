@@ -1,0 +1,11 @@
+import { Error as IoError, println } from "std/io";
+
+import { benchmarkStack } from "study/algorithms/benchmarks/core";
+
+fn main(): Result<void, IoError> {
+  if benchmarkStack() != 498055372 {
+    panic("stack checksum mismatch");
+  }
+  println("stack 498055372")?;
+  return Ok();
+}

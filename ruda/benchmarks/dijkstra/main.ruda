@@ -1,0 +1,11 @@
+import { Error as IoError, println } from "std/io";
+
+import { benchmarkDijkstra } from "study/algorithms/benchmarks/core";
+
+fn main(): Result<void, IoError> {
+  if benchmarkDijkstra() != 38672 {
+    panic("dijkstra checksum mismatch");
+  }
+  println("dijkstra 38672")?;
+  return Ok();
+}
