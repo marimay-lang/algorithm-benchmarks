@@ -1,0 +1,129 @@
+{
+  "schema": "ruda.performance-budgets/1",
+  "protocol_sha256": "0b43886b4e02ee72e8ea4be8eca6c3fb228336bcf525522723a4b40c3b862b19",
+  "platform_id": "macos-arm64-apple-m2",
+  "created_at": "2026-08-22T00:01:37+07:00",
+  "review": {
+    "status": "reviewed",
+    "reviewed_at": "2026-08-22T00:04:00+07:00",
+    "rationale": "All 17 raw Ruda distributions contain 11 retained samples from committed corpus 57ad442, use the protocol median/MAD/IQR envelope, remain below 7.6% measured noise, and receive the reviewed 10% workload-local median budget."
+  },
+  "baseline": {
+    "probe_result": "benchmarks/results/cp21-probes-macos-arm64-apple-m2.json",
+    "probe_result_sha256": "0ab81bdc0ac202d6076e81a38f3708675c343eac97ef874ef0d199b03f25442c",
+    "algorithm_result": "benchmarks/results/cp21-algorithms-macos-arm64-apple-m2.json",
+    "algorithm_result_sha256": "36d15c44686162ba1e35a91bcda7720ac317ec944d0d3c13c1fe9c6ae4eccde1",
+    "ruda_revision": "d6afbe792685ef12fe1ce9e6e053ad9758ddce8d",
+    "corpus_revision": "57ad442f62ee644c82bd48243913c55cf0d27dac",
+    "probe_manifest_sha256": "25bcb922a294a316784e8cf382c239fc62e9b7cbe7d88618c3f61a326c4bd6ab",
+    "equivalence_manifest_sha256": "51702f2ad1bae31fb11b9df8550f58b2034e1e7044f3d6e7448e5001399d3535"
+  },
+  "suites": {
+    "probes": {
+      "scalar-get": {
+        "baseline_median_ms": 96.956583,
+        "baseline_noise_fraction": 0.02914793315271856,
+        "allowed_regression_fraction": 0.1,
+        "maximum_median_ms": 106.6522413
+      },
+      "scalar-set": {
+        "baseline_median_ms": 127.138167,
+        "baseline_noise_fraction": 0.022849149618461965,
+        "allowed_regression_fraction": 0.1,
+        "maximum_median_ms": 139.8519837
+      },
+      "proven-bounds": {
+        "baseline_median_ms": 264.162958,
+        "baseline_noise_fraction": 0.02,
+        "allowed_regression_fraction": 0.1,
+        "maximum_median_ms": 290.5792538
+      },
+      "unproven-bounds": {
+        "baseline_median_ms": 258.445459,
+        "baseline_noise_fraction": 0.028323674280537534,
+        "allowed_regression_fraction": 0.1,
+        "maximum_median_ms": 284.29000490000004
+      },
+      "growth": {
+        "baseline_median_ms": 88.832959,
+        "baseline_noise_fraction": 0.04178207099912092,
+        "allowed_regression_fraction": 0.1,
+        "maximum_median_ms": 97.71625490000001
+      },
+      "reserved-growth": {
+        "baseline_median_ms": 87.667083,
+        "baseline_noise_fraction": 0.039614355595702914,
+        "allowed_regression_fraction": 0.1,
+        "maximum_median_ms": 96.43379130000001
+      },
+      "density": {
+        "baseline_median_ms": 428.377708,
+        "baseline_noise_fraction": 0.02,
+        "allowed_regression_fraction": 0.1,
+        "maximum_median_ms": 471.2154788
+      },
+      "nested-traversal": {
+        "baseline_median_ms": 211.872209,
+        "baseline_noise_fraction": 0.04914991470164936,
+        "allowed_regression_fraction": 0.1,
+        "maximum_median_ms": 233.05942990000003
+      },
+      "checked-loop": {
+        "baseline_median_ms": 310.762833,
+        "baseline_noise_fraction": 0.02,
+        "allowed_regression_fraction": 0.1,
+        "maximum_median_ms": 341.8391163
+      }
+    },
+    "algorithms": {
+      "insertion": {
+        "baseline_median_ms": 4003.604709,
+        "baseline_noise_fraction": 0.02,
+        "allowed_regression_fraction": 0.1,
+        "maximum_median_ms": 4403.9651799
+      },
+      "heap-sort": {
+        "baseline_median_ms": 1007.910375,
+        "baseline_noise_fraction": 0.07559687536701865,
+        "allowed_regression_fraction": 0.1,
+        "maximum_median_ms": 1108.7014125
+      },
+      "stack": {
+        "baseline_median_ms": 395.264542,
+        "baseline_noise_fraction": 0.026216310594336316,
+        "allowed_regression_fraction": 0.1,
+        "maximum_median_ms": 434.79099620000005
+      },
+      "queue": {
+        "baseline_median_ms": 429.974583,
+        "baseline_noise_fraction": 0.02,
+        "allowed_regression_fraction": 0.1,
+        "maximum_median_ms": 472.97204130000006
+      },
+      "min-heap": {
+        "baseline_median_ms": 1896.281208,
+        "baseline_noise_fraction": 0.06132100793354503,
+        "allowed_regression_fraction": 0.1,
+        "maximum_median_ms": 2085.9093288000004
+      },
+      "dsu": {
+        "baseline_median_ms": 1948.329458,
+        "baseline_noise_fraction": 0.02,
+        "allowed_regression_fraction": 0.1,
+        "maximum_median_ms": 2143.1624038
+      },
+      "bfs": {
+        "baseline_median_ms": 2488.138042,
+        "baseline_noise_fraction": 0.02,
+        "allowed_regression_fraction": 0.1,
+        "maximum_median_ms": 2736.9518462
+      },
+      "dijkstra": {
+        "baseline_median_ms": 885.366333,
+        "baseline_noise_fraction": 0.02,
+        "allowed_regression_fraction": 0.1,
+        "maximum_median_ms": 973.9029663000001
+      }
+    }
+  }
+}
