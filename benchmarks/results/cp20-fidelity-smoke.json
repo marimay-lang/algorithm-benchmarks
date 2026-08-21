@@ -1,0 +1,253 @@
+{
+  "metadata": {
+    "generated_at": "2026-08-21T22:47:55+07:00",
+    "platform": "macOS-26.3.1-arm64-arm-64bit",
+    "cpu": "Apple M2",
+    "samples": 1,
+    "warmups": 0,
+    "languages": [
+      "ruda",
+      "go",
+      "rust"
+    ],
+    "ruda_compiler": "/home/marimay/Projects/ai-projects/Ma/build/release/ruda",
+    "ruda_revision": "bf8edd83e85cc2ed9c84791a2ea8cf0fe07146ae",
+    "corpus_revision": "033f17e9225d5760d40181ce13903bcda4decba3",
+    "equivalence_manifest": "benchmarks/equivalence.json",
+    "equivalence_schema": "ruda.algorithm-equivalence/1",
+    "equivalence_sha256": "51702f2ad1bae31fb11b9df8550f58b2034e1e7044f3d6e7448e5001399d3535",
+    "toolchains": {
+      "Ruda": "Ruda compiler 0.0.0-dev",
+      "Go": "go version go1.26.4 darwin/arm64",
+      "Rust": "rustc 1.96.0 (ac68faa20 2026-05-25)"
+    }
+  },
+  "summary": {
+    "insertion": {
+      "ruda": {
+        "median_ms": 4271.701334,
+        "min_ms": 4271.701334,
+        "max_ms": 4271.701334
+      },
+      "go": {
+        "median_ms": 430.016625,
+        "min_ms": 430.016625,
+        "max_ms": 430.016625
+      },
+      "rust": {
+        "median_ms": 298.736666,
+        "min_ms": 298.736666,
+        "max_ms": 298.736666
+      }
+    },
+    "heap-sort": {
+      "ruda": {
+        "median_ms": 1258.775166,
+        "min_ms": 1258.775166,
+        "max_ms": 1258.775166
+      },
+      "go": {
+        "median_ms": 41.127459,
+        "min_ms": 41.127459,
+        "max_ms": 41.127459
+      },
+      "rust": {
+        "median_ms": 21.974542,
+        "min_ms": 21.974542,
+        "max_ms": 21.974542
+      }
+    },
+    "stack": {
+      "ruda": {
+        "median_ms": 691.633167,
+        "min_ms": 691.633167,
+        "max_ms": 691.633167
+      },
+      "go": {
+        "median_ms": 15.98725,
+        "min_ms": 15.98725,
+        "max_ms": 15.98725
+      },
+      "rust": {
+        "median_ms": 9.147125,
+        "min_ms": 9.147125,
+        "max_ms": 9.147125
+      }
+    },
+    "queue": {
+      "ruda": {
+        "median_ms": 724.842333,
+        "min_ms": 724.842333,
+        "max_ms": 724.842333
+      },
+      "go": {
+        "median_ms": 15.317292,
+        "min_ms": 15.317292,
+        "max_ms": 15.317292
+      },
+      "rust": {
+        "median_ms": 9.105792,
+        "min_ms": 9.105792,
+        "max_ms": 9.105792
+      }
+    },
+    "min-heap": {
+      "ruda": {
+        "median_ms": 2143.320833,
+        "min_ms": 2143.320833,
+        "max_ms": 2143.320833
+      },
+      "go": {
+        "median_ms": 54.506625,
+        "min_ms": 54.506625,
+        "max_ms": 54.506625
+      },
+      "rust": {
+        "median_ms": 30.089292,
+        "min_ms": 30.089292,
+        "max_ms": 30.089292
+      }
+    },
+    "dsu": {
+      "ruda": {
+        "median_ms": 2217.1735,
+        "min_ms": 2217.1735,
+        "max_ms": 2217.1735
+      },
+      "go": {
+        "median_ms": 24.790083,
+        "min_ms": 24.790083,
+        "max_ms": 24.790083
+      },
+      "rust": {
+        "median_ms": 21.698875,
+        "min_ms": 21.698875,
+        "max_ms": 21.698875
+      }
+    },
+    "bfs": {
+      "ruda": {
+        "median_ms": 2746.553667,
+        "min_ms": 2746.553667,
+        "max_ms": 2746.553667
+      },
+      "go": {
+        "median_ms": 62.044416,
+        "min_ms": 62.044416,
+        "max_ms": 62.044416
+      },
+      "rust": {
+        "median_ms": 24.400459,
+        "min_ms": 24.400459,
+        "max_ms": 24.400459
+      }
+    },
+    "dijkstra": {
+      "ruda": {
+        "median_ms": 1169.741084,
+        "min_ms": 1169.741084,
+        "max_ms": 1169.741084
+      },
+      "go": {
+        "median_ms": 42.214583,
+        "min_ms": 42.214583,
+        "max_ms": 42.214583
+      },
+      "rust": {
+        "median_ms": 39.370083,
+        "min_ms": 39.370083,
+        "max_ms": 39.370083
+      }
+    }
+  },
+  "raw_ms": {
+    "insertion": {
+      "ruda": [
+        4271.701334
+      ],
+      "go": [
+        430.016625
+      ],
+      "rust": [
+        298.736666
+      ]
+    },
+    "heap-sort": {
+      "ruda": [
+        1258.775166
+      ],
+      "go": [
+        41.127459
+      ],
+      "rust": [
+        21.974542
+      ]
+    },
+    "stack": {
+      "ruda": [
+        691.633167
+      ],
+      "go": [
+        15.98725
+      ],
+      "rust": [
+        9.147125
+      ]
+    },
+    "queue": {
+      "ruda": [
+        724.842333
+      ],
+      "go": [
+        15.317292
+      ],
+      "rust": [
+        9.105792
+      ]
+    },
+    "min-heap": {
+      "ruda": [
+        2143.320833
+      ],
+      "go": [
+        54.506625
+      ],
+      "rust": [
+        30.089292
+      ]
+    },
+    "dsu": {
+      "ruda": [
+        2217.1735
+      ],
+      "go": [
+        24.790083
+      ],
+      "rust": [
+        21.698875
+      ]
+    },
+    "bfs": {
+      "ruda": [
+        2746.553667
+      ],
+      "go": [
+        62.044416
+      ],
+      "rust": [
+        24.400459
+      ]
+    },
+    "dijkstra": {
+      "ruda": [
+        1169.741084
+      ],
+      "go": [
+        42.214583
+      ],
+      "rust": [
+        39.370083
+      ]
+    }
+  }
+}
