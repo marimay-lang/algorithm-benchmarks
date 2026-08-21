@@ -12,7 +12,7 @@ import sys
 from collections.abc import Sequence
 from typing import Any
 
-from perf_protocol import ProtocolError, sha256_file
+from perf_protocol import ProtocolError, sha256_file, tier1_target
 
 
 def run_checked(
@@ -32,9 +32,22 @@ def run_checked(
     )
 
 
-def tool_version(command: Sequence[str], cwd: pathlib.Path) -> str:
+def tool_version(
+    command: Sequence[str],
+    cwd: pathlib.Path,
+    *,
+    accept_nonzero_output: bool = False,
+) -> str:
     try:
-        completed = run_checked(command, cwd=cwd, timeout=30)
+        completed = subprocess.run(
+            command,
+            cwd=cwd,
+            check=not accept_nonzero_output,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            timeout=30,
+        )
     except (OSError, subprocess.SubprocessError):
         return "unavailable"
     output = completed.stdout.strip() or completed.stderr.strip()
@@ -66,18 +79,35 @@ def cpu_name() -> str:
 
 
 def platform_id() -> str:
-    system_names = {"Darwin": "macos", "Windows": "windows", "Linux": "linux"}
-    system = system_names.get(platform.system(), platform.system().lower())
-    machine_names = {
-        "AMD64": "x86_64",
-        "amd64": "x86_64",
-        "aarch64": "arm64",
-    }
-    machine = machine_names.get(platform.machine(), platform.machine().lower())
+    target = tier1_target(platform.system(), platform.machine())
     cpu = re.sub(r"[^a-z0-9]+", "-", cpu_name().lower()).strip("-")
-    if system == "macos" and cpu.startswith("apple-"):
-        return f"{system}-{machine}-{cpu}"
-    return f"{system}-{machine}"
+    if target.startswith("macos-") and cpu.startswith("apple-"):
+        return f"{target}-{cpu}"
+    return target
+
+
+def native_tool_version(
+    compiler: pathlib.Path,
+    repository: pathlib.Path,
+    config: dict[str, str],
+    system: str,
+) -> str:
+    windows = system.lower() == "windows"
+    live = tool_version(
+        [str(compiler), "/Bv" if windows else "--version"],
+        repository,
+        accept_nonzero_output=windows,
+    )
+    configured_id = config.get("RUDA_NATIVE_C_COMPILER_ID", "")
+    configured_version = config.get("RUDA_NATIVE_C_COMPILER_VERSION", "")
+    configured = " ".join(
+        value for value in (configured_id, configured_version) if value
+    )
+    if live in {"unavailable", "unknown"}:
+        return configured or live
+    if configured and configured.lower() not in live.lower():
+        return f"{live}; configured {configured}"
+    return live
 
 
 def _version_lines(ruda_binary: pathlib.Path, repository: pathlib.Path) -> list[str]:
@@ -236,9 +266,10 @@ def capture_metadata(
         resolved = shutil.which(str(native_compiler))
         if resolved:
             native_compiler = pathlib.Path(resolved)
+    system = platform.system()
     platform_data = {
         "id": platform_id(),
-        "system": platform.system(),
+        "system": system,
         "release": platform.release(),
         "machine": platform.machine(),
         "cpu": cpu_name(),
@@ -249,6 +280,9 @@ def capture_metadata(
         if (candidate / ".git").exists():
             revision = git_revision(candidate, repository)
             break
+    native_version = native_tool_version(
+        native_compiler, repository, config, system
+    )
     return {
         "generated_at": dt.datetime.now().astimezone().isoformat(timespec="seconds"),
         "platform": platform_data,
@@ -282,13 +316,9 @@ def capture_metadata(
             },
             "native_c": {
                 "compiler_path": str(native_compiler),
-                "compiler_version": tool_version(
-                    [str(native_compiler), "--version"], repository
-                ),
+                "compiler_version": native_version,
                 "linker_path": str(native_compiler),
-                "linker_version": tool_version(
-                    [str(native_compiler), "--version"], repository
-                ),
+                "linker_version": native_version,
                 "output_profile": "release",
                 "flags": _native_flags(config),
             },

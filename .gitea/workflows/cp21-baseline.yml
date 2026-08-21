@@ -24,12 +24,21 @@ jobs:
           persist-credentials: false
 
       - name: Check out Ruda compiler
-        uses: actions/checkout@v4
-        with:
-          repository: OS/Ruda
-          ref: main
-          path: Ma
-          persist-credentials: false
+        env:
+          RUDA_CHECKOUT_KEY: ${{ secrets.RUDA_CHECKOUT_KEY }}
+        run: |
+          baseline_key_dir="${RUNNER_TEMP:-/tmp}/ruda-checkout"
+          install -d -m 700 "$baseline_key_dir"
+          printf '%s\n' "$RUDA_CHECKOUT_KEY" >"$baseline_key_dir/id_ed25519"
+          chmod 600 "$baseline_key_dir/id_ed25519"
+          printf '%s\n' \
+            '[gitea.example.invalid]:2222 ssh-ed25519 ARCHIVED_HOST_KEY_REMOVED' \
+            >"$baseline_key_dir/known_hosts"
+          GIT_SSH_COMMAND="ssh -i $baseline_key_dir/id_ed25519 -o IdentitiesOnly=yes -o UserKnownHostsFile=$baseline_key_dir/known_hosts" \
+            git clone --branch main --depth 1 \
+              ssh://git@gitea.example.invalid:2222/OS/Ruda.git Ma
+          rm -- "$baseline_key_dir/id_ed25519" "$baseline_key_dir/known_hosts"
+          rmdir "$baseline_key_dir"
 
       - name: Install toolchains
         run: |

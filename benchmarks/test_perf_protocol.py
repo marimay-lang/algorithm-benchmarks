@@ -19,7 +19,9 @@ from perf_protocol import (
     schedule,
     sha256_file,
     summarize,
+    tier1_target,
     validate_budget,
+    validate_budget_files,
     validate_compatible_results,
     validate_result,
     validate_run_shape,
@@ -165,6 +167,16 @@ class PerformanceProtocolTests(unittest.TestCase):
                 "reviewed_at": "2026-08-21T00:00:00+00:00",
                 "rationale": "unit-test review",
             },
+            "baseline": {
+                "probe_result": "benchmarks/results/probes.json",
+                "probe_result_sha256": "7" * 64,
+                "algorithm_result": "benchmarks/results/algorithms.json",
+                "algorithm_result_sha256": "8" * 64,
+                "ruda_revision": "test-revision",
+                "corpus_revision": "test-corpus-revision",
+                "probe_manifest_sha256": "4" * 64,
+                "equivalence_manifest_sha256": "6" * 64,
+            },
             "suites": {
                 "probes": {"workload": copy.deepcopy(entry)},
                 "algorithms": {"workload": copy.deepcopy(entry)},
@@ -236,6 +248,23 @@ class PerformanceProtocolTests(unittest.TestCase):
         validate_result(algorithms, self.protocol, self.protocol_sha)
         validate_compatible_results(probes, algorithms)
 
+    def test_tier1_platform_metadata_is_canonical_and_consistent(self) -> None:
+        cases = {
+            ("Linux", "x86_64"): "linux-x86_64",
+            ("Linux", "aarch64"): "linux-arm64",
+            ("Darwin", "arm64"): "macos-arm64",
+            ("Darwin", "x86_64"): "macos-x86_64",
+            ("Windows", "AMD64"): "windows-x86_64",
+        }
+        for source, expected in cases.items():
+            self.assertEqual(tier1_target(*source), expected)
+        with self.assertRaisesRegex(ProtocolError, "unsupported Tier 1"):
+            tier1_target("FreeBSD", "x86_64")
+        inconsistent = self.valid_result()
+        inconsistent["metadata"]["platform"]["id"] = "windows-x86_64"
+        with self.assertRaisesRegex(ProtocolError, "platform id is inconsistent"):
+            validate_result(inconsistent, self.protocol, self.protocol_sha)
+
     def test_rejects_wrong_profile_and_insufficient_samples(self) -> None:
         wrong_profile = self.valid_result()
         wrong_profile["metadata"]["artifacts"]["runtime"]["profile"] = "debug"
@@ -255,6 +284,12 @@ class PerformanceProtocolTests(unittest.TestCase):
         drift["workloads"]["workload"]["summary"]["ruda"]["median_ms"] += 1
         with self.assertRaisesRegex(ProtocolError, "summary drift"):
             validate_result(drift, self.protocol, self.protocol_sha)
+        unavailable = self.valid_result()
+        unavailable["metadata"]["artifacts"]["native_c"][
+            "compiler_version"
+        ] = "unavailable"
+        with self.assertRaisesRegex(ProtocolError, "metadata is unavailable"):
+            validate_result(unavailable, self.protocol, self.protocol_sha)
 
     def test_strict_json_rejects_non_finite_and_duplicate_data(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -283,6 +318,38 @@ class PerformanceProtocolTests(unittest.TestCase):
         budget["platform_id"] = "macos-arm64"
         with self.assertRaisesRegex(ProtocolError, "platform"):
             validate_budget(budget, probes, algorithms, self.protocol_sha)
+
+    def test_budget_is_bound_to_baseline_metadata_and_files(self) -> None:
+        probes = self.valid_result()
+        algorithms = self.valid_result(ALGORITHM_RESULT_SCHEMA)
+        budget = self.valid_budget(probes)
+        budget["baseline"]["corpus_revision"] = "drifted"
+        with self.assertRaisesRegex(ProtocolError, "corpus revision"):
+            validate_budget(budget, probes, algorithms, self.protocol_sha)
+
+        budget = self.valid_budget(probes)
+        with tempfile.TemporaryDirectory() as directory:
+            repository = pathlib.Path(directory)
+            results = repository / "benchmarks" / "results"
+            results.mkdir(parents=True)
+            probes_path = results / "probes.json"
+            algorithms_path = results / "algorithms.json"
+            probes_path.write_text(json.dumps(probes) + "\n", encoding="utf-8")
+            algorithms_path.write_text(
+                json.dumps(algorithms) + "\n", encoding="utf-8"
+            )
+            budget["baseline"]["probe_result_sha256"] = sha256_file(probes_path)
+            budget["baseline"]["algorithm_result_sha256"] = sha256_file(
+                algorithms_path
+            )
+            validate_budget_files(
+                budget, repository, probes_path, algorithms_path
+            )
+            probes_path.write_text("{}\n", encoding="utf-8")
+            with self.assertRaisesRegex(ProtocolError, "checksum drifted"):
+                validate_budget_files(
+                    budget, repository, probes_path, algorithms_path
+                )
 
     def test_budget_candidate_and_regression_are_rejected(self) -> None:
         probes = self.valid_result()

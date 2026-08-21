@@ -17,6 +17,39 @@ PROTOCOL_SCHEMA = "ruda.performance-protocol/1"
 PROBE_RESULT_SCHEMA = "ruda.array-probes/1"
 ALGORITHM_RESULT_SCHEMA = "ruda.algorithm-benchmark/2"
 BUDGET_SCHEMA = "ruda.performance-budgets/1"
+TIER1_TARGETS = (
+    "linux-x86_64",
+    "linux-arm64",
+    "macos-arm64",
+    "macos-x86_64",
+    "windows-x86_64",
+)
+
+
+def tier1_target(system: str, machine: str) -> str:
+    system_names = {
+        "darwin": "macos",
+        "linux": "linux",
+        "windows": "windows",
+    }
+    machine_names = {
+        "amd64": "x86_64",
+        "x86_64": "x86_64",
+        "aarch64": "arm64",
+        "arm64": "arm64",
+    }
+    normalized_system = system_names.get(system.strip().lower())
+    normalized_machine = machine_names.get(machine.strip().lower())
+    target = (
+        f"{normalized_system}-{normalized_machine}"
+        if normalized_system is not None and normalized_machine is not None
+        else ""
+    )
+    if target not in TIER1_TARGETS:
+        raise ProtocolError(
+            f"unsupported Tier 1 platform metadata: {system!r}/{machine!r}"
+        )
+    return target
 
 
 def _reject_constant(value: str) -> None:
@@ -284,10 +317,18 @@ def validate_result(
     ):
         raise ProtocolError("result timeout is incompatible with the protocol")
     platform_data = _mapping(metadata, "platform")
-    _nonempty_string(platform_data, "id")
+    platform_identifier = _nonempty_string(platform_data, "id")
     for key in ("system", "release", "machine", "cpu"):
         _nonempty_string(platform_data, key)
     _positive_int(platform_data, "logical_cpus", allow_zero=False)
+    target = tier1_target(
+        _nonempty_string(platform_data, "system"),
+        _nonempty_string(platform_data, "machine"),
+    )
+    if platform_identifier != target and not platform_identifier.startswith(
+        target + "-"
+    ):
+        raise ProtocolError("platform id is inconsistent with system/architecture")
     isolation = _mapping(metadata, "isolation")
     if isolation.get("mode") != "dedicated-runner-contract":
         raise ProtocolError("result lacks the dedicated-runner isolation contract")
@@ -309,8 +350,9 @@ def validate_result(
     native_c = _mapping(artifacts, "native_c")
     for artifact in (compiler, runtime):
         _sha256(artifact, "sha256")
-    for key in ("path", "revision", "version"):
-        _nonempty_string(compiler, key)
+    _nonempty_string(compiler, "path")
+    for key in ("revision", "version"):
+        _available_string(compiler, key)
     _sha256(runtime, "manifest_sha256")
     for key in (
         "path",
@@ -332,6 +374,8 @@ def validate_result(
         "linker_version",
     ):
         _nonempty_string(native_c, key)
+    for key in ("compiler_version", "linker_version"):
+        _available_string(native_c, key)
     flags = native_c.get("flags")
     if not isinstance(flags, list) or not all(
         isinstance(value, str) and value for value in flags
@@ -348,7 +392,7 @@ def validate_result(
     if set(toolchains) != {"python", "ruda", "go", "rust"}:
         raise ProtocolError("toolchain metadata is incomplete")
     for key in toolchains:
-        _nonempty_string(toolchains, key)
+        _available_string(toolchains, key)
     _nonempty_string(metadata, "corpus_revision")
     manifest_key = (
         "probe_manifest" if schema == PROBE_RESULT_SCHEMA else "equivalence_manifest"
@@ -487,6 +531,50 @@ def validate_budget(
     actual_platform = _mapping(_mapping(probes, "metadata"), "platform").get("id")
     if platform_id != actual_platform:
         raise ProtocolError("budget platform is incompatible with results")
+    baseline = _mapping(budget, "baseline")
+    for key in ("probe_result", "algorithm_result"):
+        _nonempty_string(baseline, key)
+    for key in ("probe_result_sha256", "algorithm_result_sha256"):
+        _sha256(baseline, key)
+    probe_metadata = _mapping(probes, "metadata")
+    algorithm_metadata = _mapping(algorithms, "metadata")
+    probe_compiler = _mapping(_mapping(probe_metadata, "artifacts"), "ruda_compiler")
+    algorithm_compiler = _mapping(
+        _mapping(algorithm_metadata, "artifacts"), "ruda_compiler"
+    )
+    bindings = (
+        (
+            "Ruda revision",
+            _nonempty_string(baseline, "ruda_revision"),
+            _nonempty_string(probe_compiler, "revision"),
+            _nonempty_string(algorithm_compiler, "revision"),
+        ),
+        (
+            "corpus revision",
+            _nonempty_string(baseline, "corpus_revision"),
+            _nonempty_string(probe_metadata, "corpus_revision"),
+            _nonempty_string(algorithm_metadata, "corpus_revision"),
+        ),
+        (
+            "probe manifest",
+            _sha256(baseline, "probe_manifest_sha256"),
+            _sha256(_mapping(probe_metadata, "probe_manifest"), "sha256"),
+            _sha256(_mapping(probe_metadata, "probe_manifest"), "sha256"),
+        ),
+        (
+            "equivalence manifest",
+            _sha256(baseline, "equivalence_manifest_sha256"),
+            _sha256(
+                _mapping(algorithm_metadata, "equivalence_manifest"), "sha256"
+            ),
+            _sha256(
+                _mapping(algorithm_metadata, "equivalence_manifest"), "sha256"
+            ),
+        ),
+    )
+    for label, recorded, first, second in bindings:
+        if recorded != first or recorded != second:
+            raise ProtocolError(f"budget baseline {label} is incompatible with results")
     suites = _mapping(budget, "suites")
     failures: list[str] = []
     for suite_name, result in (("probes", probes), ("algorithms", algorithms)):
@@ -516,6 +604,41 @@ def validate_budget(
                     f"{suite_name}/{workload}: {actual:.6f} ms > {maximum:.6f} ms"
                 )
     return failures
+
+
+def validate_budget_files(
+    budget: Mapping[str, Any],
+    repository: pathlib.Path,
+    probes_path: pathlib.Path,
+    algorithms_path: pathlib.Path,
+) -> None:
+    baseline = _mapping(budget, "baseline")
+    repository = repository.resolve()
+    paths = (
+        (
+            "probe",
+            probes_path.resolve(),
+            _nonempty_string(baseline, "probe_result"),
+            _sha256(baseline, "probe_result_sha256"),
+        ),
+        (
+            "algorithm",
+            algorithms_path.resolve(),
+            _nonempty_string(baseline, "algorithm_result"),
+            _sha256(baseline, "algorithm_result_sha256"),
+        ),
+    )
+    for label, path, recorded_path, recorded_hash in paths:
+        try:
+            relative = path.relative_to(repository).as_posix()
+        except ValueError as error:
+            raise ProtocolError(
+                f"{label} result is outside the benchmark repository"
+            ) from error
+        if recorded_path != relative:
+            raise ProtocolError(f"budget baseline {label} result path drifted")
+        if recorded_hash != sha256_file(path):
+            raise ProtocolError(f"budget baseline {label} result checksum drifted")
 
 
 def _mapping(container: Mapping[str, Any], key: str) -> Mapping[str, Any]:
@@ -550,6 +673,13 @@ def _nonempty_string(container: Mapping[str, Any], key: str) -> str:
     value = container.get(key)
     if not isinstance(value, str) or not value:
         raise ProtocolError(f"{key} must be a non-empty string")
+    return value
+
+
+def _available_string(container: Mapping[str, Any], key: str) -> str:
+    value = _nonempty_string(container, key)
+    if value.strip().lower() in {"unknown", "unavailable", "pending"}:
+        raise ProtocolError(f"{key} metadata is unavailable")
     return value
 
 

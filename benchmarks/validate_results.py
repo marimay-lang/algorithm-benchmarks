@@ -11,6 +11,7 @@ from perf_protocol import (
     load_protocol,
     sha256_file,
     validate_budget,
+    validate_budget_files,
     validate_compatible_results,
     validate_result,
 )
@@ -92,6 +93,12 @@ def main() -> None:
     platform_id = probes["metadata"]["platform"]["id"]
     budget_path = repository / "benchmarks" / "budgets" / f"cp21-{platform_id}.json"
     budget = load_json(budget_path)
+    validate_budget_files(
+        budget,
+        repository,
+        resolve(repository, args.probes),
+        resolve(repository, args.algorithms),
+    )
     failures = validate_budget(budget, probes, algorithms, protocol_sha)
     if not failures:
         print(
