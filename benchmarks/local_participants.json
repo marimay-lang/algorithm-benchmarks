@@ -1,0 +1,139 @@
+{
+  "schema": "ruda.local-benchmark-participants/1",
+  "languages": [
+    "typescript",
+    "v",
+    "moonbit"
+  ],
+  "scope": "local-only",
+  "participants": {
+    "typescript": {
+      "runtime": "Bun",
+      "build_profile": "bun build --compile --minify",
+      "documentation": "https://bun.sh/docs/bundler/executables",
+      "source_paths": [
+        "typescript/src/benchmark.ts",
+        "typescript/src/sorting.ts",
+        "typescript/src/structures.ts",
+        "typescript/src/graphs.ts"
+      ],
+      "required_fragments": [
+        "import { bfs, dijkstra, type Edge } from \"./graphs\";",
+        "import { heapSort, insertionSort } from \"./sorting\";",
+        "import { Dsu, MinHeap, Queue, Stack } from \"./structures\";",
+        "const name = Bun.argv[2];"
+      ]
+    },
+    "v": {
+      "runtime": "native",
+      "build_profile": "v -prod",
+      "documentation": "https://github.com/vlang/v",
+      "source_paths": [
+        "v/cmd/benchmark/main.v",
+        "v/sorting/sorting.v",
+        "v/structures/structures.v",
+        "v/graphs/graphs.v"
+      ],
+      "required_fragments": [
+        "import graphs",
+        "import sorting",
+        "import structures",
+        "sorting.insertion_sort(mut values)",
+        "sorting.heap_sort(mut values)"
+      ]
+    },
+    "moonbit": {
+      "runtime": "native",
+      "build_profile": "moon build --release --target native",
+      "documentation": "https://docs.moonbitlang.com/en/latest/",
+      "source_paths": [
+        "moonbit/benchmark.mbt",
+        "moonbit/sorting.mbt",
+        "moonbit/structures.mbt",
+        "moonbit/graphs.mbt",
+        "moonbit/cmd/benchmark/main.mbt"
+      ],
+      "required_fragments": [
+        "@app.run(name)",
+        "insertion_sort(values)",
+        "heap_sort(values)",
+        "let distances = bfs(adjacency, repeat).unwrap()",
+        "let distances = dijkstra(adjacency, repeat).unwrap()"
+      ]
+    }
+  },
+  "workloads": [
+    {
+      "id": "insertion",
+      "expected_checksum": 999956059,
+      "required_fragments": {
+        "typescript": ["repeat < 50", "generatedValues(2_500, repeat + 1)", "insertionSort(values);"],
+        "v": ["repeat in 0 .. 50", "generated_values(2_500, repeat + 1)", "sorting.insertion_sort(mut values)"],
+        "moonbit": ["repeat < 50", "generated_values(2_500, repeat + 1)", "insertion_sort(values)"]
+      }
+    },
+    {
+      "id": "heap-sort",
+      "expected_checksum": 999995320,
+      "required_fragments": {
+        "typescript": ["repeat < 5", "generatedValues(100_000, repeat + 101)", "heapSort(values);"],
+        "v": ["repeat in 0 .. 5", "generated_values(100_000, repeat + 101)", "sorting.heap_sort(mut values)"],
+        "moonbit": ["repeat < 5", "generated_values(100_000, repeat + 101)", "heap_sort(values)"]
+      }
+    },
+    {
+      "id": "stack",
+      "expected_checksum": 498055372,
+      "required_fragments": {
+        "typescript": ["index < 1_000_000", "new Stack()", "stack.push(state % 1_001);"],
+        "v": ["_ in 0 .. 1_000_000", "structures.Stack{}", "stack.push(state % 1_001)"],
+        "moonbit": ["index < 1_000_000", "stack_new()", "stack_push(stack, state % 1_001)"]
+      }
+    },
+    {
+      "id": "queue",
+      "expected_checksum": 498106199,
+      "required_fragments": {
+        "typescript": ["index < 1_000_000", "new Queue()", "queue.enqueue(state % 1_001);"],
+        "v": ["_ in 0 .. 1_000_000", "structures.Queue{}", "queue.enqueue(state % 1_001)"],
+        "moonbit": ["index < 1_000_000", "queue_new()", "queue_enqueue(queue, state % 1_001)"]
+      }
+    },
+    {
+      "id": "min-heap",
+      "expected_checksum": 405398755,
+      "required_fragments": {
+        "typescript": ["index < 500_000", "new MinHeap()", "heap.push(state % 10_001);"],
+        "v": ["_ in 0 .. 500_000", "structures.MinHeap{}", "heap.push(state % 10_001)"],
+        "moonbit": ["index < 500_000", "min_heap_new()", "min_heap_push(heap, state % 10_001)"]
+      }
+    },
+    {
+      "id": "dsu",
+      "expected_checksum": 21343152,
+      "required_fragments": {
+        "typescript": ["operation < 5_000_000", "new Dsu(size)", "dsu.union(operation % size, (operation * 17 + 3) % size);"],
+        "v": ["operation in 0 .. 5_000_000", "structures.new_dsu(size)", "dsu.union(operation % size, (operation * 17 + 3) % size)"],
+        "moonbit": ["operation < 5_000_000", "dsu_new(size)", "dsu_union(parent, rank, operation % size, (operation * 17 + 3) % size)"]
+      }
+    },
+    {
+      "id": "bfs",
+      "expected_checksum": 715800,
+      "required_fragments": {
+        "typescript": ["const size = 20_000", "repeat < 300", "bfs(adjacency, repeat)"],
+        "v": ["size := 20_000", "repeat in 0 .. 300", "graphs.bfs(adjacency, repeat)"],
+        "moonbit": ["let size = 20_000", "repeat < 300", "bfs(adjacency, repeat).unwrap()"]
+      }
+    },
+    {
+      "id": "dijkstra",
+      "expected_checksum": 38672,
+      "required_fragments": {
+        "typescript": ["const size = 800", "repeat < 80", "dijkstra(adjacency, repeat)"],
+        "v": ["size := 800", "repeat in 0 .. 80", "graphs.dijkstra(adjacency, repeat)"],
+        "moonbit": ["let size = 800", "repeat < 80", "dijkstra(adjacency, repeat).unwrap()"]
+      }
+    }
+  ]
+}

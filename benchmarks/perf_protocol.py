@@ -24,6 +24,8 @@ TIER1_TARGETS = (
     "macos-x86_64",
     "windows-x86_64",
 )
+CORE_ALGORITHM_PARTICIPANTS = ["ruda", "go", "rust"]
+LOCAL_ALGORITHM_PARTICIPANTS = ["typescript", "v", "moonbit"]
 
 
 def tier1_target(system: str, machine: str) -> str:
@@ -388,11 +390,6 @@ def validate_result(
         _mapping(protocol, "resource"), "max_heap_bytes", False
     ):
         raise ProtocolError("managed-heap budget is incompatible with the protocol")
-    toolchains = _mapping(metadata, "toolchains")
-    if set(toolchains) != {"python", "ruda", "go", "rust"}:
-        raise ProtocolError("toolchain metadata is incomplete")
-    for key in toolchains:
-        _available_string(toolchains, key)
     _nonempty_string(metadata, "corpus_revision")
     manifest_key = (
         "probe_manifest" if schema == PROBE_RESULT_SCHEMA else "equivalence_manifest"
@@ -404,10 +401,44 @@ def validate_result(
     if schema == PROBE_RESULT_SCHEMA:
         _sha256(manifest, "source_tree_sha256")
         expected_participants = {"ruda"}
+        expected_toolchains = {"python", "ruda", "go", "rust"}
     else:
-        if metadata.get("languages") != ["ruda", "go", "rust"]:
-            raise ProtocolError("algorithm result lacks the complete language matrix")
-        expected_participants = {"ruda", "go", "rust"}
+        languages = metadata.get("languages")
+        if languages == CORE_ALGORITHM_PARTICIPANTS:
+            expected_participants = set(CORE_ALGORITHM_PARTICIPANTS)
+            expected_toolchains = {"python", *CORE_ALGORITHM_PARTICIPANTS}
+        else:
+            if not isinstance(languages, list):
+                raise ProtocolError("algorithm result lacks the complete language matrix")
+            extras = languages[len(CORE_ALGORITHM_PARTICIPANTS) :]
+            expected_extras = [
+                language
+                for language in LOCAL_ALGORITHM_PARTICIPANTS
+                if language in extras
+            ]
+            if (
+                languages[: len(CORE_ALGORITHM_PARTICIPANTS)]
+                != CORE_ALGORITHM_PARTICIPANTS
+                or not extras
+                or extras != expected_extras
+                or len(set(languages)) != len(languages)
+            ):
+                raise ProtocolError("algorithm result has an invalid local language matrix")
+            if metadata.get("comparison_scope") != "local-only":
+                raise ProtocolError("extended algorithm result must be marked local-only")
+            local_manifest = _mapping(metadata, "local_participants_manifest")
+            for key in ("path", "schema", "sha256"):
+                _nonempty_string(local_manifest, key)
+            _sha256(local_manifest, "sha256")
+            if local_manifest.get("schema") != "ruda.local-benchmark-participants/1":
+                raise ProtocolError("extended algorithm result has the wrong local manifest")
+            expected_participants = set(languages)
+            expected_toolchains = {"python", *CORE_ALGORITHM_PARTICIPANTS, *extras}
+    toolchains = _mapping(metadata, "toolchains")
+    if set(toolchains) != expected_toolchains:
+        raise ProtocolError("toolchain metadata is incomplete")
+    for key in toolchains:
+        _available_string(toolchains, key)
     workloads = _mapping(result, "workloads")
     if not workloads:
         raise ProtocolError("result has no workloads")
@@ -497,6 +528,8 @@ def validate_compatible_results(
         raise ProtocolError("second result is not an algorithm result")
     left = _mapping(probes, "metadata")
     right = _mapping(algorithms, "metadata")
+    if right.get("comparison_scope") == "local-only":
+        raise ProtocolError("local-only algorithm results cannot be Tier 1 baselines")
     checks = [
         ("platform", _mapping(left, "platform").get("id"), _mapping(right, "platform").get("id")),
         ("Ruda compiler", _mapping(_mapping(left, "artifacts"), "ruda_compiler").get("sha256"), _mapping(_mapping(right, "artifacts"), "ruda_compiler").get("sha256")),
@@ -518,6 +551,8 @@ def validate_budget(
     algorithms: Mapping[str, Any],
     protocol_sha256: str,
 ) -> list[str]:
+    if _mapping(algorithms, "metadata").get("comparison_scope") == "local-only":
+        raise ProtocolError("local-only algorithm results cannot use Tier 1 budgets")
     if budget.get("schema") != BUDGET_SCHEMA:
         raise ProtocolError("unsupported performance budget schema")
     if budget.get("protocol_sha256") != protocol_sha256:

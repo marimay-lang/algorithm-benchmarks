@@ -82,12 +82,15 @@ echo "== Benchmark harness =="
 python3 -m py_compile \
   "$repository_root/benchmarks/derive_budget.py" \
   "$repository_root/benchmarks/equivalence.py" \
+  "$repository_root/benchmarks/local_languages.py" \
+  "$repository_root/benchmarks/local_participants.py" \
   "$repository_root/benchmarks/perf_environment.py" \
   "$repository_root/benchmarks/perf_protocol.py" \
   "$repository_root/benchmarks/probe_manifest.py" \
   "$repository_root/benchmarks/probes.py" \
   "$repository_root/benchmarks/run.py" \
   "$repository_root/benchmarks/test_equivalence.py" \
+  "$repository_root/benchmarks/test_local_participants.py" \
   "$repository_root/benchmarks/test_perf_environment.py" \
   "$repository_root/benchmarks/test_perf_protocol.py" \
   "$repository_root/benchmarks/test_probe_manifest.py" \

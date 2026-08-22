@@ -183,6 +183,31 @@ class PerformanceProtocolTests(unittest.TestCase):
             },
         }
 
+    def extend_with_local_participant(
+        self, result: dict[str, object], language: str = "typescript"
+    ) -> dict[str, object]:
+        extended = copy.deepcopy(result)
+        extended["metadata"]["languages"].append(language)
+        extended["metadata"]["comparison_scope"] = "local-only"
+        extended["metadata"]["local_participants_manifest"] = {
+            "path": "benchmarks/local_participants.json",
+            "schema": "ruda.local-benchmark-participants/1",
+            "sha256": "9" * 64,
+        }
+        extended["metadata"]["toolchains"][language] = "test"
+        raw = [float(value + 60) for value in range(100, 111)]
+        observation = extended["workloads"]["workload"]
+        observation["raw_ms"][language] = raw
+        observation["summary"][language] = summarize(raw)
+        observation["commands"][language] = [f"{language}-probe"]
+        events = schedule(
+            ["workload"], extended["metadata"]["languages"], 3, 11
+        )
+        for index, event in enumerate(events):
+            event["elapsed_ms"] = float(index + 1)
+        extended["order"] = events
+        return extended
+
     def test_protocol_and_minimum_run_shape_are_valid(self) -> None:
         validate_run_shape(self.protocol, 3, 11)
         with self.assertRaisesRegex(ProtocolError, "insufficient warmups"):
@@ -247,6 +272,42 @@ class PerformanceProtocolTests(unittest.TestCase):
         validate_result(probes, self.protocol, self.protocol_sha)
         validate_result(algorithms, self.protocol, self.protocol_sha)
         validate_compatible_results(probes, algorithms)
+
+    def test_local_algorithm_result_is_valid_but_cannot_be_tier1_evidence(self) -> None:
+        probes = self.valid_result()
+        algorithms = self.extend_with_local_participant(
+            self.valid_result(ALGORITHM_RESULT_SCHEMA)
+        )
+        validate_result(algorithms, self.protocol, self.protocol_sha)
+        with self.assertRaisesRegex(ProtocolError, "cannot be Tier 1"):
+            validate_compatible_results(probes, algorithms)
+        with self.assertRaisesRegex(ProtocolError, "cannot use Tier 1"):
+            validate_budget(
+                self.valid_budget(probes),
+                probes,
+                algorithms,
+                self.protocol_sha,
+            )
+
+    def test_local_algorithm_result_requires_scope_manifest_and_order(self) -> None:
+        algorithms = self.extend_with_local_participant(
+            self.valid_result(ALGORITHM_RESULT_SCHEMA)
+        )
+        del algorithms["metadata"]["comparison_scope"]
+        with self.assertRaisesRegex(ProtocolError, "marked local-only"):
+            validate_result(algorithms, self.protocol, self.protocol_sha)
+
+        algorithms = self.extend_with_local_participant(
+            self.valid_result(ALGORITHM_RESULT_SCHEMA), "moonbit"
+        )
+        algorithms["metadata"]["languages"].append("v")
+        algorithms["metadata"]["toolchains"]["v"] = "test"
+        for observation in algorithms["workloads"].values():
+            observation["raw_ms"]["v"] = observation["raw_ms"]["moonbit"]
+            observation["summary"]["v"] = observation["summary"]["moonbit"]
+            observation["commands"]["v"] = ["v-probe"]
+        with self.assertRaisesRegex(ProtocolError, "invalid local language matrix"):
+            validate_result(algorithms, self.protocol, self.protocol_sha)
 
     def test_tier1_platform_metadata_is_canonical_and_consistent(self) -> None:
         cases = {

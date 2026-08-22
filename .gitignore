@@ -2,5 +2,6 @@
 .ruda/
 **/.ruda/
 rust/target/
+moonbit/_build/
 benchmarks/.build/
 __pycache__/

@@ -24,6 +24,9 @@ ruda-algotithms/
   rust/
     src/{sorting,structures,graphs}/
     tests/algorithms_test.rs
+  typescript/src/{sorting,structures,graphs,benchmark}.ts
+  v/{sorting,structures,graphs,cmd/benchmark}/
+  moonbit/{sorting,structures,graphs,cmd/benchmark}/
   benchmarks/{run.py,probes.py,validate_results.py,results/,budgets/}
   verify.sh
 ```
@@ -88,6 +91,25 @@ make benchmark
 [`equivalence.json`](benchmarks/equivalence.json) и берёт из него список
 workload, описания и ожидаемые checksum. Источник Ruda compiler, revision
 corpus и SHA-256 manifest записываются в Markdown и raw JSON отчёты.
+
+Для локального расширенного сравнения доступны TypeScript под Bun, V и MoonBit:
+
+```sh
+RUDA=/absolute/path/to/release/ruda \
+  ./benchmarks/run.py \
+  --languages ruda,go,rust,typescript,v,moonbit \
+  --samples 11 --warmups 3 \
+  --output benchmarks/results/local-six-languages.md
+```
+
+Harness принимает `BUN`, `V` и `MOON` как пути к исполняемым файлам. TypeScript
+заранее компилируется через `bun build --compile --minify`, V — через `v -prod`,
+MoonBit — через `moon build --release --target native`; компиляция не входит в
+замеры. Эти toolchain не устанавливаются и не запускаются в `verify.sh` или CI.
+Расширенный JSON помечается `comparison_scope: local-only`, использует отдельный
+[`local_participants.json`](benchmarks/local_participants.json) и запрещён как
+Tier 1 baseline. Штатный `make benchmark` по-прежнему измеряет только
+`ruda,go,rust`.
 
 Воспроизводимый checkpoint-21 baseline, focused array probes, raw samples,
 artifact hashes и reviewed macOS arm64 budget находятся в

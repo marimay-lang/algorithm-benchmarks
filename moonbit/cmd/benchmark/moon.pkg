@@ -1,0 +1,7 @@
+import {
+  "local/ruda-algorithms-benchmark" @app,
+  "moonbitlang/core/abort",
+  "moonbitlang/core/env",
+}
+
+pkgtype(kind: "executable")

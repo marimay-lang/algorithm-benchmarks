@@ -13,6 +13,18 @@ import time
 from typing import Sequence
 
 from equivalence import load_and_validate, manifest_sha256
+from local_languages import (
+    CORE_LANGUAGES,
+    build_local_binaries,
+    existing_local_commands,
+    is_local_comparison,
+    local_toolchain_versions,
+    parse_language_selection,
+)
+from local_participants import (
+    load_and_validate as load_and_validate_local,
+    manifest_sha256 as local_manifest_sha256,
+)
 from perf_environment import capture_metadata, finish_metadata, git_revision
 from perf_protocol import (
     ALGORITHM_RESULT_SCHEMA,
@@ -25,14 +37,23 @@ from perf_protocol import (
     validate_run_shape,
 )
 
-LANGUAGES = ["ruda", "go", "rust"]
+LANGUAGES = CORE_LANGUAGES
+
+
+def language_label(language: str) -> str:
+    return {"typescript": "TypeScript", "moonbit": "MoonBit"}.get(
+        language, language.capitalize()
+    )
 
 
 def parse_args(protocol: dict[str, object]) -> argparse.Namespace:
     measurement = protocol["measurement"]
     assert isinstance(measurement, dict)
     parser = argparse.ArgumentParser(
-        description="Build and time identical Ruda, Go, and Rust workloads."
+        description=(
+            "Build and time identical Ruda, Go, and Rust workloads, with optional "
+            "local-only TypeScript/Bun, V, and MoonBit participants."
+        )
     )
     parser.add_argument("--samples", type=int, default=measurement["minimum_samples"])
     parser.add_argument("--warmups", type=int, default=measurement["minimum_warmups"])
@@ -40,7 +61,7 @@ def parse_args(protocol: dict[str, object]) -> argparse.Namespace:
     parser.add_argument(
         "--languages",
         default=",".join(LANGUAGES),
-        help="comma-separated subset of ruda,go,rust",
+        help="ruda,go,rust followed by an optional subset of typescript,v,moonbit",
     )
     parser.add_argument("--skip-build", action="store_true")
     parser.add_argument(
@@ -55,12 +76,10 @@ def parse_args(protocol: dict[str, object]) -> argparse.Namespace:
         parser.error(str(error))
     if args.timeout != measurement["timeout_seconds"]:
         parser.error("Tier 1 benchmark timeout must match performance_protocol.json")
-    selected = [item.strip() for item in args.languages.split(",") if item.strip()]
-    if not selected or any(item not in LANGUAGES for item in selected):
-        parser.error("languages must be a comma-separated subset of ruda,go,rust")
-    if selected != LANGUAGES:
-        parser.error("Tier 1 algorithm results require ruda,go,rust in protocol order")
-    args.languages = selected
+    try:
+        args.languages = parse_language_selection(args.languages)
+    except ValueError as error:
+        parser.error(str(error))
     return args
 
 
@@ -239,15 +258,13 @@ def markdown_report(
 ) -> str:
     warmup_label = "warm-up run" if metadata["warmups"] == 1 else "warm-up runs"
     ratio_languages = [
-        language
-        for language in ("go", "rust")
-        if "ruda" in languages and language in languages
-    ]
+        language for language in languages if language != "ruda"
+    ] if "ruda" in languages else []
     table_headers = [
         "Algorithm",
         "Workload",
-        *(language.capitalize() + " median" for language in languages),
-        *("Ruda / " + language.capitalize() for language in ratio_languages),
+        *(language_label(language) + " median" for language in languages),
+        *("Ruda / " + language_label(language) for language in ratio_languages),
         "Fastest",
     ]
     lines = [
@@ -276,6 +293,14 @@ def markdown_report(
         + "---:|" * len(ratio_languages)
         + "---:|",
     ]
+    if metadata.get("comparison_scope") == "local-only":
+        local_manifest = metadata["local_participants_manifest"]
+        lines[14:14] = [
+            f"Local participant manifest: `{local_manifest['path']}` "
+            f"(`{local_manifest['sha256']}`). This extended matrix is local-only "
+            "and is excluded from Tier 1 baselines.",
+            "",
+        ]
     for workload in workloads:
         name = str(workload["id"])
         timings = summarized[name]
@@ -286,14 +311,14 @@ def markdown_report(
             f"{timings['ruda']['median_ms'] / timings[language]['median_ms']:.1f}×"
             for language in ratio_languages
         )
-        row.append(fastest_language.capitalize())
+        row.append(language_label(fastest_language))
         lines.append("| " + " | ".join(row) + " |")
     lines.extend(
         [
             "",
             "## Range (min–max)",
             "",
-            "| Algorithm | " + " | ".join(language.capitalize() for language in languages) + " |",
+            "| Algorithm | " + " | ".join(language_label(language) for language in languages) + " |",
             "|---|" + "---:|" * len(languages),
         ]
     )
@@ -311,9 +336,9 @@ def markdown_report(
             "## Interpretation limits",
             "",
             "- Checksums prove matching selected results, not identical abstraction boundaries.",
-            "- All three languages call reusable sorting, structures, and graph packages.",
+            "- Every participant calls reusable sorting, structures, and graph code.",
             "- Stack, queue, heap, DSU, BFS, and O(V²) Dijkstra use matching operations and layouts;",
-            "  Ruda and Rust model absence with Option while Go returns a value/bool pair.",
+            "  absence representation follows each host language without changing timed valid inputs.",
             "- Checksums cover selected results and do not prove equal compiler optimization maturity.",
             "",
         ]
@@ -338,6 +363,10 @@ def main() -> None:
     protocol_file, protocol = load_protocol(repository)
     args = parse_args(protocol)
     manifest_path, manifest = load_and_validate(repository)
+    local_manifest_path = None
+    local_manifest = None
+    if is_local_comparison(args.languages):
+        local_manifest_path, local_manifest = load_and_validate_local(repository)
     workloads = manifest["workloads"]
     benchmark_names = [str(workload["id"]) for workload in workloads]
     output = args.output
@@ -348,18 +377,35 @@ def main() -> None:
     default_ruda = repository.parent / "Ma" / "build" / "release" / "ruda"
     ruda_binary = pathlib.Path(os.environ.get("RUDA", str(default_ruda))).resolve()
     max_heap_bytes = protocol["resource"]["max_heap_bytes"]
+    core_languages = [
+        language for language in args.languages if language in CORE_LANGUAGES
+    ]
     if args.skip_build:
         commands = existing_commands(
-            repository, build_dir, args.languages, benchmark_names
+            repository, build_dir, core_languages, benchmark_names
+        )
+        commands.update(
+            existing_local_commands(
+                repository, build_dir, args.languages, benchmark_names
+            )
         )
     else:
         commands = build_binaries(
             repository,
             build_dir,
-            args.languages,
+            core_languages,
             ruda_binary,
             benchmark_names,
             max_heap_bytes,
+        )
+        commands.update(
+            build_local_binaries(
+                repository,
+                build_dir,
+                args.languages,
+                benchmark_names,
+                run_checked,
+            )
         )
 
     metadata = capture_metadata(
@@ -377,6 +423,16 @@ def main() -> None:
         "schema": manifest["schema"],
         "sha256": manifest_sha256(manifest_path),
     }
+    metadata["toolchains"].update(
+        local_toolchain_versions(repository, args.languages, tool_version)
+    )
+    if local_manifest_path is not None and local_manifest is not None:
+        metadata["comparison_scope"] = "local-only"
+        metadata["local_participants_manifest"] = {
+            "path": str(local_manifest_path.relative_to(repository)),
+            "schema": local_manifest["schema"],
+            "sha256": local_manifest_sha256(local_manifest_path),
+        }
     raw, order = measure(
         repository,
         commands,

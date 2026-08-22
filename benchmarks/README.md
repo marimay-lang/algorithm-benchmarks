@@ -56,6 +56,32 @@ build profile compiler executable. Harness проверяет release runtime ma
 исполняемые файлы. Tier 1 algorithm report содержит полный `ruda,go,rust`
 набор в protocol order; частичная language matrix не принимается этой схемой.
 
+## Локальные дополнительные языки
+
+TypeScript/Bun, V и MoonBit подключаются только явным расширением canonical
+матрицы:
+
+```sh
+RUDA=/absolute/path/to/release/ruda \
+  ./benchmarks/run.py \
+  --languages ruda,go,rust,typescript,v,moonbit \
+  --samples 11 --warmups 3 \
+  --output benchmarks/results/local-six-languages.md
+```
+
+Пути к локальным toolchain можно задать переменными `BUN`, `V` и `MOON`.
+TypeScript собирается Bun в standalone executable, V — production native
+executable, MoonBit — release native executable. Отдельный
+[`local_participants.json`](local_participants.json) связывает их исходники,
+workload IDs и checksum с canonical [`equivalence.json`](equivalence.json), не
+меняя hash исторических Tier 1 baseline.
+
+Расширенный result всегда содержит `comparison_scope: local-only` и не может
+использоваться `validate_results.py`, reviewed budget или Tier 1 registry.
+`verify.sh` проверяет manifest, source contracts и негативные protocol tests,
+но не требует и не устанавливает Bun, V или MoonBit. Поэтому стандартный CI и
+`make benchmark` остаются на `ruda,go,rust`.
+
 ## Что измеряется
 
 - release/optimized native executable каждого языка;
