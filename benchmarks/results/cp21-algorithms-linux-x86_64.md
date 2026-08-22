@@ -1,14 +1,14 @@
 # Latest algorithm benchmark
 
-Generated: `2026-08-22T05:20:51+00:00`
+Generated: `2026-08-22T12:55:39+00:00`
 
 Host: `Linux 6.12.57+deb13-amd64 x86_64`; CPU: `QEMU Virtual CPU version 2.5+`.
 
 Ruda compiler executable: `/workspace/OS/ruda-algotithms/Ma/build/release/ruda`.
 
-Ruda source revision: `1d728451612f5ad4d6cfb78a5785b2e57605af26`.
+Ruda source revision: `17b7a1f1dcffd17659d84244c5f9981cdba867ea`.
 
-Algorithm corpus revision: `c8da4676e0e80522d795a6b7fe551e93916c9fad`.
+Algorithm corpus revision: `1588f070db936168bd10d8e8e4a0d5f7a5751c46`.
 
 Equivalence manifest: `benchmarks/equivalence.json` (`51702f2ad1bae31fb11b9df8550f58b2034e1e7044f3d6e7448e5001399d3535`).
 
@@ -16,34 +16,34 @@ Samples: 11 measured after 3 warm-up runs. Reported times include process startu
 
 | Algorithm | Workload | Ruda median | Go median | Rust median | Ruda / Go | Ruda / Rust | Fastest |
 |---|---|---:|---:|---:|---:|---:|---:|
-| insertion | 50 × 2,500 generated integers | 6038.62 ms | 41.84 ms | 39.91 ms | 144.3× | 151.3× | Rust |
-| heap-sort | 5 × 100,000 generated integers | 1650.28 ms | 52.11 ms | 44.15 ms | 31.7× | 37.4× | Rust |
-| stack | 1,000,000 push + pop | 515.24 ms | 14.74 ms | 8.30 ms | 35.0× | 62.1× | Rust |
-| queue | 1,000,000 enqueue + dequeue | 593.95 ms | 15.33 ms | 7.95 ms | 38.8× | 74.7× | Rust |
-| min-heap | 500,000 insert + remove-min | 3292.64 ms | 75.10 ms | 57.12 ms | 43.8× | 57.6× | Rust |
-| dsu | 100,000 nodes; 5,000,000 unions | 3234.76 ms | 47.04 ms | 38.94 ms | 68.8× | 83.1× | Rust |
-| bfs | 300 × 20,000 nodes, degree 4 | 4479.39 ms | 107.75 ms | 47.69 ms | 41.6× | 93.9× | Rust |
-| dijkstra | 80 × 800 nodes, O(V²) | 1845.18 ms | 69.11 ms | 39.42 ms | 26.7× | 46.8× | Rust |
+| insertion | 50 × 2,500 generated integers | 4526.35 ms | 41.56 ms | 40.45 ms | 108.9× | 111.9× | Rust |
+| heap-sort | 5 × 100,000 generated integers | 1193.25 ms | 52.01 ms | 43.95 ms | 22.9× | 27.2× | Rust |
+| stack | 1,000,000 push + pop | 502.08 ms | 14.57 ms | 8.18 ms | 34.5× | 61.4× | Rust |
+| queue | 1,000,000 enqueue + dequeue | 567.42 ms | 14.90 ms | 7.76 ms | 38.1× | 73.1× | Rust |
+| min-heap | 500,000 insert + remove-min | 2599.11 ms | 74.75 ms | 56.62 ms | 34.8× | 45.9× | Rust |
+| dsu | 100,000 nodes; 5,000,000 unions | 2640.37 ms | 46.98 ms | 38.14 ms | 56.2× | 69.2× | Rust |
+| bfs | 300 × 20,000 nodes, degree 4 | 3763.75 ms | 105.94 ms | 47.34 ms | 35.5× | 79.5× | Rust |
+| dijkstra | 80 × 800 nodes, O(V²) | 1064.06 ms | 67.96 ms | 39.40 ms | 15.7× | 27.0× | Rust |
 
 ## Range (min–max)
 
 | Algorithm | Ruda | Go | Rust |
 |---|---:|---:|---:|
-| insertion | 5971.71–6498.20 ms | 41.13–45.23 ms | 39.24–41.95 ms |
-| heap-sort | 1635.99–1728.05 ms | 51.35–53.09 ms | 43.42–46.18 ms |
-| stack | 507.45–526.66 ms | 13.74–17.41 ms | 7.93–9.19 ms |
-| queue | 586.33–608.30 ms | 13.65–19.00 ms | 7.64–9.01 ms |
-| min-heap | 3237.68–3355.25 ms | 72.95–79.02 ms | 55.62–65.55 ms |
-| dsu | 3206.77–3358.04 ms | 46.45–51.66 ms | 37.46–41.97 ms |
-| bfs | 4401.60–4990.60 ms | 102.42–112.70 ms | 46.20–49.35 ms |
-| dijkstra | 1824.55–1948.19 ms | 66.92–72.10 ms | 38.76–41.42 ms |
+| insertion | 4495.11–4554.51 ms | 40.75–42.55 ms | 39.28–44.19 ms |
+| heap-sort | 1182.39–1209.07 ms | 50.72–54.19 ms | 43.35–45.84 ms |
+| stack | 498.61–517.98 ms | 13.65–16.68 ms | 7.89–8.43 ms |
+| queue | 561.99–581.32 ms | 13.75–16.23 ms | 7.43–8.14 ms |
+| min-heap | 2579.76–2642.34 ms | 72.43–76.38 ms | 55.93–60.60 ms |
+| dsu | 2598.60–2657.95 ms | 46.22–48.19 ms | 37.10–39.56 ms |
+| bfs | 3732.68–3843.07 ms | 102.64–112.33 ms | 45.87–51.69 ms |
+| dijkstra | 1056.10–1081.70 ms | 66.94–70.61 ms | 38.33–40.43 ms |
 
 ## Interpretation limits
 
 - Checksums prove matching selected results, not identical abstraction boundaries.
-- All three languages call reusable sorting, structures, and graph packages.
+- Every participant calls reusable sorting, structures, and graph code.
 - Stack, queue, heap, DSU, BFS, and O(V²) Dijkstra use matching operations and layouts;
-  Ruda and Rust model absence with Option while Go returns a value/bool pair.
+  absence representation follows each host language without changing timed valid inputs.
 - Checksums cover selected results and do not prove equal compiler optimization maturity.
 
 
