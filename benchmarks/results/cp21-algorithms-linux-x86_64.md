@@ -1,6 +1,6 @@
 # Latest algorithm benchmark
 
-Generated: `2026-08-22T05:20:51+00:00`
+Generated: `2026-08-22T05:30:24+00:00`
 
 Host: `Linux 6.12.57+deb13-amd64 x86_64`; CPU: `QEMU Virtual CPU version 2.5+`.
 
@@ -8,7 +8,7 @@ Ruda compiler executable: `/workspace/OS/ruda-algotithms/Ma/build/release/ruda`.
 
 Ruda source revision: `1d728451612f5ad4d6cfb78a5785b2e57605af26`.
 
-Algorithm corpus revision: `c8da4676e0e80522d795a6b7fe551e93916c9fad`.
+Algorithm corpus revision: `a05a1ffff0e6be52cda6deac0c64e7215048e91d`.
 
 Equivalence manifest: `benchmarks/equivalence.json` (`51702f2ad1bae31fb11b9df8550f58b2034e1e7044f3d6e7448e5001399d3535`).
 
@@ -16,27 +16,27 @@ Samples: 11 measured after 3 warm-up runs. Reported times include process startu
 
 | Algorithm | Workload | Ruda median | Go median | Rust median | Ruda / Go | Ruda / Rust | Fastest |
 |---|---|---:|---:|---:|---:|---:|---:|
-| insertion | 50 × 2,500 generated integers | 6038.62 ms | 41.84 ms | 39.91 ms | 144.3× | 151.3× | Rust |
-| heap-sort | 5 × 100,000 generated integers | 1650.28 ms | 52.11 ms | 44.15 ms | 31.7× | 37.4× | Rust |
-| stack | 1,000,000 push + pop | 515.24 ms | 14.74 ms | 8.30 ms | 35.0× | 62.1× | Rust |
-| queue | 1,000,000 enqueue + dequeue | 593.95 ms | 15.33 ms | 7.95 ms | 38.8× | 74.7× | Rust |
-| min-heap | 500,000 insert + remove-min | 3292.64 ms | 75.10 ms | 57.12 ms | 43.8× | 57.6× | Rust |
-| dsu | 100,000 nodes; 5,000,000 unions | 3234.76 ms | 47.04 ms | 38.94 ms | 68.8× | 83.1× | Rust |
-| bfs | 300 × 20,000 nodes, degree 4 | 4479.39 ms | 107.75 ms | 47.69 ms | 41.6× | 93.9× | Rust |
-| dijkstra | 80 × 800 nodes, O(V²) | 1845.18 ms | 69.11 ms | 39.42 ms | 26.7× | 46.8× | Rust |
+| insertion | 50 × 2,500 generated integers | 6968.71 ms | 48.61 ms | 46.67 ms | 143.4× | 149.3× | Rust |
+| heap-sort | 5 × 100,000 generated integers | 1933.01 ms | 59.65 ms | 51.93 ms | 32.4× | 37.2× | Rust |
+| stack | 1,000,000 push + pop | 589.93 ms | 18.58 ms | 10.49 ms | 31.8× | 56.2× | Rust |
+| queue | 1,000,000 enqueue + dequeue | 676.86 ms | 21.17 ms | 9.26 ms | 32.0× | 73.1× | Rust |
+| min-heap | 500,000 insert + remove-min | 3864.02 ms | 87.29 ms | 66.98 ms | 44.3× | 57.7× | Rust |
+| dsu | 100,000 nodes; 5,000,000 unions | 3882.68 ms | 54.55 ms | 43.96 ms | 71.2× | 88.3× | Rust |
+| bfs | 300 × 20,000 nodes, degree 4 | 5547.00 ms | 140.75 ms | 54.78 ms | 39.4× | 101.3× | Rust |
+| dijkstra | 80 × 800 nodes, O(V²) | 2128.03 ms | 78.04 ms | 45.96 ms | 27.3× | 46.3× | Rust |
 
 ## Range (min–max)
 
 | Algorithm | Ruda | Go | Rust |
 |---|---:|---:|---:|
-| insertion | 5971.71–6498.20 ms | 41.13–45.23 ms | 39.24–41.95 ms |
-| heap-sort | 1635.99–1728.05 ms | 51.35–53.09 ms | 43.42–46.18 ms |
-| stack | 507.45–526.66 ms | 13.74–17.41 ms | 7.93–9.19 ms |
-| queue | 586.33–608.30 ms | 13.65–19.00 ms | 7.64–9.01 ms |
-| min-heap | 3237.68–3355.25 ms | 72.95–79.02 ms | 55.62–65.55 ms |
-| dsu | 3206.77–3358.04 ms | 46.45–51.66 ms | 37.46–41.97 ms |
-| bfs | 4401.60–4990.60 ms | 102.42–112.70 ms | 46.20–49.35 ms |
-| dijkstra | 1824.55–1948.19 ms | 66.92–72.10 ms | 38.76–41.42 ms |
+| insertion | 6597.60–7679.31 ms | 46.67–80.71 ms | 44.82–53.54 ms |
+| heap-sort | 1871.74–2120.99 ms | 55.00–70.23 ms | 47.93–57.49 ms |
+| stack | 565.21–659.64 ms | 17.13–57.23 ms | 8.46–14.83 ms |
+| queue | 649.86–710.23 ms | 16.22–40.40 ms | 8.31–11.81 ms |
+| min-heap | 3640.50–3903.40 ms | 80.30–97.68 ms | 62.59–79.06 ms |
+| dsu | 3671.89–4164.90 ms | 51.36–63.25 ms | 42.43–51.51 ms |
+| bfs | 5388.29–6020.37 ms | 120.67–243.91 ms | 53.33–86.73 ms |
+| dijkstra | 2017.39–2329.32 ms | 73.52–84.80 ms | 42.69–55.82 ms |
 
 ## Interpretation limits
 

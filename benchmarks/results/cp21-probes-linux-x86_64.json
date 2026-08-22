@@ -6,7 +6,7 @@
     "sha256": "0b43886b4e02ee72e8ea4be8eca6c3fb228336bcf525522723a4b40c3b862b19"
   },
   "metadata": {
-    "generated_at": "2026-08-22T05:20:00+00:00",
+    "generated_at": "2026-08-22T05:29:31+00:00",
     "platform": {
       "id": "linux-x86_64",
       "system": "Linux",
@@ -18,17 +18,17 @@
     "isolation": {
       "mode": "dedicated-runner-contract",
       "load_average_at_start": [
-        8.87255859375,
-        3.84375,
-        3.5810546875
+        8.1005859375,
+        4.048828125,
+        3.4287109375
       ],
       "power_source": "runner-policy",
       "affinity": "not-requested",
       "sample_selection": "none",
       "load_average_at_end": [
-        5.0810546875,
-        3.50048828125,
-        3.4755859375
+        4.64013671875,
+        3.6650390625,
+        3.32470703125
       ]
     },
     "warmups": 3,
@@ -87,7 +87,7 @@
       "go": "go version go1.26.6 linux/amd64",
       "rust": "rustc 1.96.0 (ac68faa20 2026-05-25)"
     },
-    "corpus_revision": "c8da4676e0e80522d795a6b7fe551e93916c9fad",
+    "corpus_revision": "a05a1ffff0e6be52cda6deac0c64e7215048e91d",
     "probe_manifest": {
       "path": "benchmarks/probes.json",
       "schema": "ruda.array-probes-manifest/1",
@@ -108,29 +108,29 @@
       },
       "raw_ms": {
         "ruda": [
-          169.434802,
-          171.510891,
-          170.79814,
-          178.73747,
-          169.929883,
-          172.015872,
-          170.828516,
-          169.259832,
-          170.271919,
-          170.772841,
-          174.416242
+          168.04757,
+          171.02099,
+          168.086814,
+          170.605387,
+          179.494478,
+          169.65004,
+          170.371216,
+          184.02574,
+          186.831516,
+          171.332537,
+          172.81039
         ]
       },
       "summary": {
         "ruda": {
-          "median_ms": 170.79814,
-          "mad_ms": 0.8682569999999998,
-          "q1_ms": 169.929883,
-          "q3_ms": 172.015872,
-          "iqr_ms": 2.085989000000012,
-          "min_ms": 169.259832,
-          "max_ms": 178.73747,
-          "noise_fraction": 0.02
+          "median_ms": 171.02099,
+          "mad_ms": 1.7894000000000005,
+          "q1_ms": 169.65004,
+          "q3_ms": 179.494478,
+          "iqr_ms": 9.844437999999997,
+          "min_ms": 168.04757,
+          "max_ms": 186.831516,
+          "noise_fraction": 0.05756274712244384
         }
       }
     },
@@ -146,29 +146,29 @@
       },
       "raw_ms": {
         "ruda": [
-          173.176748,
-          177.873814,
-          165.915404,
-          167.948421,
-          165.412517,
-          167.280373,
-          165.351661,
-          169.101103,
-          163.732162,
-          167.016337,
-          169.450692
+          177.496014,
+          167.115285,
+          171.788545,
+          168.150004,
+          166.348621,
+          166.784372,
+          167.657807,
+          166.597579,
+          182.014424,
+          168.469866,
+          183.570594
         ]
       },
       "summary": {
         "ruda": {
-          "median_ms": 167.280373,
-          "mad_ms": 1.867855999999989,
-          "q1_ms": 165.412517,
-          "q3_ms": 169.450692,
-          "iqr_ms": 4.038174999999995,
-          "min_ms": 163.732162,
-          "max_ms": 177.873814,
-          "noise_fraction": 0.033498060169915855
+          "median_ms": 168.150004,
+          "mad_ms": 1.5524249999999995,
+          "q1_ms": 166.784372,
+          "q3_ms": 177.496014,
+          "iqr_ms": 10.711642000000012,
+          "min_ms": 166.348621,
+          "max_ms": 183.570594,
+          "noise_fraction": 0.06370289470822738
         }
       }
     },
@@ -184,29 +184,29 @@
       },
       "raw_ms": {
         "ruda": [
-          345.675178,
-          342.91408,
-          344.459499,
-          347.970422,
-          344.285412,
-          351.876778,
-          349.46684,
-          338.954073,
-          348.021489,
-          345.294393,
-          341.999808
+          338.656374,
+          348.873114,
+          345.721299,
+          342.106071,
+          338.288452,
+          345.169209,
+          350.735171,
+          347.027619,
+          341.789495,
+          338.774276,
+          348.731798
         ]
       },
       "summary": {
         "ruda": {
-          "median_ms": 345.294393,
-          "mad_ms": 2.6760289999999713,
-          "q1_ms": 342.91408,
-          "q3_ms": 348.021489,
-          "iqr_ms": 5.1074089999999615,
-          "min_ms": 338.954073,
-          "max_ms": 351.876778,
-          "noise_fraction": 0.023249977881916878
+          "median_ms": 345.169209,
+          "mad_ms": 3.5625890000000027,
+          "q1_ms": 338.774276,
+          "q3_ms": 348.731798,
+          "iqr_ms": 9.95752200000004,
+          "min_ms": 338.288452,
+          "max_ms": 350.735171,
+          "noise_fraction": 0.030963848226682373
         }
       }
     },
@@ -222,29 +222,29 @@
       },
       "raw_ms": {
         "ruda": [
-          396.73727,
-          411.126178,
-          395.410862,
-          408.89207,
-          401.991105,
-          403.390099,
-          399.12147,
-          406.90577,
-          406.391261,
-          410.185596,
-          402.055536
+          403.541718,
+          408.715251,
+          397.657907,
+          406.08629,
+          396.669777,
+          394.532722,
+          398.162808,
+          404.155423,
+          403.179055,
+          399.359872,
+          401.263808
         ]
       },
       "summary": {
         "ruda": {
-          "median_ms": 403.390099,
-          "mad_ms": 4.268629000000033,
-          "q1_ms": 399.12147,
-          "q3_ms": 408.89207,
-          "iqr_ms": 9.770600000000002,
-          "min_ms": 395.410862,
-          "max_ms": 411.126178,
-          "noise_fraction": 0.03174566513096321
+          "median_ms": 401.263808,
+          "mad_ms": 3.100999999999999,
+          "q1_ms": 397.657907,
+          "q3_ms": 404.155423,
+          "iqr_ms": 6.497515999999962,
+          "min_ms": 394.532722,
+          "max_ms": 408.715251,
+          "noise_fraction": 0.023184248901909434
         }
       }
     },
@@ -260,29 +260,29 @@
       },
       "raw_ms": {
         "ruda": [
-          142.976616,
-          141.567422,
-          141.102556,
-          142.801164,
-          142.084285,
-          143.495312,
-          142.286776,
-          142.106406,
-          141.606194,
-          147.876363,
-          143.332345
+          140.695721,
+          144.756338,
+          142.484369,
+          141.607498,
+          141.414325,
+          143.996998,
+          143.289165,
+          142.63312,
+          146.636118,
+          141.460201,
+          165.095541
         ]
       },
       "summary": {
         "ruda": {
-          "median_ms": 142.286776,
-          "mad_ms": 0.6898400000000038,
-          "q1_ms": 141.606194,
-          "q3_ms": 143.332345,
-          "iqr_ms": 1.7261510000000158,
-          "min_ms": 141.102556,
-          "max_ms": 147.876363,
-          "noise_fraction": 0.02
+          "median_ms": 142.63312,
+          "mad_ms": 1.218795,
+          "q1_ms": 141.460201,
+          "q3_ms": 144.756338,
+          "iqr_ms": 3.2961369999999874,
+          "min_ms": 140.695721,
+          "max_ms": 165.095541,
+          "noise_fraction": 0.025634894616341566
         }
       }
     },
@@ -298,29 +298,29 @@
       },
       "raw_ms": {
         "ruda": [
-          143.275919,
-          139.588013,
-          142.492253,
-          144.644947,
-          138.662831,
-          141.744205,
-          138.037004,
-          142.272889,
-          139.934466,
-          143.244179,
-          150.290529
+          140.388132,
+          140.158689,
+          139.090388,
+          141.483604,
+          140.404903,
+          139.931562,
+          137.70542,
+          140.782765,
+          140.555206,
+          141.448178,
+          138.780053
         ]
       },
       "summary": {
         "ruda": {
-          "median_ms": 142.272889,
-          "mad_ms": 2.338423000000006,
-          "q1_ms": 139.588013,
-          "q3_ms": 143.275919,
-          "iqr_ms": 3.687905999999998,
-          "min_ms": 138.037004,
-          "max_ms": 150.290529,
-          "noise_fraction": 0.049308543948946015
+          "median_ms": 140.388132,
+          "mad_ms": 0.45656999999999925,
+          "q1_ms": 139.090388,
+          "q3_ms": 140.782765,
+          "iqr_ms": 1.6923770000000218,
+          "min_ms": 137.70542,
+          "max_ms": 141.483604,
+          "noise_fraction": 0.02
         }
       }
     },
@@ -336,29 +336,29 @@
       },
       "raw_ms": {
         "ruda": [
-          571.277525,
-          577.542744,
-          569.011299,
-          583.153911,
-          577.398744,
-          567.673189,
-          578.824218,
-          584.49107,
-          580.277696,
-          574.290671,
-          574.862579
+          573.190984,
+          589.875535,
+          573.666028,
+          578.527184,
+          576.631053,
+          583.37343,
+          576.40656,
+          581.20717,
+          586.642938,
+          591.068671,
+          584.319212
         ]
       },
       "summary": {
         "ruda": {
-          "median_ms": 577.398744,
-          "mad_ms": 3.1080729999999903,
-          "q1_ms": 571.277525,
-          "q3_ms": 580.277696,
-          "iqr_ms": 9.000171000000023,
-          "min_ms": 567.673189,
-          "max_ms": 584.49107,
-          "noise_fraction": 0.02
+          "median_ms": 581.20717,
+          "mad_ms": 4.800610000000006,
+          "q1_ms": 576.40656,
+          "q3_ms": 586.642938,
+          "iqr_ms": 10.236377999999945,
+          "min_ms": 573.190984,
+          "max_ms": 591.068671,
+          "noise_fraction": 0.02477916781377631
         }
       }
     },
@@ -374,29 +374,29 @@
       },
       "raw_ms": {
         "ruda": [
-          318.817552,
-          316.295672,
-          316.143374,
-          310.344905,
-          312.483142,
-          313.3327,
-          311.819141,
-          317.922116,
-          312.336666,
-          309.379917,
-          315.733964
+          313.452741,
+          310.9883,
+          307.333577,
+          310.747938,
+          310.619505,
+          312.699211,
+          311.178367,
+          308.964408,
+          317.892671,
+          339.423338,
+          343.251248
         ]
       },
       "summary": {
         "ruda": {
-          "median_ms": 313.3327,
-          "mad_ms": 2.810674000000006,
-          "q1_ms": 311.819141,
-          "q3_ms": 316.295672,
-          "iqr_ms": 4.476531000000023,
-          "min_ms": 309.379917,
-          "max_ms": 318.817552,
-          "noise_fraction": 0.026910762904733588
+          "median_ms": 311.178367,
+          "mad_ms": 2.2139589999999885,
+          "q1_ms": 310.619505,
+          "q3_ms": 317.892671,
+          "iqr_ms": 7.273166000000003,
+          "min_ms": 307.333577,
+          "max_ms": 343.251248,
+          "noise_fraction": 0.023372980808784832
         }
       }
     },
@@ -412,29 +412,29 @@
       },
       "raw_ms": {
         "ruda": [
-          478.304297,
-          491.602802,
-          474.904645,
-          477.194017,
-          476.09626,
-          480.513929,
-          473.358365,
-          477.01505,
-          479.44737,
-          478.407033,
-          483.371932
+          472.631038,
+          468.826823,
+          472.221337,
+          468.68678,
+          476.327199,
+          487.397246,
+          477.27349,
+          473.86968,
+          471.807988,
+          482.51901,
+          490.361678
         ]
       },
       "summary": {
         "ruda": {
-          "median_ms": 478.304297,
-          "mad_ms": 2.208037000000047,
-          "q1_ms": 476.09626,
-          "q3_ms": 480.513929,
-          "iqr_ms": 4.417669000000046,
-          "min_ms": 473.358365,
-          "max_ms": 491.602802,
-          "noise_fraction": 0.02
+          "median_ms": 473.86968,
+          "mad_ms": 3.4038099999999645,
+          "q1_ms": 471.807988,
+          "q3_ms": 482.51901,
+          "iqr_ms": 10.711021999999957,
+          "min_ms": 468.68678,
+          "max_ms": 490.361678,
+          "noise_fraction": 0.02260330730592419
         }
       }
     }
@@ -445,882 +445,882 @@
       "round": 0,
       "workload": "scalar-get",
       "participant": "ruda",
-      "elapsed_ms": 171.097451
+      "elapsed_ms": 171.42421
     },
     {
       "phase": "warmup",
       "round": 0,
       "workload": "scalar-set",
       "participant": "ruda",
-      "elapsed_ms": 164.96361
+      "elapsed_ms": 169.824476
     },
     {
       "phase": "warmup",
       "round": 0,
       "workload": "proven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 344.981422
+      "elapsed_ms": 343.307364
     },
     {
       "phase": "warmup",
       "round": 0,
       "workload": "unproven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 419.044217
+      "elapsed_ms": 412.855567
     },
     {
       "phase": "warmup",
       "round": 0,
       "workload": "growth",
       "participant": "ruda",
-      "elapsed_ms": 151.657863
+      "elapsed_ms": 140.835273
     },
     {
       "phase": "warmup",
       "round": 0,
       "workload": "reserved-growth",
       "participant": "ruda",
-      "elapsed_ms": 147.95474
+      "elapsed_ms": 143.171453
     },
     {
       "phase": "warmup",
       "round": 0,
       "workload": "density",
       "participant": "ruda",
-      "elapsed_ms": 604.227288
+      "elapsed_ms": 580.537279
     },
     {
       "phase": "warmup",
       "round": 0,
       "workload": "nested-traversal",
       "participant": "ruda",
-      "elapsed_ms": 347.941747
+      "elapsed_ms": 312.17293
     },
     {
       "phase": "warmup",
       "round": 0,
       "workload": "checked-loop",
       "participant": "ruda",
-      "elapsed_ms": 495.121428
+      "elapsed_ms": 469.242425
     },
     {
       "phase": "warmup",
       "round": 1,
       "workload": "scalar-get",
       "participant": "ruda",
-      "elapsed_ms": 180.586762
+      "elapsed_ms": 169.823927
     },
     {
       "phase": "warmup",
       "round": 1,
       "workload": "checked-loop",
       "participant": "ruda",
-      "elapsed_ms": 475.366214
+      "elapsed_ms": 476.061969
     },
     {
       "phase": "warmup",
       "round": 1,
       "workload": "nested-traversal",
       "participant": "ruda",
-      "elapsed_ms": 322.120471
+      "elapsed_ms": 324.321588
     },
     {
       "phase": "warmup",
       "round": 1,
       "workload": "density",
       "participant": "ruda",
-      "elapsed_ms": 580.342166
+      "elapsed_ms": 570.064727
     },
     {
       "phase": "warmup",
       "round": 1,
       "workload": "reserved-growth",
       "participant": "ruda",
-      "elapsed_ms": 138.723324
+      "elapsed_ms": 139.143547
     },
     {
       "phase": "warmup",
       "round": 1,
       "workload": "growth",
       "participant": "ruda",
-      "elapsed_ms": 143.49941
+      "elapsed_ms": 145.438994
     },
     {
       "phase": "warmup",
       "round": 1,
       "workload": "unproven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 407.16095
+      "elapsed_ms": 401.117893
     },
     {
       "phase": "warmup",
       "round": 1,
       "workload": "proven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 347.883407
+      "elapsed_ms": 339.971321
     },
     {
       "phase": "warmup",
       "round": 1,
       "workload": "scalar-set",
       "participant": "ruda",
-      "elapsed_ms": 172.759112
+      "elapsed_ms": 167.201957
     },
     {
       "phase": "warmup",
       "round": 2,
       "workload": "proven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 342.572848
+      "elapsed_ms": 341.502554
     },
     {
       "phase": "warmup",
       "round": 2,
       "workload": "unproven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 399.103726
+      "elapsed_ms": 400.436861
     },
     {
       "phase": "warmup",
       "round": 2,
       "workload": "growth",
       "participant": "ruda",
-      "elapsed_ms": 143.415913
+      "elapsed_ms": 140.747127
     },
     {
       "phase": "warmup",
       "round": 2,
       "workload": "reserved-growth",
       "participant": "ruda",
-      "elapsed_ms": 141.405527
+      "elapsed_ms": 139.550153
     },
     {
       "phase": "warmup",
       "round": 2,
       "workload": "density",
       "participant": "ruda",
-      "elapsed_ms": 571.476852
+      "elapsed_ms": 578.507548
     },
     {
       "phase": "warmup",
       "round": 2,
       "workload": "nested-traversal",
       "participant": "ruda",
-      "elapsed_ms": 312.252708
+      "elapsed_ms": 309.200872
     },
     {
       "phase": "warmup",
       "round": 2,
       "workload": "checked-loop",
       "participant": "ruda",
-      "elapsed_ms": 496.851667
+      "elapsed_ms": 469.944338
     },
     {
       "phase": "warmup",
       "round": 2,
       "workload": "scalar-get",
       "participant": "ruda",
-      "elapsed_ms": 170.473057
+      "elapsed_ms": 174.315985
     },
     {
       "phase": "warmup",
       "round": 2,
       "workload": "scalar-set",
       "participant": "ruda",
-      "elapsed_ms": 164.964953
+      "elapsed_ms": 165.429371
     },
     {
       "phase": "sample",
       "round": 0,
       "workload": "proven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 345.675178
+      "elapsed_ms": 338.656374
     },
     {
       "phase": "sample",
       "round": 0,
       "workload": "scalar-set",
       "participant": "ruda",
-      "elapsed_ms": 173.176748
+      "elapsed_ms": 177.496014
     },
     {
       "phase": "sample",
       "round": 0,
       "workload": "scalar-get",
       "participant": "ruda",
-      "elapsed_ms": 169.434802
+      "elapsed_ms": 168.04757
     },
     {
       "phase": "sample",
       "round": 0,
       "workload": "checked-loop",
       "participant": "ruda",
-      "elapsed_ms": 478.304297
+      "elapsed_ms": 472.631038
     },
     {
       "phase": "sample",
       "round": 0,
       "workload": "nested-traversal",
       "participant": "ruda",
-      "elapsed_ms": 318.817552
+      "elapsed_ms": 313.452741
     },
     {
       "phase": "sample",
       "round": 0,
       "workload": "density",
       "participant": "ruda",
-      "elapsed_ms": 571.277525
+      "elapsed_ms": 573.190984
     },
     {
       "phase": "sample",
       "round": 0,
       "workload": "reserved-growth",
       "participant": "ruda",
-      "elapsed_ms": 143.275919
+      "elapsed_ms": 140.388132
     },
     {
       "phase": "sample",
       "round": 0,
       "workload": "growth",
       "participant": "ruda",
-      "elapsed_ms": 142.976616
+      "elapsed_ms": 140.695721
     },
     {
       "phase": "sample",
       "round": 0,
       "workload": "unproven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 396.73727
+      "elapsed_ms": 403.541718
     },
     {
       "phase": "sample",
       "round": 1,
       "workload": "growth",
       "participant": "ruda",
-      "elapsed_ms": 141.567422
+      "elapsed_ms": 144.756338
     },
     {
       "phase": "sample",
       "round": 1,
       "workload": "reserved-growth",
       "participant": "ruda",
-      "elapsed_ms": 139.588013
+      "elapsed_ms": 140.158689
     },
     {
       "phase": "sample",
       "round": 1,
       "workload": "density",
       "participant": "ruda",
-      "elapsed_ms": 577.542744
+      "elapsed_ms": 589.875535
     },
     {
       "phase": "sample",
       "round": 1,
       "workload": "nested-traversal",
       "participant": "ruda",
-      "elapsed_ms": 316.295672
+      "elapsed_ms": 310.9883
     },
     {
       "phase": "sample",
       "round": 1,
       "workload": "checked-loop",
       "participant": "ruda",
-      "elapsed_ms": 491.602802
+      "elapsed_ms": 468.826823
     },
     {
       "phase": "sample",
       "round": 1,
       "workload": "scalar-get",
       "participant": "ruda",
-      "elapsed_ms": 171.510891
+      "elapsed_ms": 171.02099
     },
     {
       "phase": "sample",
       "round": 1,
       "workload": "scalar-set",
       "participant": "ruda",
-      "elapsed_ms": 177.873814
+      "elapsed_ms": 167.115285
     },
     {
       "phase": "sample",
       "round": 1,
       "workload": "proven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 342.91408
+      "elapsed_ms": 348.873114
     },
     {
       "phase": "sample",
       "round": 1,
       "workload": "unproven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 411.126178
+      "elapsed_ms": 408.715251
     },
     {
       "phase": "sample",
       "round": 2,
       "workload": "growth",
       "participant": "ruda",
-      "elapsed_ms": 141.102556
+      "elapsed_ms": 142.484369
     },
     {
       "phase": "sample",
       "round": 2,
       "workload": "unproven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 395.410862
+      "elapsed_ms": 397.657907
     },
     {
       "phase": "sample",
       "round": 2,
       "workload": "proven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 344.459499
+      "elapsed_ms": 345.721299
     },
     {
       "phase": "sample",
       "round": 2,
       "workload": "scalar-set",
       "participant": "ruda",
-      "elapsed_ms": 165.915404
+      "elapsed_ms": 171.788545
     },
     {
       "phase": "sample",
       "round": 2,
       "workload": "scalar-get",
       "participant": "ruda",
-      "elapsed_ms": 170.79814
+      "elapsed_ms": 168.086814
     },
     {
       "phase": "sample",
       "round": 2,
       "workload": "checked-loop",
       "participant": "ruda",
-      "elapsed_ms": 474.904645
+      "elapsed_ms": 472.221337
     },
     {
       "phase": "sample",
       "round": 2,
       "workload": "nested-traversal",
       "participant": "ruda",
-      "elapsed_ms": 316.143374
+      "elapsed_ms": 307.333577
     },
     {
       "phase": "sample",
       "round": 2,
       "workload": "density",
       "participant": "ruda",
-      "elapsed_ms": 569.011299
+      "elapsed_ms": 573.666028
     },
     {
       "phase": "sample",
       "round": 2,
       "workload": "reserved-growth",
       "participant": "ruda",
-      "elapsed_ms": 142.492253
+      "elapsed_ms": 139.090388
     },
     {
       "phase": "sample",
       "round": 3,
       "workload": "density",
       "participant": "ruda",
-      "elapsed_ms": 583.153911
+      "elapsed_ms": 578.527184
     },
     {
       "phase": "sample",
       "round": 3,
       "workload": "nested-traversal",
       "participant": "ruda",
-      "elapsed_ms": 310.344905
+      "elapsed_ms": 310.747938
     },
     {
       "phase": "sample",
       "round": 3,
       "workload": "checked-loop",
       "participant": "ruda",
-      "elapsed_ms": 477.194017
+      "elapsed_ms": 468.68678
     },
     {
       "phase": "sample",
       "round": 3,
       "workload": "scalar-get",
       "participant": "ruda",
-      "elapsed_ms": 178.73747
+      "elapsed_ms": 170.605387
     },
     {
       "phase": "sample",
       "round": 3,
       "workload": "scalar-set",
       "participant": "ruda",
-      "elapsed_ms": 167.948421
+      "elapsed_ms": 168.150004
     },
     {
       "phase": "sample",
       "round": 3,
       "workload": "proven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 347.970422
+      "elapsed_ms": 342.106071
     },
     {
       "phase": "sample",
       "round": 3,
       "workload": "unproven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 408.89207
+      "elapsed_ms": 406.08629
     },
     {
       "phase": "sample",
       "round": 3,
       "workload": "growth",
       "participant": "ruda",
-      "elapsed_ms": 142.801164
+      "elapsed_ms": 141.607498
     },
     {
       "phase": "sample",
       "round": 3,
       "workload": "reserved-growth",
       "participant": "ruda",
-      "elapsed_ms": 144.644947
+      "elapsed_ms": 141.483604
     },
     {
       "phase": "sample",
       "round": 4,
       "workload": "density",
       "participant": "ruda",
-      "elapsed_ms": 577.398744
+      "elapsed_ms": 576.631053
     },
     {
       "phase": "sample",
       "round": 4,
       "workload": "reserved-growth",
       "participant": "ruda",
-      "elapsed_ms": 138.662831
+      "elapsed_ms": 140.404903
     },
     {
       "phase": "sample",
       "round": 4,
       "workload": "growth",
       "participant": "ruda",
-      "elapsed_ms": 142.084285
+      "elapsed_ms": 141.414325
     },
     {
       "phase": "sample",
       "round": 4,
       "workload": "unproven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 401.991105
+      "elapsed_ms": 396.669777
     },
     {
       "phase": "sample",
       "round": 4,
       "workload": "proven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 344.285412
+      "elapsed_ms": 338.288452
     },
     {
       "phase": "sample",
       "round": 4,
       "workload": "scalar-set",
       "participant": "ruda",
-      "elapsed_ms": 165.412517
+      "elapsed_ms": 166.348621
     },
     {
       "phase": "sample",
       "round": 4,
       "workload": "scalar-get",
       "participant": "ruda",
-      "elapsed_ms": 169.929883
+      "elapsed_ms": 179.494478
     },
     {
       "phase": "sample",
       "round": 4,
       "workload": "checked-loop",
       "participant": "ruda",
-      "elapsed_ms": 476.09626
+      "elapsed_ms": 476.327199
     },
     {
       "phase": "sample",
       "round": 4,
       "workload": "nested-traversal",
       "participant": "ruda",
-      "elapsed_ms": 312.483142
+      "elapsed_ms": 310.619505
     },
     {
       "phase": "sample",
       "round": 5,
       "workload": "checked-loop",
       "participant": "ruda",
-      "elapsed_ms": 480.513929
+      "elapsed_ms": 487.397246
     },
     {
       "phase": "sample",
       "round": 5,
       "workload": "scalar-get",
       "participant": "ruda",
-      "elapsed_ms": 172.015872
+      "elapsed_ms": 169.65004
     },
     {
       "phase": "sample",
       "round": 5,
       "workload": "scalar-set",
       "participant": "ruda",
-      "elapsed_ms": 167.280373
+      "elapsed_ms": 166.784372
     },
     {
       "phase": "sample",
       "round": 5,
       "workload": "proven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 351.876778
+      "elapsed_ms": 345.169209
     },
     {
       "phase": "sample",
       "round": 5,
       "workload": "unproven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 403.390099
+      "elapsed_ms": 394.532722
     },
     {
       "phase": "sample",
       "round": 5,
       "workload": "growth",
       "participant": "ruda",
-      "elapsed_ms": 143.495312
+      "elapsed_ms": 143.996998
     },
     {
       "phase": "sample",
       "round": 5,
       "workload": "reserved-growth",
       "participant": "ruda",
-      "elapsed_ms": 141.744205
+      "elapsed_ms": 139.931562
     },
     {
       "phase": "sample",
       "round": 5,
       "workload": "density",
       "participant": "ruda",
-      "elapsed_ms": 567.673189
+      "elapsed_ms": 583.37343
     },
     {
       "phase": "sample",
       "round": 5,
       "workload": "nested-traversal",
       "participant": "ruda",
-      "elapsed_ms": 313.3327
+      "elapsed_ms": 312.699211
     },
     {
       "phase": "sample",
       "round": 6,
       "workload": "checked-loop",
       "participant": "ruda",
-      "elapsed_ms": 473.358365
+      "elapsed_ms": 477.27349
     },
     {
       "phase": "sample",
       "round": 6,
       "workload": "nested-traversal",
       "participant": "ruda",
-      "elapsed_ms": 311.819141
+      "elapsed_ms": 311.178367
     },
     {
       "phase": "sample",
       "round": 6,
       "workload": "density",
       "participant": "ruda",
-      "elapsed_ms": 578.824218
+      "elapsed_ms": 576.40656
     },
     {
       "phase": "sample",
       "round": 6,
       "workload": "reserved-growth",
       "participant": "ruda",
-      "elapsed_ms": 138.037004
+      "elapsed_ms": 137.70542
     },
     {
       "phase": "sample",
       "round": 6,
       "workload": "growth",
       "participant": "ruda",
-      "elapsed_ms": 142.286776
+      "elapsed_ms": 143.289165
     },
     {
       "phase": "sample",
       "round": 6,
       "workload": "unproven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 399.12147
+      "elapsed_ms": 398.162808
     },
     {
       "phase": "sample",
       "round": 6,
       "workload": "proven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 349.46684
+      "elapsed_ms": 350.735171
     },
     {
       "phase": "sample",
       "round": 6,
       "workload": "scalar-set",
       "participant": "ruda",
-      "elapsed_ms": 165.351661
+      "elapsed_ms": 167.657807
     },
     {
       "phase": "sample",
       "round": 6,
       "workload": "scalar-get",
       "participant": "ruda",
-      "elapsed_ms": 170.828516
+      "elapsed_ms": 170.371216
     },
     {
       "phase": "sample",
       "round": 7,
       "workload": "scalar-set",
       "participant": "ruda",
-      "elapsed_ms": 169.101103
+      "elapsed_ms": 166.597579
     },
     {
       "phase": "sample",
       "round": 7,
       "workload": "proven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 338.954073
+      "elapsed_ms": 347.027619
     },
     {
       "phase": "sample",
       "round": 7,
       "workload": "unproven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 406.90577
+      "elapsed_ms": 404.155423
     },
     {
       "phase": "sample",
       "round": 7,
       "workload": "growth",
       "participant": "ruda",
-      "elapsed_ms": 142.106406
+      "elapsed_ms": 142.63312
     },
     {
       "phase": "sample",
       "round": 7,
       "workload": "reserved-growth",
       "participant": "ruda",
-      "elapsed_ms": 142.272889
+      "elapsed_ms": 140.782765
     },
     {
       "phase": "sample",
       "round": 7,
       "workload": "density",
       "participant": "ruda",
-      "elapsed_ms": 584.49107
+      "elapsed_ms": 581.20717
     },
     {
       "phase": "sample",
       "round": 7,
       "workload": "nested-traversal",
       "participant": "ruda",
-      "elapsed_ms": 317.922116
+      "elapsed_ms": 308.964408
     },
     {
       "phase": "sample",
       "round": 7,
       "workload": "checked-loop",
       "participant": "ruda",
-      "elapsed_ms": 477.01505
+      "elapsed_ms": 473.86968
     },
     {
       "phase": "sample",
       "round": 7,
       "workload": "scalar-get",
       "participant": "ruda",
-      "elapsed_ms": 169.259832
+      "elapsed_ms": 184.02574
     },
     {
       "phase": "sample",
       "round": 8,
       "workload": "scalar-set",
       "participant": "ruda",
-      "elapsed_ms": 163.732162
+      "elapsed_ms": 182.014424
     },
     {
       "phase": "sample",
       "round": 8,
       "workload": "scalar-get",
       "participant": "ruda",
-      "elapsed_ms": 170.271919
+      "elapsed_ms": 186.831516
     },
     {
       "phase": "sample",
       "round": 8,
       "workload": "checked-loop",
       "participant": "ruda",
-      "elapsed_ms": 479.44737
+      "elapsed_ms": 471.807988
     },
     {
       "phase": "sample",
       "round": 8,
       "workload": "nested-traversal",
       "participant": "ruda",
-      "elapsed_ms": 312.336666
+      "elapsed_ms": 317.892671
     },
     {
       "phase": "sample",
       "round": 8,
       "workload": "density",
       "participant": "ruda",
-      "elapsed_ms": 580.277696
+      "elapsed_ms": 586.642938
     },
     {
       "phase": "sample",
       "round": 8,
       "workload": "reserved-growth",
       "participant": "ruda",
-      "elapsed_ms": 139.934466
+      "elapsed_ms": 140.555206
     },
     {
       "phase": "sample",
       "round": 8,
       "workload": "growth",
       "participant": "ruda",
-      "elapsed_ms": 141.606194
+      "elapsed_ms": 146.636118
     },
     {
       "phase": "sample",
       "round": 8,
       "workload": "unproven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 406.391261
+      "elapsed_ms": 403.179055
     },
     {
       "phase": "sample",
       "round": 8,
       "workload": "proven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 348.021489
+      "elapsed_ms": 341.789495
     },
     {
       "phase": "sample",
       "round": 9,
       "workload": "unproven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 410.185596
+      "elapsed_ms": 399.359872
     },
     {
       "phase": "sample",
       "round": 9,
       "workload": "growth",
       "participant": "ruda",
-      "elapsed_ms": 147.876363
+      "elapsed_ms": 141.460201
     },
     {
       "phase": "sample",
       "round": 9,
       "workload": "reserved-growth",
       "participant": "ruda",
-      "elapsed_ms": 143.244179
+      "elapsed_ms": 141.448178
     },
     {
       "phase": "sample",
       "round": 9,
       "workload": "density",
       "participant": "ruda",
-      "elapsed_ms": 574.290671
+      "elapsed_ms": 591.068671
     },
     {
       "phase": "sample",
       "round": 9,
       "workload": "nested-traversal",
       "participant": "ruda",
-      "elapsed_ms": 309.379917
+      "elapsed_ms": 339.423338
     },
     {
       "phase": "sample",
       "round": 9,
       "workload": "checked-loop",
       "participant": "ruda",
-      "elapsed_ms": 478.407033
+      "elapsed_ms": 482.51901
     },
     {
       "phase": "sample",
       "round": 9,
       "workload": "scalar-get",
       "participant": "ruda",
-      "elapsed_ms": 170.772841
+      "elapsed_ms": 171.332537
     },
     {
       "phase": "sample",
       "round": 9,
       "workload": "scalar-set",
       "participant": "ruda",
-      "elapsed_ms": 167.016337
+      "elapsed_ms": 168.469866
     },
     {
       "phase": "sample",
       "round": 9,
       "workload": "proven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 345.294393
+      "elapsed_ms": 338.774276
     },
     {
       "phase": "sample",
       "round": 10,
       "workload": "unproven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 402.055536
+      "elapsed_ms": 401.263808
     },
     {
       "phase": "sample",
       "round": 10,
       "workload": "proven-bounds",
       "participant": "ruda",
-      "elapsed_ms": 341.999808
+      "elapsed_ms": 348.731798
     },
     {
       "phase": "sample",
       "round": 10,
       "workload": "scalar-set",
       "participant": "ruda",
-      "elapsed_ms": 169.450692
+      "elapsed_ms": 183.570594
     },
     {
       "phase": "sample",
       "round": 10,
       "workload": "scalar-get",
       "participant": "ruda",
-      "elapsed_ms": 174.416242
+      "elapsed_ms": 172.81039
     },
     {
       "phase": "sample",
       "round": 10,
       "workload": "checked-loop",
       "participant": "ruda",
-      "elapsed_ms": 483.371932
+      "elapsed_ms": 490.361678
     },
     {
       "phase": "sample",
       "round": 10,
       "workload": "nested-traversal",
       "participant": "ruda",
-      "elapsed_ms": 315.733964
+      "elapsed_ms": 343.251248
     },
     {
       "phase": "sample",
       "round": 10,
       "workload": "density",
       "participant": "ruda",
-      "elapsed_ms": 574.862579
+      "elapsed_ms": 584.319212
     },
     {
       "phase": "sample",
       "round": 10,
       "workload": "reserved-growth",
       "participant": "ruda",
-      "elapsed_ms": 150.290529
+      "elapsed_ms": 138.780053
     },
     {
       "phase": "sample",
       "round": 10,
       "workload": "growth",
       "participant": "ruda",
-      "elapsed_ms": 143.332345
+      "elapsed_ms": 165.095541
     }
   ]
 }
