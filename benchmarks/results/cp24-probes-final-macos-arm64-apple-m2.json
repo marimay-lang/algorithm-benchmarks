@@ -1,0 +1,1326 @@
+{
+  "schema": "ruda.array-probes/1",
+  "protocol": {
+    "schema": "ruda.performance-protocol/1",
+    "path": "benchmarks/performance_protocol.json",
+    "sha256": "0b43886b4e02ee72e8ea4be8eca6c3fb228336bcf525522723a4b40c3b862b19"
+  },
+  "metadata": {
+    "generated_at": "2026-08-22T16:06:06+07:00",
+    "platform": {
+      "id": "macos-arm64-apple-m2",
+      "system": "Darwin",
+      "release": "25.3.0",
+      "machine": "arm64",
+      "cpu": "Apple M2",
+      "logical_cpus": 8
+    },
+    "isolation": {
+      "mode": "dedicated-runner-contract",
+      "load_average_at_start": [
+        3.76220703125,
+        3.677734375,
+        3.7392578125
+      ],
+      "power_source": "Now drawing from 'AC Power",
+      "affinity": "not-requested",
+      "sample_selection": "none",
+      "load_average_at_end": [
+        3.9267578125,
+        3.73193359375,
+        3.7568359375
+      ]
+    },
+    "warmups": 3,
+    "samples": 11,
+    "timeout_seconds": 300,
+    "clock": "perf_counter_ns",
+    "order": "rotating-balanced-v1",
+    "command": "./benchmarks/probes.py --samples 11 --warmups 3 --output benchmarks/results/cp24-probes-final-macos-arm64-apple-m2.json",
+    "resource": {
+      "max_heap_bytes": 67108864
+    },
+    "artifacts": {
+      "ruda_compiler": {
+        "path": "/home/marimay/Projects/ai-projects/Ma/build/release/ruda",
+        "sha256": "204338312d2e018991b176178730b97f7bdd8f8c239632712de6c93b7e3915be",
+        "revision": "17b7a1f1dcffd17659d84244c5f9981cdba867ea",
+        "version": "Ruda compiler 0.0.0-dev\nruntime 0.0.0-dev\nlanguage 0.1-design\nbytecode unavailable\nstandard-library unavailable\nbootstrap-stage 0\nhost Darwin/arm64\ntargets native-host"
+      },
+      "runtime": {
+        "path": "/home/marimay/Projects/ai-projects/Ma/build/release/native-runtime/release/libruda_native_runtime_release.a",
+        "sha256": "5a2473dba1654e512cbc57db66eae13d47edfc75d18fe3dd29a6f1509f01453c",
+        "manifest_path": "/home/marimay/Projects/ai-projects/Ma/build/release/native-runtime/release/ruda-native-runtime.manifest",
+        "manifest_sha256": "326b650acb58b1d66f98291cf9177ef825ae461a45fc84b9be5ddc6016e661f4",
+        "profile": "release",
+        "runtime": "0.0.0-dev",
+        "host": "Darwin",
+        "processor": "arm64",
+        "compiler": "AppleClang-17.0.0.17000604"
+      },
+      "native_c": {
+        "compiler_path": "/usr/bin/cc",
+        "compiler_version": "Apple clang version 17.0.0 (clang-1700.6.4.2); configured AppleClang 17.0.0.17000604",
+        "linker_path": "/usr/bin/cc",
+        "linker_version": "Apple clang version 17.0.0 (clang-1700.6.4.2); configured AppleClang 17.0.0.17000604",
+        "output_profile": "release",
+        "flags": [
+          "-std=c17",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Werror",
+          "-fno-fast-math",
+          "-frounding-math",
+          "-ffp-contract=off",
+          "-fexcess-precision=standard",
+          "-lm"
+        ]
+      }
+    },
+    "toolchains": {
+      "python": "3.9.6",
+      "ruda": "Ruda compiler 0.0.0-dev",
+      "go": "go version go1.26.4 darwin/arm64",
+      "rust": "rustc 1.96.0 (ac68faa20 2026-05-25)"
+    },
+    "corpus_revision": "e74bd93b89b13b8aebd537d40326d7630f5ed461",
+    "probe_manifest": {
+      "path": "benchmarks/probes.json",
+      "schema": "ruda.array-probes-manifest/1",
+      "sha256": "25bcb922a294a316784e8cf382c239fc62e9b7cbe7d88618c3f61a326c4bd6ab",
+      "source_tree_sha256": "571d2aa80904e20b90c7b893c32c7e9e63a8b0c04484d72fa5bfe6c5e3a5d650"
+    }
+  },
+  "workloads": {
+    "scalar-get": {
+      "category": "access",
+      "description": "cache-hot scalar reads with runtime-selected indices",
+      "expected_checksum": 16031036,
+      "expected_stdout": "scalar-get 16031036\n",
+      "commands": {
+        "ruda": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/ruda-probe-scalar-get"
+        ]
+      },
+      "raw_ms": {
+        "ruda": [
+          87.341417,
+          99.389542,
+          87.304375,
+          88.560125,
+          88.873375,
+          90.531667,
+          89.154583,
+          88.737958,
+          88.1665,
+          87.55075,
+          88.871791
+        ]
+      },
+      "summary": {
+        "ruda": {
+          "median_ms": 88.737958,
+          "mad_ms": 0.5714580000000069,
+          "q1_ms": 87.55075,
+          "q3_ms": 89.154583,
+          "iqr_ms": 1.6038330000000087,
+          "min_ms": 87.304375,
+          "max_ms": 99.389542,
+          "noise_fraction": 0.02
+        }
+      }
+    },
+    "scalar-set": {
+      "category": "access",
+      "description": "cache-hot scalar writes with runtime-selected indices",
+      "expected_checksum": 2051754,
+      "expected_stdout": "scalar-set 2051754\n",
+      "commands": {
+        "ruda": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/ruda-probe-scalar-set"
+        ]
+      },
+      "raw_ms": {
+        "ruda": [
+          102.8225,
+          111.379375,
+          102.889333,
+          103.913208,
+          104.389083,
+          106.160875,
+          104.079125,
+          104.858958,
+          103.111167,
+          102.175875,
+          105.122459
+        ]
+      },
+      "summary": {
+        "ruda": {
+          "median_ms": 104.079125,
+          "mad_ms": 1.0433340000000015,
+          "q1_ms": 102.889333,
+          "q3_ms": 105.122459,
+          "iqr_ms": 2.233126000000013,
+          "min_ms": 102.175875,
+          "max_ms": 111.379375,
+          "noise_fraction": 0.030073292795265185
+        }
+      }
+    },
+    "proven-bounds": {
+      "category": "bounds",
+      "description": "sequential length-guarded traversal for future MIR range proofs",
+      "expected_checksum": 48334393,
+      "expected_stdout": "proven-bounds 48334393\n",
+      "commands": {
+        "ruda": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/ruda-probe-proven-bounds"
+        ]
+      },
+      "raw_ms": {
+        "ruda": [
+          226.374833,
+          233.774666,
+          224.450625,
+          227.252792,
+          229.278334,
+          230.817959,
+          228.135666,
+          230.784084,
+          226.786792,
+          228.214208,
+          229.016541
+        ]
+      },
+      "summary": {
+        "ruda": {
+          "median_ms": 228.214208,
+          "mad_ms": 1.4274160000000222,
+          "q1_ms": 226.786792,
+          "q3_ms": 230.784084,
+          "iqr_ms": 3.997292000000016,
+          "min_ms": 224.450625,
+          "max_ms": 233.774666,
+          "noise_fraction": 0.02
+        }
+      }
+    },
+    "unproven-bounds": {
+      "category": "bounds",
+      "description": "runtime modulo indices that retain dynamic bounds checks",
+      "expected_checksum": 999770104,
+      "expected_stdout": "unproven-bounds 999770104\n",
+      "commands": {
+        "ruda": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/ruda-probe-unproven-bounds"
+        ]
+      },
+      "raw_ms": {
+        "ruda": [
+          220.524666,
+          220.390083,
+          218.217458,
+          219.622375,
+          220.85625,
+          223.737417,
+          217.954709,
+          220.806666,
+          217.806167,
+          217.665958,
+          221.787917
+        ]
+      },
+      "summary": {
+        "ruda": {
+          "median_ms": 220.390083,
+          "mad_ms": 1.397833999999989,
+          "q1_ms": 217.954709,
+          "q3_ms": 220.85625,
+          "iqr_ms": 2.9015409999999804,
+          "min_ms": 217.665958,
+          "max_ms": 223.737417,
+          "noise_fraction": 0.02
+        }
+      }
+    },
+    "growth": {
+      "category": "growth",
+      "description": "failure-atomic array growth from empty storage",
+      "expected_checksum": 125500,
+      "expected_stdout": "growth 125500\n",
+      "commands": {
+        "ruda": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/ruda-probe-growth"
+        ]
+      },
+      "raw_ms": {
+        "ruda": [
+          98.329084,
+          94.588708,
+          98.29175,
+          96.014209,
+          98.81225,
+          97.370792,
+          96.445375,
+          97.742833,
+          94.856334,
+          94.247208,
+          99.076917
+        ]
+      },
+      "summary": {
+        "ruda": {
+          "median_ms": 97.370792,
+          "mad_ms": 1.3565830000000005,
+          "q1_ms": 94.856334,
+          "q3_ms": 98.329084,
+          "iqr_ms": 3.4727499999999907,
+          "min_ms": 94.247208,
+          "max_ms": 99.076917,
+          "noise_fraction": 0.04179640440841851
+        }
+      }
+    },
+    "reserved-growth": {
+      "category": "growth",
+      "description": "the same pushes after one non-observable reserve",
+      "expected_checksum": 125500,
+      "expected_stdout": "reserved-growth 125500\n",
+      "commands": {
+        "ruda": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/ruda-probe-reserved-growth"
+        ]
+      },
+      "raw_ms": {
+        "ruda": [
+          91.767584,
+          90.862417,
+          92.670292,
+          92.240208,
+          93.431542,
+          91.547542,
+          92.190167,
+          93.176167,
+          91.189625,
+          90.78625,
+          91.426292
+        ]
+      },
+      "summary": {
+        "ruda": {
+          "median_ms": 91.767584,
+          "mad_ms": 0.5779589999999928,
+          "q1_ms": 91.189625,
+          "q3_ms": 92.670292,
+          "iqr_ms": 1.4806669999999968,
+          "min_ms": 90.78625,
+          "max_ms": 93.431542,
+          "noise_fraction": 0.02
+        }
+      }
+    },
+    "density": {
+      "category": "storage",
+      "description": "repeated sequential traversal of one million scalar cells",
+      "expected_checksum": 499977433,
+      "expected_stdout": "density 499977433\n",
+      "commands": {
+        "ruda": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/ruda-probe-density"
+        ]
+      },
+      "raw_ms": {
+        "ruda": [
+          381.128584,
+          412.238584,
+          380.38025,
+          384.587541,
+          380.227041,
+          384.424125,
+          380.168625,
+          386.177334,
+          379.250292,
+          380.251542,
+          385.368542
+        ]
+      },
+      "summary": {
+        "ruda": {
+          "median_ms": 381.128584,
+          "mad_ms": 1.8782919999999876,
+          "q1_ms": 380.227041,
+          "q3_ms": 385.368542,
+          "iqr_ms": 5.141501000000005,
+          "min_ms": 379.250292,
+          "max_ms": 412.238584,
+          "noise_fraction": 0.02
+        }
+      }
+    },
+    "nested-traversal": {
+      "category": "nested",
+      "description": "repeated row-major traversal through managed nested arrays",
+      "expected_checksum": 786370800,
+      "expected_stdout": "nested-traversal 786370800\n",
+      "commands": {
+        "ruda": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/ruda-probe-nested-traversal"
+        ]
+      },
+      "raw_ms": {
+        "ruda": [
+          189.359625,
+          213.476625,
+          193.586292,
+          192.576875,
+          193.087416,
+          192.615041,
+          192.046583,
+          192.958458,
+          190.179292,
+          189.691958,
+          191.315333
+        ]
+      },
+      "summary": {
+        "ruda": {
+          "median_ms": 192.576875,
+          "mad_ms": 1.009416999999985,
+          "q1_ms": 190.179292,
+          "q3_ms": 193.087416,
+          "iqr_ms": 2.9081239999999866,
+          "min_ms": 189.359625,
+          "max_ms": 213.476625,
+          "noise_fraction": 0.02
+        }
+      }
+    },
+    "checked-loop": {
+      "category": "checked-arithmetic",
+      "description": "pure checked integer recurrence without array accesses",
+      "expected_checksum": 72846317,
+      "expected_stdout": "checked-loop 72846317\n",
+      "commands": {
+        "ruda": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/ruda-probe-checked-loop"
+        ]
+      },
+      "raw_ms": {
+        "ruda": [
+          309.659916,
+          328.401125,
+          317.358625,
+          311.62025,
+          313.787708,
+          313.0925,
+          311.9335,
+          314.620041,
+          310.03175,
+          308.112,
+          310.306542
+        ]
+      },
+      "summary": {
+        "ruda": {
+          "median_ms": 311.9335,
+          "mad_ms": 1.9017499999999927,
+          "q1_ms": 310.03175,
+          "q3_ms": 314.620041,
+          "iqr_ms": 4.5882910000000265,
+          "min_ms": 308.112,
+          "max_ms": 328.401125,
+          "noise_fraction": 0.02
+        }
+      }
+    }
+  },
+  "order": [
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "scalar-get",
+      "participant": "ruda",
+      "elapsed_ms": 477.426834
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "scalar-set",
+      "participant": "ruda",
+      "elapsed_ms": 502.237541
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "proven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 595.073
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "unproven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 568.75625
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "growth",
+      "participant": "ruda",
+      "elapsed_ms": 579.03575
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "reserved-growth",
+      "participant": "ruda",
+      "elapsed_ms": 477.789542
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "density",
+      "participant": "ruda",
+      "elapsed_ms": 774.322167
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "nested-traversal",
+      "participant": "ruda",
+      "elapsed_ms": 588.621792
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 701.619083
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "scalar-get",
+      "participant": "ruda",
+      "elapsed_ms": 113.933625
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 328.244833
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "nested-traversal",
+      "participant": "ruda",
+      "elapsed_ms": 212.835833
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "density",
+      "participant": "ruda",
+      "elapsed_ms": 400.62075
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "reserved-growth",
+      "participant": "ruda",
+      "elapsed_ms": 94.891
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "growth",
+      "participant": "ruda",
+      "elapsed_ms": 99.432625
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "unproven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 218.664792
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "proven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 233.137
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "scalar-set",
+      "participant": "ruda",
+      "elapsed_ms": 104.157833
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "proven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 225.114834
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "unproven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 219.209292
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "growth",
+      "participant": "ruda",
+      "elapsed_ms": 99.401791
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "reserved-growth",
+      "participant": "ruda",
+      "elapsed_ms": 92.955708
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "density",
+      "participant": "ruda",
+      "elapsed_ms": 382.269791
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "nested-traversal",
+      "participant": "ruda",
+      "elapsed_ms": 196.019125
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 308.943417
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "scalar-get",
+      "participant": "ruda",
+      "elapsed_ms": 88.835375
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "scalar-set",
+      "participant": "ruda",
+      "elapsed_ms": 103.545167
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "proven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 226.374833
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "scalar-set",
+      "participant": "ruda",
+      "elapsed_ms": 102.8225
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "scalar-get",
+      "participant": "ruda",
+      "elapsed_ms": 87.341417
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 309.659916
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "nested-traversal",
+      "participant": "ruda",
+      "elapsed_ms": 189.359625
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "density",
+      "participant": "ruda",
+      "elapsed_ms": 381.128584
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "reserved-growth",
+      "participant": "ruda",
+      "elapsed_ms": 91.767584
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "growth",
+      "participant": "ruda",
+      "elapsed_ms": 98.329084
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "unproven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 220.524666
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "growth",
+      "participant": "ruda",
+      "elapsed_ms": 94.588708
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "reserved-growth",
+      "participant": "ruda",
+      "elapsed_ms": 90.862417
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "density",
+      "participant": "ruda",
+      "elapsed_ms": 412.238584
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "nested-traversal",
+      "participant": "ruda",
+      "elapsed_ms": 213.476625
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 328.401125
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "scalar-get",
+      "participant": "ruda",
+      "elapsed_ms": 99.389542
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "scalar-set",
+      "participant": "ruda",
+      "elapsed_ms": 111.379375
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "proven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 233.774666
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "unproven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 220.390083
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "growth",
+      "participant": "ruda",
+      "elapsed_ms": 98.29175
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "unproven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 218.217458
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "proven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 224.450625
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "scalar-set",
+      "participant": "ruda",
+      "elapsed_ms": 102.889333
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "scalar-get",
+      "participant": "ruda",
+      "elapsed_ms": 87.304375
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 317.358625
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "nested-traversal",
+      "participant": "ruda",
+      "elapsed_ms": 193.586292
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "density",
+      "participant": "ruda",
+      "elapsed_ms": 380.38025
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "reserved-growth",
+      "participant": "ruda",
+      "elapsed_ms": 92.670292
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "density",
+      "participant": "ruda",
+      "elapsed_ms": 384.587541
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "nested-traversal",
+      "participant": "ruda",
+      "elapsed_ms": 192.576875
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 311.62025
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "scalar-get",
+      "participant": "ruda",
+      "elapsed_ms": 88.560125
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "scalar-set",
+      "participant": "ruda",
+      "elapsed_ms": 103.913208
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "proven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 227.252792
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "unproven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 219.622375
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "growth",
+      "participant": "ruda",
+      "elapsed_ms": 96.014209
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "reserved-growth",
+      "participant": "ruda",
+      "elapsed_ms": 92.240208
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "density",
+      "participant": "ruda",
+      "elapsed_ms": 380.227041
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "reserved-growth",
+      "participant": "ruda",
+      "elapsed_ms": 93.431542
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "growth",
+      "participant": "ruda",
+      "elapsed_ms": 98.81225
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "unproven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 220.85625
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "proven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 229.278334
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "scalar-set",
+      "participant": "ruda",
+      "elapsed_ms": 104.389083
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "scalar-get",
+      "participant": "ruda",
+      "elapsed_ms": 88.873375
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 313.787708
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "nested-traversal",
+      "participant": "ruda",
+      "elapsed_ms": 193.087416
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 313.0925
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "scalar-get",
+      "participant": "ruda",
+      "elapsed_ms": 90.531667
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "scalar-set",
+      "participant": "ruda",
+      "elapsed_ms": 106.160875
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "proven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 230.817959
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "unproven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 223.737417
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "growth",
+      "participant": "ruda",
+      "elapsed_ms": 97.370792
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "reserved-growth",
+      "participant": "ruda",
+      "elapsed_ms": 91.547542
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "density",
+      "participant": "ruda",
+      "elapsed_ms": 384.424125
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "nested-traversal",
+      "participant": "ruda",
+      "elapsed_ms": 192.615041
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 311.9335
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "nested-traversal",
+      "participant": "ruda",
+      "elapsed_ms": 192.046583
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "density",
+      "participant": "ruda",
+      "elapsed_ms": 380.168625
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "reserved-growth",
+      "participant": "ruda",
+      "elapsed_ms": 92.190167
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "growth",
+      "participant": "ruda",
+      "elapsed_ms": 96.445375
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "unproven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 217.954709
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "proven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 228.135666
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "scalar-set",
+      "participant": "ruda",
+      "elapsed_ms": 104.079125
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "scalar-get",
+      "participant": "ruda",
+      "elapsed_ms": 89.154583
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "scalar-set",
+      "participant": "ruda",
+      "elapsed_ms": 104.858958
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "proven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 230.784084
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "unproven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 220.806666
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "growth",
+      "participant": "ruda",
+      "elapsed_ms": 97.742833
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "reserved-growth",
+      "participant": "ruda",
+      "elapsed_ms": 93.176167
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "density",
+      "participant": "ruda",
+      "elapsed_ms": 386.177334
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "nested-traversal",
+      "participant": "ruda",
+      "elapsed_ms": 192.958458
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 314.620041
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "scalar-get",
+      "participant": "ruda",
+      "elapsed_ms": 88.737958
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "scalar-set",
+      "participant": "ruda",
+      "elapsed_ms": 103.111167
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "scalar-get",
+      "participant": "ruda",
+      "elapsed_ms": 88.1665
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 310.03175
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "nested-traversal",
+      "participant": "ruda",
+      "elapsed_ms": 190.179292
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "density",
+      "participant": "ruda",
+      "elapsed_ms": 379.250292
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "reserved-growth",
+      "participant": "ruda",
+      "elapsed_ms": 91.189625
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "growth",
+      "participant": "ruda",
+      "elapsed_ms": 94.856334
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "unproven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 217.806167
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "proven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 226.786792
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "unproven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 217.665958
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "growth",
+      "participant": "ruda",
+      "elapsed_ms": 94.247208
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "reserved-growth",
+      "participant": "ruda",
+      "elapsed_ms": 90.78625
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "density",
+      "participant": "ruda",
+      "elapsed_ms": 380.251542
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "nested-traversal",
+      "participant": "ruda",
+      "elapsed_ms": 189.691958
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 308.112
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "scalar-get",
+      "participant": "ruda",
+      "elapsed_ms": 87.55075
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "scalar-set",
+      "participant": "ruda",
+      "elapsed_ms": 102.175875
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "proven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 228.214208
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "unproven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 221.787917
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "proven-bounds",
+      "participant": "ruda",
+      "elapsed_ms": 229.016541
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "scalar-set",
+      "participant": "ruda",
+      "elapsed_ms": 105.122459
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "scalar-get",
+      "participant": "ruda",
+      "elapsed_ms": 88.871791
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 310.306542
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "nested-traversal",
+      "participant": "ruda",
+      "elapsed_ms": 191.315333
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "density",
+      "participant": "ruda",
+      "elapsed_ms": 385.368542
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "reserved-growth",
+      "participant": "ruda",
+      "elapsed_ms": 91.426292
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "growth",
+      "participant": "ruda",
+      "elapsed_ms": 99.076917
+    }
+  ]
+}
