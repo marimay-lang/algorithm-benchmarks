@@ -2,127 +2,127 @@
   "schema": "ruda.performance-budgets/1",
   "protocol_sha256": "0b43886b4e02ee72e8ea4be8eca6c3fb228336bcf525522723a4b40c3b862b19",
   "platform_id": "linux-x86_64",
-  "created_at": "2026-08-22T05:26:05+00:00",
+  "created_at": "2026-08-22T06:16:49+00:00",
   "review": {
-    "status": "reviewed",
-    "reviewed_at": "2026-08-22T12:27:40+07:00",
-    "rationale": "All 17 raw Ruda distributions retain 11 samples from corpus c8da467; maximum Ruda noise is 4.93% and maximum complete-matrix noise is 17.03%. Every cool-down retry median passes the previous reviewed workload budget after five probe exceedances in attempt 1 did not reproduce, and every Ruda workload retains the 10% budget floor."
+    "status": "candidate",
+    "reviewed_at": "pending",
+    "rationale": "pending engineering review of raw samples and noise"
   },
   "baseline": {
     "probe_result": "benchmarks/results/cp21-probes-linux-x86_64.json",
-    "probe_result_sha256": "819b702bc3f3c5ca382d9f957f7ed812c7b99c67afe53aaae2970c10ed704caf",
+    "probe_result_sha256": "7a1da098d166c554964d0f75065a4e33cda98819e47f336dd6c663cad05ffcc6",
     "algorithm_result": "benchmarks/results/cp21-algorithms-linux-x86_64.json",
-    "algorithm_result_sha256": "0bccbbfdb24ca6d5fd5f405183b021deea667d0952505f094ebb6a069cb4f7dd",
-    "ruda_revision": "1d728451612f5ad4d6cfb78a5785b2e57605af26",
-    "corpus_revision": "c8da4676e0e80522d795a6b7fe551e93916c9fad",
+    "algorithm_result_sha256": "5602ac99a43bea0f8848741f93fd0eae8966a147eb5b61720fed3afdf3870932",
+    "ruda_revision": "1b4a8b7cab70d5967440cb01854bd174078d0723",
+    "corpus_revision": "e74bd93b89b13b8aebd537d40326d7630f5ed461",
     "probe_manifest_sha256": "25bcb922a294a316784e8cf382c239fc62e9b7cbe7d88618c3f61a326c4bd6ab",
     "equivalence_manifest_sha256": "51702f2ad1bae31fb11b9df8550f58b2034e1e7044f3d6e7448e5001399d3535"
   },
   "suites": {
     "probes": {
       "scalar-get": {
-        "baseline_median_ms": 170.79814,
-        "baseline_noise_fraction": 0.02,
-        "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 187.87795400000002
+        "baseline_median_ms": 208.060628,
+        "baseline_noise_fraction": 0.24305998441954166,
+        "allowed_regression_fraction": 0.24305998441954166,
+        "maximum_median_ms": 258.63184100000007
       },
       "scalar-set": {
-        "baseline_median_ms": 167.280373,
-        "baseline_noise_fraction": 0.033498060169915855,
-        "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 184.0084103
+        "baseline_median_ms": 189.898141,
+        "baseline_noise_fraction": 0.1565899478710537,
+        "allowed_regression_fraction": 0.1565899478710537,
+        "maximum_median_ms": 219.63428100000002
       },
       "proven-bounds": {
-        "baseline_median_ms": 345.294393,
-        "baseline_noise_fraction": 0.023249977881916878,
-        "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 379.82383230000005
+        "baseline_median_ms": 395.478939,
+        "baseline_noise_fraction": 0.1306777805429481,
+        "allowed_regression_fraction": 0.1306777805429481,
+        "maximum_median_ms": 447.15924899999993
       },
       "unproven-bounds": {
-        "baseline_median_ms": 403.390099,
-        "baseline_noise_fraction": 0.03174566513096321,
-        "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 443.7291089000001
+        "baseline_median_ms": 467.349451,
+        "baseline_noise_fraction": 0.1605189025888039,
+        "allowed_regression_fraction": 0.1605189025888039,
+        "maximum_median_ms": 542.3678719999999
       },
       "growth": {
-        "baseline_median_ms": 142.286776,
-        "baseline_noise_fraction": 0.02,
-        "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 156.51545360000003
+        "baseline_median_ms": 172.685735,
+        "baseline_noise_fraction": 0.239128854505556,
+        "allowed_regression_fraction": 0.239128854505556,
+        "maximum_median_ms": 213.97987700000002
       },
       "reserved-growth": {
-        "baseline_median_ms": 142.272889,
-        "baseline_noise_fraction": 0.049308543948946015,
-        "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 156.5001779
+        "baseline_median_ms": 169.620599,
+        "baseline_noise_fraction": 0.2199171398987925,
+        "allowed_regression_fraction": 0.2199171398987925,
+        "maximum_median_ms": 206.92307599999998
       },
       "density": {
-        "baseline_median_ms": 577.398744,
-        "baseline_noise_fraction": 0.02,
-        "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 635.1386184
+        "baseline_median_ms": 681.376393,
+        "baseline_noise_fraction": 0.15922393425215134,
+        "allowed_regression_fraction": 0.15922393425215134,
+        "maximum_median_ms": 789.867823
       },
       "nested-traversal": {
-        "baseline_median_ms": 313.3327,
-        "baseline_noise_fraction": 0.026910762904733588,
-        "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 344.66597
+        "baseline_median_ms": 372.147382,
+        "baseline_noise_fraction": 0.14120879668045044,
+        "allowed_regression_fraction": 0.14120879668045044,
+        "maximum_median_ms": 424.6978659999999
       },
       "checked-loop": {
-        "baseline_median_ms": 478.304297,
-        "baseline_noise_fraction": 0.02,
-        "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 526.1347267000001
+        "baseline_median_ms": 560.434383,
+        "baseline_noise_fraction": 0.16039828519942909,
+        "allowed_regression_fraction": 0.16039828519942909,
+        "maximum_median_ms": 650.3270970000001
       }
     },
     "algorithms": {
       "insertion": {
-        "baseline_median_ms": 6038.623912,
-        "baseline_noise_fraction": 0.02055911591932244,
+        "baseline_median_ms": 7012.835807,
+        "baseline_noise_fraction": 0.020995291498630934,
         "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 6642.4863032
+        "maximum_median_ms": 7714.119387700001
       },
       "heap-sort": {
-        "baseline_median_ms": 1650.280103,
+        "baseline_median_ms": 1939.700249,
         "baseline_noise_fraction": 0.02,
         "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 1815.3081133000003
+        "maximum_median_ms": 2133.6702739
       },
       "stack": {
-        "baseline_median_ms": 515.243303,
-        "baseline_noise_fraction": 0.020892783928139858,
-        "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 566.7676333
+        "baseline_median_ms": 605.66575,
+        "baseline_noise_fraction": 0.1160952984381236,
+        "allowed_regression_fraction": 0.1160952984381236,
+        "maximum_median_ms": 675.980696
       },
       "queue": {
-        "baseline_median_ms": 593.945657,
-        "baseline_noise_fraction": 0.022134706845747403,
-        "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 653.3402227
+        "baseline_median_ms": 718.82493,
+        "baseline_noise_fraction": 0.10468870215728339,
+        "allowed_regression_fraction": 0.10468870215728339,
+        "maximum_median_ms": 794.0777790000001
       },
       "min-heap": {
-        "baseline_median_ms": 3292.642371,
-        "baseline_noise_fraction": 0.02202255569528405,
-        "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 3621.9066081
+        "baseline_median_ms": 3901.056242,
+        "baseline_noise_fraction": 0.1082878479043472,
+        "allowed_regression_fraction": 0.1082878479043472,
+        "maximum_median_ms": 4323.493227000001
       },
       "dsu": {
-        "baseline_median_ms": 3234.760969,
-        "baseline_noise_fraction": 0.02,
+        "baseline_median_ms": 3910.537258,
+        "baseline_noise_fraction": 0.020964019670772053,
         "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 3558.2370659000003
+        "maximum_median_ms": 4301.5909838
       },
       "bfs": {
-        "baseline_median_ms": 4479.385681,
-        "baseline_noise_fraction": 0.024895802000935226,
+        "baseline_median_ms": 5552.147869,
+        "baseline_noise_fraction": 0.02,
         "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 4927.3242491
+        "maximum_median_ms": 6107.362655900001
       },
       "dijkstra": {
-        "baseline_median_ms": 1845.182898,
-        "baseline_noise_fraction": 0.02733129060249947,
+        "baseline_median_ms": 2121.951841,
+        "baseline_noise_fraction": 0.029862717322621846,
         "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 2029.7011878000003
+        "maximum_median_ms": 2334.1470251
       }
     }
   }
