@@ -30,8 +30,12 @@ jobs:
 
       - name: Check out Marimay compiler
         env:
-          MMAY_CHECKOUT_KEY: ${{ secrets.MMAY_CHECKOUT_KEY }}
+          MMAY_CHECKOUT_KEY: ${{ secrets.RUDA_CHECKOUT_KEY }}
         run: |
+          if [ -z "$MMAY_CHECKOUT_KEY" ]; then
+            echo "Marimay compiler checkout key is not configured" >&2
+            exit 1
+          fi
           baseline_key_dir="${RUNNER_TEMP:-/tmp}/marimay-checkout"
           install -d -m 700 "$baseline_key_dir"
           printf '%s\n' "$MMAY_CHECKOUT_KEY" >"$baseline_key_dir/id_ed25519"
