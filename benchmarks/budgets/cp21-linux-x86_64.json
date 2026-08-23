@@ -2,127 +2,127 @@
   "schema": "marimay.performance-budgets/1",
   "protocol_sha256": "a94f5be850eb26fd821b3630b16254f145a8e30c1b8e7a63fd7230ed761dd4a8",
   "platform_id": "linux-x86_64",
-  "created_at": "2026-08-22T05:26:05+00:00",
+  "created_at": "2026-08-23T05:04:01+00:00",
   "review": {
-    "status": "reviewed",
-    "reviewed_at": "2026-08-22T12:27:40+07:00",
-    "rationale": "All 17 raw Marimay distributions retain 11 samples from corpus c8da467; maximum Marimay noise is 4.93% and maximum complete-matrix noise is 17.03%. Every cool-down retry median passes the previous reviewed workload budget after five probe exceedances in attempt 1 did not reproduce, and every Marimay workload retains the 10% budget floor."
+    "status": "candidate",
+    "reviewed_at": "pending",
+    "rationale": "pending engineering review of raw samples and noise"
   },
   "baseline": {
     "probe_result": "benchmarks/results/cp21-probes-linux-x86_64.json",
-    "probe_result_sha256": "daad9f3220dbcb371a5599ad43ffcb3405316a480e0674ff8e31cb9d28ce663e",
+    "probe_result_sha256": "a4b358c46f0a6d0a3a021fad299b757205db5fb7bddb37d2d9c8ffddb11f5b86",
     "algorithm_result": "benchmarks/results/cp21-algorithms-linux-x86_64.json",
-    "algorithm_result_sha256": "decc584a351c25f5b1302eca124c151f9c22238c10cd3f2d8eeb568da5a1797e",
-    "marimay_revision": "1d728451612f5ad4d6cfb78a5785b2e57605af26",
-    "corpus_revision": "c8da4676e0e80522d795a6b7fe551e93916c9fad",
+    "algorithm_result_sha256": "5ae084a90a926cd3404b060ba2ab25cfc729102b97ecbccf39fcd0335da02e8f",
+    "marimay_revision": "95b74754403341e8306207a4f74e42010045a33a",
+    "corpus_revision": "0e998ccd27f7009f0efde490d95bbcdcb57be46b",
     "probe_manifest_sha256": "f7a8a378036cfcb1d121a2e49a6d32ba3a3a34840821a0d4e9dc806d3802af0a",
     "equivalence_manifest_sha256": "bf2f251de2d91e22d6696a50aa83babe9d1497139a305c4e1770e09c1f2f7e9b"
   },
   "suites": {
     "probes": {
       "scalar-get": {
-        "baseline_median_ms": 170.79814,
-        "baseline_noise_fraction": 0.02,
+        "baseline_median_ms": 19.372724,
+        "baseline_noise_fraction": 0.04950511864000146,
         "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 187.87795400000002
+        "maximum_median_ms": 21.309996400000003
       },
       "scalar-set": {
-        "baseline_median_ms": 167.280373,
-        "baseline_noise_fraction": 0.033498060169915855,
-        "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 184.0084103
+        "baseline_median_ms": 10.07994,
+        "baseline_noise_fraction": 0.1264418240584765,
+        "allowed_regression_fraction": 0.1264418240584765,
+        "maximum_median_ms": 11.354466
       },
       "proven-bounds": {
-        "baseline_median_ms": 345.294393,
-        "baseline_noise_fraction": 0.023249977881916878,
+        "baseline_median_ms": 33.419987,
+        "baseline_noise_fraction": 0.059345355221113755,
         "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 379.82383230000005
+        "maximum_median_ms": 36.761985700000004
       },
       "unproven-bounds": {
-        "baseline_median_ms": 403.390099,
-        "baseline_noise_fraction": 0.03174566513096321,
+        "baseline_median_ms": 39.755053,
+        "baseline_noise_fraction": 0.03607639511887976,
         "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 443.7291089000001
+        "maximum_median_ms": 43.7305583
       },
       "growth": {
-        "baseline_median_ms": 142.286776,
-        "baseline_noise_fraction": 0.02,
-        "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 156.51545360000003
+        "baseline_median_ms": 6.362619,
+        "baseline_noise_fraction": 0.1919341705043158,
+        "allowed_regression_fraction": 0.1919341705043158,
+        "maximum_median_ms": 7.583822999999999
       },
       "reserved-growth": {
-        "baseline_median_ms": 142.272889,
-        "baseline_noise_fraction": 0.049308543948946015,
-        "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 156.5001779
+        "baseline_median_ms": 5.414701,
+        "baseline_noise_fraction": 0.10925866451351593,
+        "allowed_regression_fraction": 0.10925866451351593,
+        "maximum_median_ms": 6.006303999999998
       },
       "density": {
-        "baseline_median_ms": 577.398744,
-        "baseline_noise_fraction": 0.02,
+        "baseline_median_ms": 48.180793,
+        "baseline_noise_fraction": 0.03018055348321068,
         "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 635.1386184
+        "maximum_median_ms": 52.99887230000001
       },
       "nested-traversal": {
-        "baseline_median_ms": 313.3327,
-        "baseline_noise_fraction": 0.026910762904733588,
+        "baseline_median_ms": 28.732466,
+        "baseline_noise_fraction": 0.03558062158674465,
         "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 344.66597
+        "maximum_median_ms": 31.6057126
       },
       "checked-loop": {
-        "baseline_median_ms": 478.304297,
-        "baseline_noise_fraction": 0.02,
+        "baseline_median_ms": 67.276245,
+        "baseline_noise_fraction": 0.02443584656069908,
         "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 526.1347267000001
+        "maximum_median_ms": 74.00386950000001
       }
     },
     "algorithms": {
       "insertion": {
-        "baseline_median_ms": 6038.623912,
-        "baseline_noise_fraction": 0.02055911591932244,
+        "baseline_median_ms": 70.702258,
+        "baseline_noise_fraction": 0.03216257958833486,
         "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 6642.4863032
+        "maximum_median_ms": 77.7724838
       },
       "heap-sort": {
-        "baseline_median_ms": 1650.280103,
-        "baseline_noise_fraction": 0.02,
+        "baseline_median_ms": 90.904565,
+        "baseline_noise_fraction": 0.020557878473979767,
         "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 1815.3081133000003
+        "maximum_median_ms": 99.99502150000001
       },
       "stack": {
-        "baseline_median_ms": 515.243303,
-        "baseline_noise_fraction": 0.020892783928139858,
+        "baseline_median_ms": 30.023397,
+        "baseline_noise_fraction": 0.025493584220333237,
         "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 566.7676333
+        "maximum_median_ms": 33.0257367
       },
       "queue": {
-        "baseline_median_ms": 593.945657,
-        "baseline_noise_fraction": 0.022134706845747403,
+        "baseline_median_ms": 31.17573,
+        "baseline_noise_fraction": 0.08197405481764178,
         "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 653.3402227
+        "maximum_median_ms": 34.293303
       },
       "min-heap": {
-        "baseline_median_ms": 3292.642371,
-        "baseline_noise_fraction": 0.02202255569528405,
+        "baseline_median_ms": 133.052146,
+        "baseline_noise_fraction": 0.042811327522669536,
         "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 3621.9066081
+        "maximum_median_ms": 146.3573606
       },
       "dsu": {
-        "baseline_median_ms": 3234.760969,
-        "baseline_noise_fraction": 0.02,
+        "baseline_median_ms": 64.835826,
+        "baseline_noise_fraction": 0.03769193902149074,
         "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 3558.2370659000003
+        "maximum_median_ms": 71.3194086
       },
       "bfs": {
-        "baseline_median_ms": 4479.385681,
-        "baseline_noise_fraction": 0.024895802000935226,
+        "baseline_median_ms": 131.080428,
+        "baseline_noise_fraction": 0.03970437142606846,
         "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 4927.3242491
+        "maximum_median_ms": 144.18847080000003
       },
       "dijkstra": {
-        "baseline_median_ms": 1845.182898,
-        "baseline_noise_fraction": 0.02733129060249947,
+        "baseline_median_ms": 90.309964,
+        "baseline_noise_fraction": 0.027718303597153396,
         "allowed_regression_fraction": 0.1,
-        "maximum_median_ms": 2029.7011878000003
+        "maximum_median_ms": 99.3409604
       }
     }
   }
