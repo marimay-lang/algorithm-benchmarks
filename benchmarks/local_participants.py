@@ -12,7 +12,7 @@ class LocalParticipantError(ValueError):
     pass
 
 
-SCHEMA = "ruda.local-benchmark-participants/1"
+SCHEMA = "marimay.local-benchmark-participants/1"
 LANGUAGES = ["typescript", "v", "moonbit"]
 
 

@@ -14,15 +14,15 @@ class PerformanceEnvironmentTests(unittest.TestCase):
         self,
         root: pathlib.Path,
         profile: str,
-        archive_name: str = "libruda_native_runtime_release.a",
+        archive_name: str = "libmmay_native_runtime_release.a",
     ) -> pathlib.Path:
-        compiler = root / "ruda"
+        compiler = root / "mmay"
         compiler.write_bytes(b"compiler")
         directory = root / "native-runtime" / "release"
         directory.mkdir(parents=True)
         (directory / archive_name).write_bytes(b"archive")
-        (directory / "ruda-native-runtime.manifest").write_text(
-            "ruda-native-runtime-v1\n"
+        (directory / "mmay-native-runtime.manifest").write_text(
+            "mmay-native-runtime-v1\n"
             f"profile={profile}\n"
             "runtime=0.0.0-dev\n"
             "host=Test\n"
@@ -73,7 +73,7 @@ class PerformanceEnvironmentTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = pathlib.Path(directory)
             compiler = self.write_runtime(
-                root, "release", "ruda_native_runtime_release.lib"
+                root, "release", "mmay_native_runtime_release.lib"
             )
             _, archive, _ = locate_runtime(compiler, ["runtime 0.0.0-dev"])
             self.assertEqual(archive.suffix, ".lib")
@@ -86,8 +86,8 @@ class PerformanceEnvironmentTests(unittest.TestCase):
             pathlib.Path("cl.exe"),
             pathlib.Path("."),
             {
-                "RUDA_NATIVE_C_COMPILER_ID": "MSVC",
-                "RUDA_NATIVE_C_COMPILER_VERSION": "19.40",
+                "MMAY_NATIVE_C_COMPILER_ID": "MSVC",
+                "MMAY_NATIVE_C_COMPILER_VERSION": "19.40",
             },
             "Windows",
         )
@@ -100,9 +100,9 @@ class PerformanceEnvironmentTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = pathlib.Path(directory)
             compiler = self.write_runtime(root, "release")
-            manifest = root / "native-runtime" / "release" / "ruda-native-runtime.manifest"
+            manifest = root / "native-runtime" / "release" / "mmay-native-runtime.manifest"
             manifest.write_text(
-                "ruda-native-runtime-v1\nprofile=release\n",
+                "mmay-native-runtime-v1\nprofile=release\n",
                 encoding="utf-8",
             )
             with self.assertRaisesRegex(ProtocolError, "incomplete"):

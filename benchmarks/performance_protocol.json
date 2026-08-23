@@ -1,5 +1,5 @@
 {
-  "schema": "ruda.performance-protocol/1",
+  "schema": "marimay.performance-protocol/1",
   "measurement": {
     "clock": "perf_counter_ns",
     "minimum_warmups": 3,
@@ -35,8 +35,8 @@
     "max_heap_bytes": 67108864
   },
   "result_schemas": {
-    "probes": "ruda.array-probes/1",
-    "algorithms": "ruda.algorithm-benchmark/2",
-    "budgets": "ruda.performance-budgets/1"
+    "probes": "marimay.array-probes/1",
+    "algorithms": "marimay.algorithm-benchmark/2",
+    "budgets": "marimay.performance-budgets/1"
   }
 }

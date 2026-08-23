@@ -1,4 +1,4 @@
-# Algorithms in Ruda, Go, and Rust
+# Algorithms in Marimay, Go, and Rust
 
 Учебный репозиторий с одинаковым набором алгоритмов на трёх языках. Его цель —
 не найти самый короткий синтаксис, а сравнить модели данных, обработку
@@ -7,15 +7,15 @@
 ## Состав
 
 ```text
-ruda-algotithms/
-  ruda/
-    ruda.mod
-    sorting/{insertion,heap}.ruda
-    structures/{stack,queue,heap,dsu}.ruda
-    graphs/{bfs,dijkstra}.ruda
+marimay-algotithms/
+  marimay/
+    mmay.mod
+    sorting/{insertion,heap}.my
+    structures/{stack,queue,heap,dsu}.my
+    graphs/{bfs,dijkstra}.my
     benchmarks/{core,insertion,heap_sort,stack,queue,min_heap,dsu,bfs,dijkstra}/
     probes/{core,scalar_get,scalar_set,proven_bounds,unproven_bounds,growth,reserved_growth,density,nested_traversal,checked_loop}/
-    algorithms_test.ruda
+    algorithms_test.my
   go/
     sorting/
     structures/
@@ -43,8 +43,8 @@ ruda-algotithms/
 
 ## Полная проверка
 
-По умолчанию скрипт ищет Ruda в соседнем репозитории
-`../Ma/build/debug/ruda`:
+По умолчанию скрипт ищет Marimay в соседнем репозитории
+`../Ma/build/rebrand-debug/mmay`:
 
 ```sh
 ./verify.sh
@@ -53,7 +53,7 @@ ruda-algotithms/
 Для другого бинарника:
 
 ```sh
-RUDA=/absolute/path/to/ruda ./verify.sh
+MMAY=/absolute/path/to/mmay ./verify.sh
 ```
 
 Или через Make:
@@ -64,7 +64,7 @@ make verify
 
 Скрипт выполняет:
 
-- Ruda: canonical format check и `ruda check` для библиотек и benchmark-кода,
+- Marimay: canonical format check и `mmay check` для библиотек и benchmark-кода,
   VM run, четыре explicit tests через `--engine both`, Debug/Release native
   build и побайтовое сравнение stdout всех трёх исполнений;
 - Go: `gofmt`, `go vet`, `go test ./...`, `go run .`;
@@ -81,23 +81,23 @@ make verify
 make benchmark
 ```
 
-Он заранее собирает release native executable через `ruda build --release`,
+Он заранее собирает release native executable через `mmay build --release`,
 `go build` и `cargo build --release`, а затем запускает одинаковые
-детерминированные нагрузки. Время компиляции исключено; `ruda run`/VM не
+детерминированные нагрузки. Время компиляции исключено; `mmay run`/VM не
 смешивается с native-результатами. Совпадение checksum обязательно для каждого
 языка и каждого замера.
 
 Перед сборкой harness проверяет
 [`equivalence.json`](benchmarks/equivalence.json) и берёт из него список
-workload, описания и ожидаемые checksum. Источник Ruda compiler, revision
+workload, описания и ожидаемые checksum. Источник Marimay compiler, revision
 corpus и SHA-256 manifest записываются в Markdown и raw JSON отчёты.
 
 Для локального расширенного сравнения доступны TypeScript под Bun, V и MoonBit:
 
 ```sh
-RUDA=/absolute/path/to/release/ruda \
+MMAY=/absolute/path/to/release/mmay \
   ./benchmarks/run.py \
-  --languages ruda,go,rust,typescript,v,moonbit \
+  --languages marimay,go,rust,typescript,v,moonbit \
   --samples 11 --warmups 3 \
   --output benchmarks/results/local-six-languages.md
 ```
@@ -109,7 +109,7 @@ MoonBit — через `moon build --release --target native`; компиляц�
 Расширенный JSON помечается `comparison_scope: local-only`, использует отдельный
 [`local_participants.json`](benchmarks/local_participants.json) и запрещён как
 Tier 1 baseline. Штатный `make benchmark` по-прежнему измеряет только
-`ruda,go,rust`.
+`marimay,go,rust`.
 
 Воспроизводимый checkpoint-21 baseline, focused array probes, raw samples,
 artifact hashes и reviewed macOS arm64 budget находятся в
@@ -117,7 +117,7 @@ artifact hashes и reviewed macOS arm64 budget находятся в
 [`benchmarks/budgets/`](benchmarks/budgets/). Методика, schema, retry и
 validation commands: [`benchmarks/README.md`](benchmarks/README.md).
 
-Развёрнутые выводы и места оптимизации зафиксированы в основном Ruda-репозитории:
+Развёрнутые выводы и места оптимизации зафиксированы в основном Marimay-репозитории:
 [`algorithm-benchmark-findings.md`](../Ma/docs/research/algorithm-benchmark-findings.md).
 Предложение по `[][]int` и соседние ergonomics-наблюдения вынесены отдельно:
 [`array-type-shorthand-proposal.md`](../Ma/docs/design/array-type-shorthand-proposal.md).
@@ -135,11 +135,11 @@ validation commands: [`benchmarks/README.md`](benchmarks/README.md).
 | BFS | пятивершинный неориентированный граф | `[0, 1, 1, 2, 2]` |
 | Dijkstra | пятивершинный ориентированный граф | `[0, 3, 1, 4, 7]` |
 
-## Текущее состояние Ruda 0.1-dev
+## Текущее состояние Marimay 0.1-dev
 
 Это наблюдения о текущем Stage 0, а не предложения менять спецификацию языка.
 
-1. После checkpoints 14–18 Ruda root, correctness tests и timed entrypoints
+1. После checkpoints 14–18 Marimay root, correctness tests и timed entrypoints
    вызывают одни reusable sorting/structures/graphs packages. Cross-package
    `[]T`, imported generic results, receiver-directed `push`/`pop`/`length`,
    physical array `pop` и canonical `[][]T` проверяются VM и native engines.
@@ -151,8 +151,10 @@ validation commands: [`benchmarks/README.md`](benchmarks/README.md).
    текущего native resource limit (`I0002`). Для общего benchmark используется
    один миллион; это ограничение отдельно зафиксировано в методике.
 4. Checkpoints 14–18 закрывают correctness/ergonomics, а не основные hot-path
-   optimization. Bounds facts, native access boundary, dense scalar storage,
-   capacity planning и nested traversal запланированы checkpoints 22–27.
+   optimization. Bounds facts и native access boundary закрыты в checkpoints
+   22–23; dense storage, capacity planning, nested traversal audit и
+   checked-integer proof pipeline относятся к checkpoints 24–27, а reusable
+   corpus остаётся public integration gate checkpoint 28.
 5. Correctness suites всех трёх языков отдельно отклоняют out-of-range graph
    starts/endpoints и negative Dijkstra weights. Эти probes не входят в timed
    interval; Rust использует `usize` для индексов, поэтому отрицательный индекс

@@ -1,4 +1,4 @@
-name = "local/ruda-algorithms-benchmark"
+name = "local/marimay-algorithms-benchmark"
 
 version = "0.1.0"
 

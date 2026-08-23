@@ -1,6 +1,6 @@
-use ruda_algorithms::graphs;
-use ruda_algorithms::sorting;
-use ruda_algorithms::structures::MinHeap;
+use marimay_algorithms::graphs;
+use marimay_algorithms::sorting;
+use marimay_algorithms::structures::MinHeap;
 
 fn main() {
     let mut values = vec![5, 1, 4, 2, 3];

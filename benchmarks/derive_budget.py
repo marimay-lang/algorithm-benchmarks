@@ -43,12 +43,12 @@ def suite_budgets(
     budgets: dict[str, dict[str, float]] = {}
     for workload, observation in result["workloads"].items():
         try:
-            ruda_summary = observation["summary"]["ruda"]
+            marimay_summary = observation["summary"]["marimay"]
         except (KeyError, TypeError) as error:
             raise ProtocolError(
-                f"cannot derive a Ruda budget for workload {workload}"
+                f"cannot derive a Marimay budget for workload {workload}"
             ) from error
-        budgets[workload] = budget_for_summary(protocol, ruda_summary)
+        budgets[workload] = budget_for_summary(protocol, marimay_summary)
     return budgets
 
 
@@ -80,7 +80,7 @@ def main() -> None:
             "probe_result_sha256": sha256_file(probes_path),
             "algorithm_result": str(algorithms_path.relative_to(repository)),
             "algorithm_result_sha256": sha256_file(algorithms_path),
-            "ruda_revision": probes["metadata"]["artifacts"]["ruda_compiler"][
+            "marimay_revision": probes["metadata"]["artifacts"]["mmay_compiler"][
                 "revision"
             ],
             "corpus_revision": probes["metadata"]["corpus_revision"],

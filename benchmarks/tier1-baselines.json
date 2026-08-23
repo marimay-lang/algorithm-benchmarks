@@ -1,6 +1,6 @@
 {
-  "schema": "ruda.tier1-performance-baselines/2",
-  "protocol_sha256": "0b43886b4e02ee72e8ea4be8eca6c3fb228336bcf525522723a4b40c3b862b19",
+  "schema": "marimay.tier1-performance-baselines/2",
+  "protocol_sha256": "a94f5be850eb26fd821b3630b16254f145a8e30c1b8e7a63fd7230ed761dd4a8",
   "checkpoint_21_targets": [
     "linux-x86_64"
   ],

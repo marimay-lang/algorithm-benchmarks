@@ -98,8 +98,8 @@ def native_tool_version(
         repository,
         accept_nonzero_output=windows,
     )
-    configured_id = config.get("RUDA_NATIVE_C_COMPILER_ID", "")
-    configured_version = config.get("RUDA_NATIVE_C_COMPILER_VERSION", "")
+    configured_id = config.get("MMAY_NATIVE_C_COMPILER_ID", "")
+    configured_version = config.get("MMAY_NATIVE_C_COMPILER_VERSION", "")
     configured = " ".join(
         value for value in (configured_id, configured_version) if value
     )
@@ -110,11 +110,11 @@ def native_tool_version(
     return live
 
 
-def _version_lines(ruda_binary: pathlib.Path, repository: pathlib.Path) -> list[str]:
+def _version_lines(mmay_binary: pathlib.Path, repository: pathlib.Path) -> list[str]:
     try:
-        completed = run_checked([str(ruda_binary), "--version"], cwd=repository)
+        completed = run_checked([str(mmay_binary), "--version"], cwd=repository)
     except (OSError, subprocess.SubprocessError) as error:
-        raise ProtocolError(f"cannot execute Ruda compiler: {error}") from error
+        raise ProtocolError(f"cannot execute Marimay compiler: {error}") from error
     return completed.stdout.splitlines()
 
 
@@ -122,7 +122,7 @@ def _runtime_version(version_lines: Sequence[str]) -> str:
     for line in version_lines:
         if line.startswith("runtime "):
             return line.split(" ", 1)[1]
-    raise ProtocolError("Ruda --version does not report a runtime version")
+    raise ProtocolError("Marimay --version does not report a runtime version")
 
 
 def _manifest(path: pathlib.Path) -> dict[str, str]:
@@ -130,7 +130,7 @@ def _manifest(path: pathlib.Path) -> dict[str, str]:
         lines = path.read_text(encoding="utf-8").splitlines()
     except (OSError, UnicodeError) as error:
         raise ProtocolError(f"cannot read runtime manifest {path}: {error}") from error
-    if not lines or lines[0] != "ruda-native-runtime-v1":
+    if not lines or lines[0] != "mmay-native-runtime-v1":
         raise ProtocolError(f"unsupported runtime manifest: {path}")
     result: dict[str, str] = {}
     for line in lines[1:]:
@@ -147,25 +147,25 @@ def _manifest(path: pathlib.Path) -> dict[str, str]:
 
 
 def locate_runtime(
-    ruda_binary: pathlib.Path, version_lines: Sequence[str]
+    mmay_binary: pathlib.Path, version_lines: Sequence[str]
 ) -> tuple[pathlib.Path, pathlib.Path, dict[str, str]]:
     release_directory = pathlib.Path("native-runtime") / "release"
     runtime_version = _runtime_version(version_lines)
     candidates = [
-        ruda_binary.parent / release_directory,
-        ruda_binary.parent.parent
+        mmay_binary.parent / release_directory,
+        mmay_binary.parent.parent
         / "lib"
-        / "ruda"
+        / "mmay"
         / runtime_version
         / "native"
         / "release",
     ]
     archive_names = [
-        "libruda_native_runtime_release.a",
-        "ruda_native_runtime_release.lib",
+        "libmmay_native_runtime_release.a",
+        "mmay_native_runtime_release.lib",
     ]
     for directory in candidates:
-        manifest_path = directory / "ruda-native-runtime.manifest"
+        manifest_path = directory / "mmay-native-runtime.manifest"
         archive_path = next(
             (directory / name for name in archive_names if (directory / name).is_file()),
             None,
@@ -178,16 +178,16 @@ def locate_runtime(
                 )
             return manifest_path, archive_path, values
     raise ProtocolError(
-        "cannot locate the release runtime manifest/archive beside the Ruda compiler"
+        "cannot locate the release runtime manifest/archive beside the Marimay compiler"
     )
 
 
-def _build_config(ruda_binary: pathlib.Path) -> dict[str, str]:
-    path = ruda_binary.parent / "generated" / "ruda" / "build_config.h"
+def _build_config(mmay_binary: pathlib.Path) -> dict[str, str]:
+    path = mmay_binary.parent / "generated" / "mmay" / "build_config.h"
     if not path.is_file():
         return {}
     values: dict[str, str] = {}
-    pattern = re.compile(r'^#define (RUDA_NATIVE_C_[A-Z_]+) "(.*)"$')
+    pattern = re.compile(r'^#define (MMAY_NATIVE_C_[A-Z_]+) "(.*)"$')
     try:
         for line in path.read_text(encoding="utf-8").splitlines():
             match = pattern.match(line)
@@ -199,7 +199,7 @@ def _build_config(ruda_binary: pathlib.Path) -> dict[str, str]:
 
 
 def _native_flags(config: dict[str, str]) -> list[str]:
-    sanitizer = config.get("RUDA_NATIVE_C_SANITIZER_FLAG", "")
+    sanitizer = config.get("MMAY_NATIVE_C_SANITIZER_FLAG", "")
     if os.name == "nt":
         flags = ["/nologo", "/std:c17", "/W4", "/WX", "/fp:strict", "/O2"]
     else:
@@ -243,7 +243,7 @@ def _power_source() -> str:
 
 def capture_metadata(
     repository: pathlib.Path,
-    ruda_binary: pathlib.Path,
+    mmay_binary: pathlib.Path,
     *,
     warmups: int,
     samples: int,
@@ -251,16 +251,16 @@ def capture_metadata(
     max_heap_bytes: int,
     command: Sequence[str],
 ) -> dict[str, Any]:
-    ruda_binary = ruda_binary.resolve()
-    if not ruda_binary.is_file() or not os.access(ruda_binary, os.X_OK):
-        raise ProtocolError(f"Ruda executable is not runnable: {ruda_binary}")
-    version_lines = _version_lines(ruda_binary, repository)
+    mmay_binary = mmay_binary.resolve()
+    if not mmay_binary.is_file() or not os.access(mmay_binary, os.X_OK):
+        raise ProtocolError(f"Marimay executable is not runnable: {mmay_binary}")
+    version_lines = _version_lines(mmay_binary, repository)
     manifest_path, archive_path, runtime_manifest = locate_runtime(
-        ruda_binary, version_lines
+        mmay_binary, version_lines
     )
-    config = _build_config(ruda_binary)
+    config = _build_config(mmay_binary)
     native_compiler = pathlib.Path(
-        config.get("RUDA_NATIVE_C_COMPILER", os.environ.get("CC", "cc"))
+        config.get("MMAY_NATIVE_C_COMPILER", os.environ.get("CC", "cc"))
     )
     if not native_compiler.is_absolute():
         resolved = shutil.which(str(native_compiler))
@@ -276,7 +276,7 @@ def capture_metadata(
         "logical_cpus": os.cpu_count() or 1,
     }
     revision = "unavailable"
-    for candidate in ruda_binary.parents:
+    for candidate in mmay_binary.parents:
         if (candidate / ".git").exists():
             revision = git_revision(candidate, repository)
             break
@@ -301,9 +301,9 @@ def capture_metadata(
         "command": shlex.join(command),
         "resource": {"max_heap_bytes": max_heap_bytes},
         "artifacts": {
-            "ruda_compiler": {
-                "path": str(ruda_binary),
-                "sha256": sha256_file(ruda_binary),
+            "mmay_compiler": {
+                "path": str(mmay_binary),
+                "sha256": sha256_file(mmay_binary),
                 "revision": revision,
                 "version": "\n".join(version_lines),
             },
@@ -325,7 +325,7 @@ def capture_metadata(
         },
         "toolchains": {
             "python": platform.python_version(),
-            "ruda": version_lines[0] if version_lines else "unknown",
+            "marimay": version_lines[0] if version_lines else "unknown",
             "go": tool_version(["go", "version"], repository),
             "rust": tool_version(["rustc", "--version"], repository),
         },

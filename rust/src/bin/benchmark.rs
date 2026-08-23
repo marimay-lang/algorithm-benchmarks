@@ -1,6 +1,6 @@
-use ruda_algorithms::graphs::{self, Edge};
-use ruda_algorithms::sorting;
-use ruda_algorithms::structures::{Dsu, MinHeap, Queue, Stack};
+use marimay_algorithms::graphs::{self, Edge};
+use marimay_algorithms::sorting;
+use marimay_algorithms::structures::{Dsu, MinHeap, Queue, Stack};
 
 const CHECKSUM_MOD: i64 = 1_000_000_007;
 

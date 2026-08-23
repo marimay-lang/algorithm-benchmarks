@@ -1,5 +1,5 @@
 import {
-  "local/ruda-algorithms-benchmark" @app,
+  "local/marimay-algorithms-benchmark" @app,
   "moonbitlang/core/abort",
   "moonbitlang/core/env",
 }

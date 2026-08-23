@@ -7,7 +7,7 @@ from typing import Any
 from perf_protocol import ProtocolError, load_json, sha256_file
 
 
-SCHEMA = "ruda.array-probes-manifest/1"
+SCHEMA = "marimay.array-probes-manifest/1"
 REQUIRED_CATEGORIES = {
     "access",
     "bounds",
@@ -36,8 +36,8 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
     if manifest.get("schema") != SCHEMA:
         raise ProtocolError("unsupported probe manifest schema")
     core_source = manifest.get("core_source")
-    if not isinstance(core_source, str) or not core_source.endswith(".ruda"):
-        raise ProtocolError("probe core_source must name a Ruda file")
+    if not isinstance(core_source, str) or not core_source.endswith(".my"):
+        raise ProtocolError("probe core_source must name a Marimay file")
     probes = manifest.get("probes")
     if not isinstance(probes, list) or not probes:
         raise ProtocolError("probe manifest must contain probes")
@@ -80,7 +80,7 @@ def validate_sources(repository: pathlib.Path, manifest: dict[str, Any]) -> None
         function_marker = f"public fn {probe['function']}(): int"
         if function_marker not in core:
             raise ProtocolError(f"probe core lacks {function_marker}")
-        main_path = repository / probe["source_directory"] / "main.ruda"
+        main_path = repository / probe["source_directory"] / "main.my"
         try:
             source = main_path.read_text(encoding="utf-8")
         except (OSError, UnicodeError) as error:
@@ -97,7 +97,7 @@ def manifest_sha256(repository: pathlib.Path) -> str:
 def source_tree_sha256(repository: pathlib.Path, manifest: dict[str, Any]) -> str:
     digest = hashlib.sha256()
     paths = [repository / manifest["core_source"]] + [
-        repository / probe["source_directory"] / "main.ruda"
+        repository / probe["source_directory"] / "main.my"
         for probe in manifest["probes"]
     ]
     for path in sorted(paths):

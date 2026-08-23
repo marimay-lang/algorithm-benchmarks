@@ -1,344 +1,3186 @@
 {
+  "schema": "marimay.algorithm-benchmark/2",
+  "protocol": {
+    "schema": "marimay.performance-protocol/1",
+    "path": "benchmarks/performance_protocol.json",
+    "sha256": "a94f5be850eb26fd821b3630b16254f145a8e30c1b8e7a63fd7230ed761dd4a8"
+  },
   "metadata": {
-    "generated_at": "2026-08-21T20:28:10+07:00",
-    "platform": "macOS-26.3.1-arm64-arm-64bit",
-    "cpu": "Apple M2",
-    "samples": 5,
-    "warmups": 2,
+    "generated_at": "2026-08-22T16:27:37+07:00",
+    "platform": {
+      "id": "macos-arm64-apple-m2",
+      "system": "Darwin",
+      "release": "25.3.0",
+      "machine": "arm64",
+      "cpu": "Apple M2",
+      "logical_cpus": 8
+    },
+    "isolation": {
+      "mode": "dedicated-runner-contract",
+      "load_average_at_start": [
+        3.0556640625,
+        3.056640625,
+        3.248046875
+      ],
+      "power_source": "Now drawing from 'AC Power",
+      "affinity": "not-requested",
+      "sample_selection": "none",
+      "load_average_at_end": [
+        4.18994140625,
+        3.48876953125,
+        3.38134765625
+      ]
+    },
+    "warmups": 3,
+    "samples": 11,
+    "timeout_seconds": 300,
+    "clock": "perf_counter_ns",
+    "order": "rotating-balanced-v1",
+    "command": "./benchmarks/run.py",
+    "resource": {
+      "max_heap_bytes": 67108864
+    },
+    "artifacts": {
+      "mmay_compiler": {
+        "path": "/home/marimay/Projects/ai-projects/Ma/build/release/mmay",
+        "sha256": "204338312d2e018991b176178730b97f7bdd8f8c239632712de6c93b7e3915be",
+        "revision": "17b7a1f1dcffd17659d84244c5f9981cdba867ea",
+        "version": "Marimay compiler 0.0.0-dev\nruntime 0.0.0-dev\nlanguage 0.1-design\nbytecode unavailable\nstandard-library unavailable\nbootstrap-stage 0\nhost Darwin/arm64\ntargets native-host"
+      },
+      "runtime": {
+        "path": "/home/marimay/Projects/ai-projects/Ma/build/release/native-runtime/release/libmmay_native_runtime_release.a",
+        "sha256": "5a2473dba1654e512cbc57db66eae13d47edfc75d18fe3dd29a6f1509f01453c",
+        "manifest_path": "/home/marimay/Projects/ai-projects/Ma/build/release/native-runtime/release/mmay-native-runtime.manifest",
+        "manifest_sha256": "326b650acb58b1d66f98291cf9177ef825ae461a45fc84b9be5ddc6016e661f4",
+        "profile": "release",
+        "runtime": "0.0.0-dev",
+        "host": "Darwin",
+        "processor": "arm64",
+        "compiler": "AppleClang-17.0.0.17000604"
+      },
+      "native_c": {
+        "compiler_path": "/usr/bin/cc",
+        "compiler_version": "Apple clang version 17.0.0 (clang-1700.6.4.2); configured AppleClang 17.0.0.17000604",
+        "linker_path": "/usr/bin/cc",
+        "linker_version": "Apple clang version 17.0.0 (clang-1700.6.4.2); configured AppleClang 17.0.0.17000604",
+        "output_profile": "release",
+        "flags": [
+          "-std=c17",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Werror",
+          "-fno-fast-math",
+          "-frounding-math",
+          "-ffp-contract=off",
+          "-fexcess-precision=standard",
+          "-lm"
+        ]
+      }
+    },
+    "toolchains": {
+      "python": "3.9.6",
+      "marimay": "Marimay compiler 0.0.0-dev",
+      "go": "go version go1.26.4 darwin/arm64",
+      "rust": "rustc 1.96.0 (ac68faa20 2026-05-25)"
+    },
+    "corpus_revision": "1e7dbf794b57eb43d27dec401b066ffa8771d978",
+    "equivalence_manifest": {
+      "path": "benchmarks/equivalence.json",
+      "schema": "marimay.algorithm-equivalence/1",
+      "sha256": "bf2f251de2d91e22d6696a50aa83babe9d1497139a305c4e1770e09c1f2f7e9b"
+    },
     "languages": [
-      "ruda",
+      "marimay",
       "go",
       "rust"
-    ],
-    "ruda_compiler": "/home/marimay/Projects/ai-projects/Ma/build/release/ruda",
-    "toolchains": {
-      "Ruda": "Ruda compiler 0.0.0-dev",
-      "Go": "go version go1.26.4 darwin/arm64",
-      "Rust": "rustc 1.96.0 (ac68faa20 2026-05-25)"
-    }
+    ]
   },
-  "summary": {
+  "workloads": {
     "insertion": {
-      "ruda": {
-        "median_ms": 4040.81325,
-        "min_ms": 3998.553959,
-        "max_ms": 4084.482292
+      "description": "50 × 2,500 generated integers",
+      "expected_checksum": 999956059,
+      "expected_stdout": "insertion 999956059\n",
+      "commands": {
+        "marimay": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/marimay-insertion"
+        ],
+        "go": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/go-benchmark",
+          "insertion"
+        ],
+        "rust": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/rust/target/release/benchmark",
+          "insertion"
+        ]
       },
-      "go": {
-        "median_ms": 30.159917,
-        "min_ms": 29.12475,
-        "max_ms": 31.112333
+      "raw_ms": {
+        "marimay": [
+          2966.115334,
+          2948.231792,
+          2953.352833,
+          2951.136166,
+          2956.198708,
+          3094.361375,
+          3016.433084,
+          2940.886208,
+          2953.576959,
+          2974.147167,
+          2980.151917
+        ],
+        "go": [
+          30.36625,
+          30.223583,
+          29.092584,
+          30.564959,
+          28.96075,
+          29.851375,
+          29.979125,
+          29.611875,
+          29.555125,
+          29.946833,
+          29.842875
+        ],
+        "rust": [
+          29.202708,
+          28.038584,
+          28.14375,
+          27.912709,
+          29.507959,
+          28.15775,
+          29.358541,
+          28.115,
+          29.335375,
+          28.146541,
+          29.510542
+        ]
       },
-      "rust": {
-        "median_ms": 29.149833,
-        "min_ms": 28.352,
-        "max_ms": 29.573541
+      "summary": {
+        "marimay": {
+          "median_ms": 2956.198708,
+          "mad_ms": 9.916626000000178,
+          "q1_ms": 2951.136166,
+          "q3_ms": 2980.151917,
+          "iqr_ms": 29.015751000000364,
+          "min_ms": 2940.886208,
+          "max_ms": 3094.361375,
+          "noise_fraction": 0.02
+        },
+        "go": {
+          "median_ms": 29.851375,
+          "mad_ms": 0.29625000000000057,
+          "q1_ms": 29.555125,
+          "q3_ms": 30.223583,
+          "iqr_ms": 0.6684580000000011,
+          "min_ms": 28.96075,
+          "max_ms": 30.564959,
+          "noise_fraction": 0.029772497916762685
+        },
+        "rust": {
+          "median_ms": 28.15775,
+          "mad_ms": 0.2450410000000005,
+          "q1_ms": 28.115,
+          "q3_ms": 29.358541,
+          "iqr_ms": 1.2435410000000005,
+          "min_ms": 27.912709,
+          "max_ms": 29.510542,
+          "noise_fraction": 0.044163365325709636
+        }
       }
     },
     "heap-sort": {
-      "ruda": {
-        "median_ms": 1008.801333,
-        "min_ms": 985.951875,
-        "max_ms": 1049.320042
+      "description": "5 × 100,000 generated integers",
+      "expected_checksum": 999995320,
+      "expected_stdout": "heap-sort 999995320\n",
+      "commands": {
+        "marimay": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/marimay-heap-sort"
+        ],
+        "go": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/go-benchmark",
+          "heap-sort"
+        ],
+        "rust": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/rust/target/release/benchmark",
+          "heap-sort"
+        ]
       },
-      "go": {
-        "median_ms": 40.4745,
-        "min_ms": 39.082916,
-        "max_ms": 41.505583
+      "raw_ms": {
+        "marimay": [
+          722.530708,
+          725.038208,
+          715.219375,
+          768.515083,
+          720.013667,
+          715.407209,
+          737.132583,
+          716.72375,
+          715.512875,
+          727.429583,
+          723.056667
+        ],
+        "go": [
+          39.50075,
+          38.699,
+          39.474958,
+          40.445667,
+          39.075042,
+          39.006208,
+          39.719792,
+          39.506083,
+          39.091875,
+          39.616083,
+          41.065083
+        ],
+        "rust": [
+          21.91475,
+          21.765708,
+          21.939291,
+          22.185875,
+          21.930708,
+          21.897209,
+          22.378125,
+          22.28425,
+          21.88225,
+          23.137709,
+          22.036708
+        ]
       },
-      "rust": {
-        "median_ms": 22.584708,
-        "min_ms": 22.130584,
-        "max_ms": 23.248333
+      "summary": {
+        "marimay": {
+          "median_ms": 722.530708,
+          "mad_ms": 5.806958000000009,
+          "q1_ms": 715.512875,
+          "q3_ms": 727.429583,
+          "iqr_ms": 11.916707999999971,
+          "min_ms": 715.219375,
+          "max_ms": 768.515083,
+          "noise_fraction": 0.024110911560038535
+        },
+        "go": {
+          "median_ms": 39.50075,
+          "mad_ms": 0.40887499999999477,
+          "q1_ms": 39.075042,
+          "q3_ms": 39.719792,
+          "iqr_ms": 0.6447499999999948,
+          "min_ms": 38.699,
+          "max_ms": 41.065083,
+          "noise_fraction": 0.031053207850483457
+        },
+        "rust": {
+          "median_ms": 21.939291,
+          "mad_ms": 0.09741700000000009,
+          "q1_ms": 21.897209,
+          "q3_ms": 22.28425,
+          "iqr_ms": 0.38704099999999997,
+          "min_ms": 21.765708,
+          "max_ms": 23.137709,
+          "noise_fraction": 0.02
+        }
       }
     },
     "stack": {
-      "ruda": {
-        "median_ms": 394.000833,
-        "min_ms": 382.008708,
-        "max_ms": 408.847416
+      "description": "1,000,000 push + pop",
+      "expected_checksum": 498055372,
+      "expected_stdout": "stack 498055372\n",
+      "commands": {
+        "marimay": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/marimay-stack"
+        ],
+        "go": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/go-benchmark",
+          "stack"
+        ],
+        "rust": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/rust/target/release/benchmark",
+          "stack"
+        ]
       },
-      "go": {
-        "median_ms": 15.776209,
-        "min_ms": 15.690875,
-        "max_ms": 16.580541
+      "raw_ms": {
+        "marimay": [
+          353.215458,
+          346.539916,
+          347.250459,
+          353.264917,
+          349.409917,
+          352.759291,
+          354.098709,
+          353.514375,
+          347.835708,
+          360.454791,
+          363.0005
+        ],
+        "go": [
+          14.174375,
+          15.824625,
+          15.381959,
+          16.984292,
+          15.510583,
+          15.611291,
+          14.410416,
+          15.690792,
+          14.813,
+          15.965667,
+          14.394333
+        ],
+        "rust": [
+          9.368333,
+          9.027292,
+          9.152083,
+          8.918583,
+          9.227834,
+          8.992208,
+          9.268958,
+          9.364583,
+          10.495208,
+          9.172,
+          8.90525
+        ]
       },
-      "rust": {
-        "median_ms": 9.9115,
-        "min_ms": 9.791584,
-        "max_ms": 10.214875
+      "summary": {
+        "marimay": {
+          "median_ms": 353.215458,
+          "mad_ms": 3.805541000000005,
+          "q1_ms": 347.835708,
+          "q3_ms": 354.098709,
+          "iqr_ms": 6.263000999999974,
+          "min_ms": 346.539916,
+          "max_ms": 363.0005,
+          "noise_fraction": 0.032321980087292826
+        },
+        "go": {
+          "median_ms": 15.510583,
+          "mad_ms": 0.4550839999999994,
+          "q1_ms": 14.410416,
+          "q3_ms": 15.824625,
+          "iqr_ms": 1.4142089999999996,
+          "min_ms": 14.174375,
+          "max_ms": 16.984292,
+          "noise_fraction": 0.09117703699467644
+        },
+        "rust": {
+          "median_ms": 9.172,
+          "mad_ms": 0.17979200000000084,
+          "q1_ms": 8.992208,
+          "q3_ms": 9.364583,
+          "iqr_ms": 0.3723749999999999,
+          "min_ms": 8.90525,
+          "max_ms": 10.495208,
+          "noise_fraction": 0.05880680331443551
+        }
       }
     },
     "queue": {
-      "ruda": {
-        "median_ms": 425.900125,
-        "min_ms": 422.34125,
-        "max_ms": 437.810458
+      "description": "1,000,000 enqueue + dequeue",
+      "expected_checksum": 498106199,
+      "expected_stdout": "queue 498106199\n",
+      "commands": {
+        "marimay": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/marimay-queue"
+        ],
+        "go": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/go-benchmark",
+          "queue"
+        ],
+        "rust": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/rust/target/release/benchmark",
+          "queue"
+        ]
       },
-      "go": {
-        "median_ms": 15.324083,
-        "min_ms": 14.926208,
-        "max_ms": 16.0815
+      "raw_ms": {
+        "marimay": [
+          379.809042,
+          373.991042,
+          371.688666,
+          376.025792,
+          373.603958,
+          375.030375,
+          379.313125,
+          379.456584,
+          381.187625,
+          381.588958,
+          390.956167
+        ],
+        "go": [
+          15.123625,
+          15.714291,
+          15.070333,
+          15.86925,
+          15.509792,
+          15.081958,
+          15.284875,
+          15.87,
+          15.265833,
+          15.323625,
+          15.27625
+        ],
+        "rust": [
+          8.974708,
+          9.202083,
+          8.884209,
+          9.384167,
+          9.080792,
+          9.420583,
+          9.603375,
+          9.205666,
+          9.000916,
+          9.978291,
+          9.321042
+        ]
       },
-      "rust": {
-        "median_ms": 9.217542,
-        "min_ms": 8.95975,
-        "max_ms": 9.458084
+      "summary": {
+        "marimay": {
+          "median_ms": 379.313125,
+          "mad_ms": 3.2873329999999896,
+          "q1_ms": 373.991042,
+          "q3_ms": 381.187625,
+          "iqr_ms": 7.196583000000032,
+          "min_ms": 371.688666,
+          "max_ms": 390.956167,
+          "noise_fraction": 0.02599962498002137
+        },
+        "go": {
+          "median_ms": 15.284875,
+          "mad_ms": 0.20291699999999935,
+          "q1_ms": 15.123625,
+          "q3_ms": 15.714291,
+          "iqr_ms": 0.5906659999999988,
+          "min_ms": 15.070333,
+          "max_ms": 15.87,
+          "noise_fraction": 0.03982701853956922
+        },
+        "rust": {
+          "median_ms": 9.205666,
+          "mad_ms": 0.20475000000000065,
+          "q1_ms": 9.000916,
+          "q3_ms": 9.420583,
+          "iqr_ms": 0.41966700000000046,
+          "min_ms": 8.884209,
+          "max_ms": 9.978291,
+          "noise_fraction": 0.06672521032155652
+        }
       }
     },
     "min-heap": {
-      "ruda": {
-        "median_ms": 1865.047959,
-        "min_ms": 1860.654209,
-        "max_ms": 1866.063
+      "description": "500,000 insert + remove-min",
+      "expected_checksum": 405398755,
+      "expected_stdout": "min-heap 405398755\n",
+      "commands": {
+        "marimay": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/marimay-min-heap"
+        ],
+        "go": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/go-benchmark",
+          "min-heap"
+        ],
+        "rust": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/rust/target/release/benchmark",
+          "min-heap"
+        ]
       },
-      "go": {
-        "median_ms": 54.251875,
-        "min_ms": 53.705125,
-        "max_ms": 55.055334
+      "raw_ms": {
+        "marimay": [
+          1469.435958,
+          1469.927292,
+          1461.489834,
+          1474.638375,
+          1460.2525,
+          1473.118208,
+          1479.617833,
+          1511.787709,
+          1516.332709,
+          1492.581917,
+          1515.197834
+        ],
+        "go": [
+          54.1515,
+          54.16275,
+          52.853333,
+          53.80775,
+          53.927334,
+          58.381791,
+          56.379833,
+          58.606834,
+          55.6435,
+          55.576833,
+          55.203
+        ],
+        "rust": [
+          29.358292,
+          29.287583,
+          29.471625,
+          29.321667,
+          29.957459,
+          32.684583,
+          30.486667,
+          32.438959,
+          30.649459,
+          30.819042,
+          30.440917
+        ]
       },
-      "rust": {
-        "median_ms": 30.215708,
-        "min_ms": 29.917042,
-        "max_ms": 30.951125
+      "summary": {
+        "marimay": {
+          "median_ms": 1474.638375,
+          "mad_ms": 13.148541000000023,
+          "q1_ms": 1469.435958,
+          "q3_ms": 1511.787709,
+          "iqr_ms": 42.35175099999992,
+          "min_ms": 1460.2525,
+          "max_ms": 1516.332709,
+          "noise_fraction": 0.028720092815975932
+        },
+        "go": {
+          "median_ms": 55.203,
+          "mad_ms": 1.176832999999995,
+          "q1_ms": 53.927334,
+          "q3_ms": 56.379833,
+          "iqr_ms": 2.452498999999996,
+          "min_ms": 52.853333,
+          "max_ms": 58.606834,
+          "noise_fraction": 0.0639548394109013
+        },
+        "rust": {
+          "median_ms": 30.440917,
+          "mad_ms": 0.9692919999999994,
+          "q1_ms": 29.358292,
+          "q3_ms": 30.819042,
+          "iqr_ms": 1.4607500000000009,
+          "min_ms": 29.287583,
+          "max_ms": 32.684583,
+          "noise_fraction": 0.09552524321130004
+        }
       }
     },
     "dsu": {
-      "ruda": {
-        "median_ms": 1981.231166,
-        "min_ms": 1968.614125,
-        "max_ms": 2135.712292
+      "description": "100,000 nodes; 5,000,000 unions",
+      "expected_checksum": 21343152,
+      "expected_stdout": "dsu 21343152\n",
+      "commands": {
+        "marimay": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/marimay-dsu"
+        ],
+        "go": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/go-benchmark",
+          "dsu"
+        ],
+        "rust": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/rust/target/release/benchmark",
+          "dsu"
+        ]
       },
-      "go": {
-        "median_ms": 25.828291,
-        "min_ms": 24.740333,
-        "max_ms": 26.328208
+      "raw_ms": {
+        "marimay": [
+          1584.181375,
+          1581.148042,
+          1584.895541,
+          1581.109042,
+          1593.735583,
+          1594.488666,
+          1605.434834,
+          1627.899,
+          1606.037459,
+          1592.297458,
+          1595.966292
+        ],
+        "go": [
+          25.319917,
+          24.905666,
+          25.27,
+          24.227333,
+          25.44975,
+          24.427958,
+          26.307792,
+          24.741417,
+          24.821041,
+          24.331833,
+          25.121417
+        ],
+        "rust": [
+          21.861791,
+          22.513167,
+          21.630167,
+          22.114459,
+          21.808083,
+          22.934917,
+          33.371542,
+          22.163625,
+          21.625292,
+          22.157917,
+          21.7065
+        ]
       },
-      "rust": {
-        "median_ms": 22.916959,
-        "min_ms": 21.698458,
-        "max_ms": 23.100541
+      "summary": {
+        "marimay": {
+          "median_ms": 1593.735583,
+          "mad_ms": 9.554208000000017,
+          "q1_ms": 1584.181375,
+          "q3_ms": 1605.434834,
+          "iqr_ms": 21.25345900000002,
+          "min_ms": 1581.109042,
+          "max_ms": 1627.899,
+          "noise_fraction": 0.02
+        },
+        "go": {
+          "median_ms": 24.905666,
+          "mad_ms": 0.41425100000000015,
+          "q1_ms": 24.427958,
+          "q3_ms": 25.319917,
+          "iqr_ms": 0.891959,
+          "min_ms": 24.227333,
+          "max_ms": 26.307792,
+          "noise_fraction": 0.04989840464414806
+        },
+        "rust": {
+          "median_ms": 22.114459,
+          "mad_ms": 0.3987079999999992,
+          "q1_ms": 21.7065,
+          "q3_ms": 22.513167,
+          "iqr_ms": 0.8066670000000009,
+          "min_ms": 21.625292,
+          "max_ms": 33.371542,
+          "noise_fraction": 0.05408787074556052
+        }
       }
     },
     "bfs": {
-      "ruda": {
-        "median_ms": 2456.671125,
-        "min_ms": 2451.767791,
-        "max_ms": 2497.43425
+      "description": "300 × 20,000 nodes, degree 4",
+      "expected_checksum": 715800,
+      "expected_stdout": "bfs 715800\n",
+      "commands": {
+        "marimay": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/marimay-bfs"
+        ],
+        "go": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/go-benchmark",
+          "bfs"
+        ],
+        "rust": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/rust/target/release/benchmark",
+          "bfs"
+        ]
       },
-      "go": {
-        "median_ms": 62.755875,
-        "min_ms": 57.867375,
-        "max_ms": 64.082458
+      "raw_ms": {
+        "marimay": [
+          2356.21675,
+          2175.536167,
+          2159.475125,
+          2162.920708,
+          2162.436791,
+          2174.107459,
+          2154.735667,
+          2167.779375,
+          2183.298459,
+          2164.835834,
+          2217.153833
+        ],
+        "go": [
+          62.424541,
+          65.733125,
+          61.657584,
+          61.668667,
+          61.704,
+          62.518041,
+          65.35875,
+          61.044292,
+          62.682042,
+          61.69275,
+          63.3835
+        ],
+        "rust": [
+          27.156333,
+          24.077,
+          25.652167,
+          23.806459,
+          24.243042,
+          23.621792,
+          24.206167,
+          23.884959,
+          23.508625,
+          23.667208,
+          26.09825
+        ]
       },
-      "rust": {
-        "median_ms": 24.499958,
-        "min_ms": 24.030542,
-        "max_ms": 26.34625
+      "summary": {
+        "marimay": {
+          "median_ms": 2167.779375,
+          "mad_ms": 7.756792000000132,
+          "q1_ms": 2162.436791,
+          "q3_ms": 2183.298459,
+          "iqr_ms": 20.86166800000001,
+          "min_ms": 2154.735667,
+          "max_ms": 2356.21675,
+          "noise_fraction": 0.02
+        },
+        "go": {
+          "median_ms": 62.424541,
+          "mad_ms": 0.7558739999999986,
+          "q1_ms": 61.668667,
+          "q3_ms": 63.3835,
+          "iqr_ms": 1.7148329999999987,
+          "min_ms": 61.044292,
+          "max_ms": 65.733125,
+          "noise_fraction": 0.03632580974844486
+        },
+        "rust": {
+          "median_ms": 24.077,
+          "mad_ms": 0.40979200000000304,
+          "q1_ms": 23.667208,
+          "q3_ms": 25.652167,
+          "iqr_ms": 1.984959,
+          "min_ms": 23.508625,
+          "max_ms": 27.156333,
+          "noise_fraction": 0.08244212318810482
+        }
       }
     },
     "dijkstra": {
-      "ruda": {
-        "median_ms": 885.725375,
-        "min_ms": 885.135458,
-        "max_ms": 897.14175
+      "description": "80 × 800 nodes, O(V²)",
+      "expected_checksum": 38672,
+      "expected_stdout": "dijkstra 38672\n",
+      "commands": {
+        "marimay": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/marimay-dijkstra"
+        ],
+        "go": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/go-benchmark",
+          "dijkstra"
+        ],
+        "rust": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/rust/target/release/benchmark",
+          "dijkstra"
+        ]
       },
-      "go": {
-        "median_ms": 41.539125,
-        "min_ms": 40.816292,
-        "max_ms": 43.971667
+      "raw_ms": {
+        "marimay": [
+          676.110125,
+          674.351083,
+          672.087417,
+          671.481791,
+          674.421667,
+          699.597333,
+          672.386209,
+          669.659958,
+          671.365708,
+          671.695083,
+          682.98275
+        ],
+        "go": [
+          41.0985,
+          40.896584,
+          41.958458,
+          40.670042,
+          41.254041,
+          41.198458,
+          42.615583,
+          41.341208,
+          41.157625,
+          40.802209,
+          42.048709
+        ],
+        "rust": [
+          38.968958,
+          40.290625,
+          39.0575,
+          39.706708,
+          38.802166,
+          39.705916,
+          39.12775,
+          39.454292,
+          39.298291,
+          39.24425,
+          40.209459
+        ]
       },
-      "rust": {
-        "median_ms": 39.570209,
-        "min_ms": 39.4705,
-        "max_ms": 40.231125
+      "summary": {
+        "marimay": {
+          "median_ms": 672.386209,
+          "mad_ms": 1.964874000000009,
+          "q1_ms": 671.481791,
+          "q3_ms": 676.110125,
+          "iqr_ms": 4.628333999999995,
+          "min_ms": 669.659958,
+          "max_ms": 699.597333,
+          "noise_fraction": 0.02
+        },
+        "go": {
+          "median_ms": 41.198458,
+          "mad_ms": 0.3018740000000051,
+          "q1_ms": 40.896584,
+          "q3_ms": 41.958458,
+          "iqr_ms": 1.061874000000003,
+          "min_ms": 40.670042,
+          "max_ms": 42.615583,
+          "noise_fraction": 0.025774605447611728
+        },
+        "rust": {
+          "median_ms": 39.298291,
+          "mad_ms": 0.3293329999999983,
+          "q1_ms": 39.0575,
+          "q3_ms": 39.706708,
+          "iqr_ms": 0.6492080000000016,
+          "min_ms": 38.802166,
+          "max_ms": 40.290625,
+          "noise_fraction": 0.02514101694651289
+        }
       }
     }
   },
-  "raw_ms": {
-    "insertion": {
-      "ruda": [
-        4084.482292,
-        4078.366708,
-        4032.769542,
-        3998.553959,
-        4040.81325
-      ],
-      "go": [
-        30.159917,
-        30.430417,
-        31.112333,
-        29.901917,
-        29.12475
-      ],
-      "rust": [
-        29.573541,
-        29.564792,
-        29.149833,
-        28.538916,
-        28.352
-      ]
+  "order": [
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "insertion",
+      "participant": "marimay",
+      "elapsed_ms": 3517.762334
     },
-    "heap-sort": {
-      "ruda": [
-        985.951875,
-        1010.058708,
-        1008.801333,
-        997.461334,
-        1049.320042
-      ],
-      "go": [
-        39.566417,
-        39.082916,
-        41.505583,
-        40.933833,
-        40.4745
-      ],
-      "rust": [
-        22.130584,
-        22.584708,
-        22.738458,
-        23.248333,
-        22.530791
-      ]
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "insertion",
+      "participant": "go",
+      "elapsed_ms": 429.965458
     },
-    "stack": {
-      "ruda": [
-        390.610583,
-        398.798666,
-        394.000833,
-        408.847416,
-        382.008708
-      ],
-      "go": [
-        16.580541,
-        16.220334,
-        15.694792,
-        15.776209,
-        15.690875
-      ],
-      "rust": [
-        9.9115,
-        10.1585,
-        10.214875,
-        9.791584,
-        9.839375
-      ]
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "insertion",
+      "participant": "rust",
+      "elapsed_ms": 403.00375
     },
-    "queue": {
-      "ruda": [
-        425.900125,
-        428.212584,
-        437.810458,
-        424.245333,
-        422.34125
-      ],
-      "go": [
-        15.324083,
-        15.224625,
-        16.0815,
-        15.715667,
-        14.926208
-      ],
-      "rust": [
-        9.217542,
-        8.95975,
-        9.396125,
-        9.458084,
-        9.123833
-      ]
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "heap-sort",
+      "participant": "marimay",
+      "elapsed_ms": 1103.385875
     },
-    "min-heap": {
-      "ruda": [
-        1860.654209,
-        1865.44075,
-        1865.047959,
-        1866.063,
-        1862.482583
-      ],
-      "go": [
-        55.055334,
-        53.705125,
-        54.1735,
-        54.251875,
-        54.452375
-      ],
-      "rust": [
-        30.335541,
-        30.215708,
-        30.951125,
-        29.988,
-        29.917042
-      ]
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "heap-sort",
+      "participant": "rust",
+      "elapsed_ms": 23.119959
     },
-    "dsu": {
-      "ruda": [
-        2004.976625,
-        1972.492834,
-        1981.231166,
-        1968.614125,
-        2135.712292
-      ],
-      "go": [
-        26.030083,
-        25.828291,
-        24.740333,
-        26.328208,
-        24.981833
-      ],
-      "rust": [
-        23.100541,
-        22.996333,
-        22.196375,
-        21.698458,
-        22.916959
-      ]
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "heap-sort",
+      "participant": "go",
+      "elapsed_ms": 39.642792
     },
-    "bfs": {
-      "ruda": [
-        2456.671125,
-        2478.487792,
-        2497.43425,
-        2454.052834,
-        2451.767791
-      ],
-      "go": [
-        61.546,
-        64.018417,
-        57.867375,
-        64.082458,
-        62.755875
-      ],
-      "rust": [
-        24.030542,
-        24.066584,
-        26.34625,
-        24.499958,
-        24.755084
-      ]
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "stack",
+      "participant": "rust",
+      "elapsed_ms": 9.598792
     },
-    "dijkstra": {
-      "ruda": [
-        885.135458,
-        885.413625,
-        885.725375,
-        897.14175,
-        892.54825
-      ],
-      "go": [
-        41.891625,
-        40.816292,
-        41.326,
-        43.971667,
-        41.539125
-      ],
-      "rust": [
-        39.570209,
-        39.4705,
-        39.724708,
-        40.231125,
-        39.549417
-      ]
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "stack",
+      "participant": "marimay",
+      "elapsed_ms": 730.445916
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "stack",
+      "participant": "go",
+      "elapsed_ms": 15.590125
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "queue",
+      "participant": "rust",
+      "elapsed_ms": 9.248292
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "queue",
+      "participant": "go",
+      "elapsed_ms": 15.082125
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "queue",
+      "participant": "marimay",
+      "elapsed_ms": 748.553875
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "min-heap",
+      "participant": "go",
+      "elapsed_ms": 55.787542
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "min-heap",
+      "participant": "rust",
+      "elapsed_ms": 31.123667
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "min-heap",
+      "participant": "marimay",
+      "elapsed_ms": 1878.037709
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "dsu",
+      "participant": "go",
+      "elapsed_ms": 25.61475
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "dsu",
+      "participant": "marimay",
+      "elapsed_ms": 1989.55725
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "dsu",
+      "participant": "rust",
+      "elapsed_ms": 22.454708
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "bfs",
+      "participant": "marimay",
+      "elapsed_ms": 2658.855375
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "bfs",
+      "participant": "go",
+      "elapsed_ms": 60.471875
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "bfs",
+      "participant": "rust",
+      "elapsed_ms": 26.935875
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "dijkstra",
+      "participant": "marimay",
+      "elapsed_ms": 1066.11925
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "dijkstra",
+      "participant": "rust",
+      "elapsed_ms": 41.011667
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "dijkstra",
+      "participant": "go",
+      "elapsed_ms": 42.16975
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "insertion",
+      "participant": "marimay",
+      "elapsed_ms": 2967.592416
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "insertion",
+      "participant": "rust",
+      "elapsed_ms": 34.038166
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "insertion",
+      "participant": "go",
+      "elapsed_ms": 32.719042
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "dijkstra",
+      "participant": "rust",
+      "elapsed_ms": 47.542916
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "dijkstra",
+      "participant": "marimay",
+      "elapsed_ms": 683.604625
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "dijkstra",
+      "participant": "go",
+      "elapsed_ms": 41.599667
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "bfs",
+      "participant": "rust",
+      "elapsed_ms": 23.873125
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "bfs",
+      "participant": "go",
+      "elapsed_ms": 62.686959
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "bfs",
+      "participant": "marimay",
+      "elapsed_ms": 2180.595334
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "dsu",
+      "participant": "go",
+      "elapsed_ms": 26.136292
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "dsu",
+      "participant": "rust",
+      "elapsed_ms": 21.9985
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "dsu",
+      "participant": "marimay",
+      "elapsed_ms": 1577.372208
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "min-heap",
+      "participant": "go",
+      "elapsed_ms": 53.304917
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "min-heap",
+      "participant": "marimay",
+      "elapsed_ms": 1470.39175
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "min-heap",
+      "participant": "rust",
+      "elapsed_ms": 29.740083
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "queue",
+      "participant": "marimay",
+      "elapsed_ms": 375.191541
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "queue",
+      "participant": "go",
+      "elapsed_ms": 15.4295
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "queue",
+      "participant": "rust",
+      "elapsed_ms": 9.0165
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "stack",
+      "participant": "marimay",
+      "elapsed_ms": 348.5005
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "stack",
+      "participant": "rust",
+      "elapsed_ms": 9.463
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "stack",
+      "participant": "go",
+      "elapsed_ms": 14.561542
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "heap-sort",
+      "participant": "rust",
+      "elapsed_ms": 21.895708
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "heap-sort",
+      "participant": "marimay",
+      "elapsed_ms": 716.442167
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "heap-sort",
+      "participant": "go",
+      "elapsed_ms": 39.113708
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "stack",
+      "participant": "rust",
+      "elapsed_ms": 8.951292
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "stack",
+      "participant": "marimay",
+      "elapsed_ms": 348.097292
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "stack",
+      "participant": "go",
+      "elapsed_ms": 15.671042
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "queue",
+      "participant": "rust",
+      "elapsed_ms": 8.784208
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "queue",
+      "participant": "go",
+      "elapsed_ms": 14.313209
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "queue",
+      "participant": "marimay",
+      "elapsed_ms": 374.175458
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "min-heap",
+      "participant": "go",
+      "elapsed_ms": 53.821083
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "min-heap",
+      "participant": "rust",
+      "elapsed_ms": 29.169959
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "min-heap",
+      "participant": "marimay",
+      "elapsed_ms": 1499.313875
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "dsu",
+      "participant": "go",
+      "elapsed_ms": 25.518333
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "dsu",
+      "participant": "marimay",
+      "elapsed_ms": 1593.978333
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "dsu",
+      "participant": "rust",
+      "elapsed_ms": 22.881167
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "bfs",
+      "participant": "marimay",
+      "elapsed_ms": 2184.376292
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "bfs",
+      "participant": "go",
+      "elapsed_ms": 64.179542
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "bfs",
+      "participant": "rust",
+      "elapsed_ms": 24.056875
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "dijkstra",
+      "participant": "marimay",
+      "elapsed_ms": 672.741667
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "dijkstra",
+      "participant": "rust",
+      "elapsed_ms": 39.88575
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "dijkstra",
+      "participant": "go",
+      "elapsed_ms": 40.956875
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "insertion",
+      "participant": "rust",
+      "elapsed_ms": 28.311042
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "insertion",
+      "participant": "marimay",
+      "elapsed_ms": 2971.974791
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "insertion",
+      "participant": "go",
+      "elapsed_ms": 30.864792
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "heap-sort",
+      "participant": "rust",
+      "elapsed_ms": 22.304
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "heap-sort",
+      "participant": "go",
+      "elapsed_ms": 39.024666
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "heap-sort",
+      "participant": "marimay",
+      "elapsed_ms": 728.018959
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "stack",
+      "participant": "rust",
+      "elapsed_ms": 9.368333
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "stack",
+      "participant": "go",
+      "elapsed_ms": 14.174375
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "stack",
+      "participant": "marimay",
+      "elapsed_ms": 353.215458
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "heap-sort",
+      "participant": "go",
+      "elapsed_ms": 39.50075
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "heap-sort",
+      "participant": "rust",
+      "elapsed_ms": 21.91475
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "heap-sort",
+      "participant": "marimay",
+      "elapsed_ms": 722.530708
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "insertion",
+      "participant": "go",
+      "elapsed_ms": 30.36625
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "insertion",
+      "participant": "marimay",
+      "elapsed_ms": 2966.115334
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "insertion",
+      "participant": "rust",
+      "elapsed_ms": 29.202708
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "dijkstra",
+      "participant": "marimay",
+      "elapsed_ms": 676.110125
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "dijkstra",
+      "participant": "go",
+      "elapsed_ms": 41.0985
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "dijkstra",
+      "participant": "rust",
+      "elapsed_ms": 38.968958
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "bfs",
+      "participant": "marimay",
+      "elapsed_ms": 2356.21675
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "bfs",
+      "participant": "rust",
+      "elapsed_ms": 27.156333
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "bfs",
+      "participant": "go",
+      "elapsed_ms": 62.424541
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "dsu",
+      "participant": "rust",
+      "elapsed_ms": 21.861791
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "dsu",
+      "participant": "marimay",
+      "elapsed_ms": 1584.181375
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "dsu",
+      "participant": "go",
+      "elapsed_ms": 25.319917
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "min-heap",
+      "participant": "rust",
+      "elapsed_ms": 29.358292
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "min-heap",
+      "participant": "go",
+      "elapsed_ms": 54.1515
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "min-heap",
+      "participant": "marimay",
+      "elapsed_ms": 1469.435958
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "queue",
+      "participant": "go",
+      "elapsed_ms": 15.123625
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "queue",
+      "participant": "rust",
+      "elapsed_ms": 8.974708
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "queue",
+      "participant": "marimay",
+      "elapsed_ms": 379.809042
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "min-heap",
+      "participant": "go",
+      "elapsed_ms": 54.16275
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "min-heap",
+      "participant": "rust",
+      "elapsed_ms": 29.287583
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "min-heap",
+      "participant": "marimay",
+      "elapsed_ms": 1469.927292
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "dsu",
+      "participant": "go",
+      "elapsed_ms": 24.905666
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "dsu",
+      "participant": "marimay",
+      "elapsed_ms": 1581.148042
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "dsu",
+      "participant": "rust",
+      "elapsed_ms": 22.513167
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "bfs",
+      "participant": "marimay",
+      "elapsed_ms": 2175.536167
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "bfs",
+      "participant": "go",
+      "elapsed_ms": 65.733125
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "bfs",
+      "participant": "rust",
+      "elapsed_ms": 24.077
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "dijkstra",
+      "participant": "marimay",
+      "elapsed_ms": 674.351083
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "dijkstra",
+      "participant": "rust",
+      "elapsed_ms": 40.290625
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "dijkstra",
+      "participant": "go",
+      "elapsed_ms": 40.896584
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "insertion",
+      "participant": "rust",
+      "elapsed_ms": 28.038584
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "insertion",
+      "participant": "marimay",
+      "elapsed_ms": 2948.231792
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "insertion",
+      "participant": "go",
+      "elapsed_ms": 30.223583
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "heap-sort",
+      "participant": "rust",
+      "elapsed_ms": 21.765708
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "heap-sort",
+      "participant": "go",
+      "elapsed_ms": 38.699
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "heap-sort",
+      "participant": "marimay",
+      "elapsed_ms": 725.038208
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "stack",
+      "participant": "go",
+      "elapsed_ms": 15.824625
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "stack",
+      "participant": "rust",
+      "elapsed_ms": 9.027292
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "stack",
+      "participant": "marimay",
+      "elapsed_ms": 346.539916
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "queue",
+      "participant": "go",
+      "elapsed_ms": 15.714291
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "queue",
+      "participant": "marimay",
+      "elapsed_ms": 373.991042
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "queue",
+      "participant": "rust",
+      "elapsed_ms": 9.202083
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "min-heap",
+      "participant": "go",
+      "elapsed_ms": 52.853333
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "min-heap",
+      "participant": "marimay",
+      "elapsed_ms": 1461.489834
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "min-heap",
+      "participant": "rust",
+      "elapsed_ms": 29.471625
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "queue",
+      "participant": "marimay",
+      "elapsed_ms": 371.688666
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "queue",
+      "participant": "go",
+      "elapsed_ms": 15.070333
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "queue",
+      "participant": "rust",
+      "elapsed_ms": 8.884209
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "stack",
+      "participant": "marimay",
+      "elapsed_ms": 347.250459
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "stack",
+      "participant": "rust",
+      "elapsed_ms": 9.152083
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "stack",
+      "participant": "go",
+      "elapsed_ms": 15.381959
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "heap-sort",
+      "participant": "rust",
+      "elapsed_ms": 21.939291
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "heap-sort",
+      "participant": "marimay",
+      "elapsed_ms": 715.219375
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "heap-sort",
+      "participant": "go",
+      "elapsed_ms": 39.474958
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "insertion",
+      "participant": "rust",
+      "elapsed_ms": 28.14375
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "insertion",
+      "participant": "go",
+      "elapsed_ms": 29.092584
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "insertion",
+      "participant": "marimay",
+      "elapsed_ms": 2953.352833
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "dijkstra",
+      "participant": "go",
+      "elapsed_ms": 41.958458
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "dijkstra",
+      "participant": "rust",
+      "elapsed_ms": 39.0575
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "dijkstra",
+      "participant": "marimay",
+      "elapsed_ms": 672.087417
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "bfs",
+      "participant": "go",
+      "elapsed_ms": 61.657584
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "bfs",
+      "participant": "marimay",
+      "elapsed_ms": 2159.475125
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "bfs",
+      "participant": "rust",
+      "elapsed_ms": 25.652167
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "dsu",
+      "participant": "marimay",
+      "elapsed_ms": 1584.895541
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "dsu",
+      "participant": "go",
+      "elapsed_ms": 25.27
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "dsu",
+      "participant": "rust",
+      "elapsed_ms": 21.630167
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "bfs",
+      "participant": "marimay",
+      "elapsed_ms": 2162.920708
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "bfs",
+      "participant": "go",
+      "elapsed_ms": 61.668667
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "bfs",
+      "participant": "rust",
+      "elapsed_ms": 23.806459
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "dijkstra",
+      "participant": "marimay",
+      "elapsed_ms": 671.481791
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "dijkstra",
+      "participant": "rust",
+      "elapsed_ms": 39.706708
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "dijkstra",
+      "participant": "go",
+      "elapsed_ms": 40.670042
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "insertion",
+      "participant": "rust",
+      "elapsed_ms": 27.912709
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "insertion",
+      "participant": "marimay",
+      "elapsed_ms": 2951.136166
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "insertion",
+      "participant": "go",
+      "elapsed_ms": 30.564959
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "heap-sort",
+      "participant": "rust",
+      "elapsed_ms": 22.185875
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "heap-sort",
+      "participant": "go",
+      "elapsed_ms": 40.445667
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "heap-sort",
+      "participant": "marimay",
+      "elapsed_ms": 768.515083
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "stack",
+      "participant": "go",
+      "elapsed_ms": 16.984292
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "stack",
+      "participant": "rust",
+      "elapsed_ms": 8.918583
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "stack",
+      "participant": "marimay",
+      "elapsed_ms": 353.264917
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "queue",
+      "participant": "go",
+      "elapsed_ms": 15.86925
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "queue",
+      "participant": "marimay",
+      "elapsed_ms": 376.025792
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "queue",
+      "participant": "rust",
+      "elapsed_ms": 9.384167
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "min-heap",
+      "participant": "marimay",
+      "elapsed_ms": 1474.638375
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "min-heap",
+      "participant": "go",
+      "elapsed_ms": 53.80775
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "min-heap",
+      "participant": "rust",
+      "elapsed_ms": 29.321667
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "dsu",
+      "participant": "marimay",
+      "elapsed_ms": 1581.109042
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "dsu",
+      "participant": "rust",
+      "elapsed_ms": 22.114459
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "dsu",
+      "participant": "go",
+      "elapsed_ms": 24.227333
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "bfs",
+      "participant": "marimay",
+      "elapsed_ms": 2162.436791
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "bfs",
+      "participant": "rust",
+      "elapsed_ms": 24.243042
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "bfs",
+      "participant": "go",
+      "elapsed_ms": 61.704
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "dsu",
+      "participant": "rust",
+      "elapsed_ms": 21.808083
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "dsu",
+      "participant": "marimay",
+      "elapsed_ms": 1593.735583
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "dsu",
+      "participant": "go",
+      "elapsed_ms": 25.44975
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "min-heap",
+      "participant": "rust",
+      "elapsed_ms": 29.957459
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "min-heap",
+      "participant": "go",
+      "elapsed_ms": 53.927334
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "min-heap",
+      "participant": "marimay",
+      "elapsed_ms": 1460.2525
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "queue",
+      "participant": "go",
+      "elapsed_ms": 15.509792
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "queue",
+      "participant": "rust",
+      "elapsed_ms": 9.080792
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "queue",
+      "participant": "marimay",
+      "elapsed_ms": 373.603958
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "stack",
+      "participant": "go",
+      "elapsed_ms": 15.510583
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "stack",
+      "participant": "marimay",
+      "elapsed_ms": 349.409917
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "stack",
+      "participant": "rust",
+      "elapsed_ms": 9.227834
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "heap-sort",
+      "participant": "marimay",
+      "elapsed_ms": 720.013667
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "heap-sort",
+      "participant": "go",
+      "elapsed_ms": 39.075042
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "heap-sort",
+      "participant": "rust",
+      "elapsed_ms": 21.930708
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "insertion",
+      "participant": "marimay",
+      "elapsed_ms": 2956.198708
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "insertion",
+      "participant": "rust",
+      "elapsed_ms": 29.507959
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "insertion",
+      "participant": "go",
+      "elapsed_ms": 28.96075
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "dijkstra",
+      "participant": "rust",
+      "elapsed_ms": 38.802166
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "dijkstra",
+      "participant": "marimay",
+      "elapsed_ms": 674.421667
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "dijkstra",
+      "participant": "go",
+      "elapsed_ms": 41.254041
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "insertion",
+      "participant": "rust",
+      "elapsed_ms": 28.15775
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "insertion",
+      "participant": "marimay",
+      "elapsed_ms": 3094.361375
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "insertion",
+      "participant": "go",
+      "elapsed_ms": 29.851375
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "heap-sort",
+      "participant": "rust",
+      "elapsed_ms": 21.897209
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "heap-sort",
+      "participant": "go",
+      "elapsed_ms": 39.006208
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "heap-sort",
+      "participant": "marimay",
+      "elapsed_ms": 715.407209
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "stack",
+      "participant": "go",
+      "elapsed_ms": 15.611291
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "stack",
+      "participant": "rust",
+      "elapsed_ms": 8.992208
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "stack",
+      "participant": "marimay",
+      "elapsed_ms": 352.759291
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "queue",
+      "participant": "go",
+      "elapsed_ms": 15.081958
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "queue",
+      "participant": "marimay",
+      "elapsed_ms": 375.030375
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "queue",
+      "participant": "rust",
+      "elapsed_ms": 9.420583
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "min-heap",
+      "participant": "marimay",
+      "elapsed_ms": 1473.118208
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "min-heap",
+      "participant": "go",
+      "elapsed_ms": 58.381791
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "min-heap",
+      "participant": "rust",
+      "elapsed_ms": 32.684583
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "dsu",
+      "participant": "marimay",
+      "elapsed_ms": 1594.488666
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "dsu",
+      "participant": "rust",
+      "elapsed_ms": 22.934917
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "dsu",
+      "participant": "go",
+      "elapsed_ms": 24.427958
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "bfs",
+      "participant": "rust",
+      "elapsed_ms": 23.621792
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "bfs",
+      "participant": "marimay",
+      "elapsed_ms": 2174.107459
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "bfs",
+      "participant": "go",
+      "elapsed_ms": 62.518041
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "dijkstra",
+      "participant": "rust",
+      "elapsed_ms": 39.705916
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "dijkstra",
+      "participant": "go",
+      "elapsed_ms": 41.198458
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "dijkstra",
+      "participant": "marimay",
+      "elapsed_ms": 699.597333
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "insertion",
+      "participant": "rust",
+      "elapsed_ms": 29.358541
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "insertion",
+      "participant": "go",
+      "elapsed_ms": 29.979125
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "insertion",
+      "participant": "marimay",
+      "elapsed_ms": 3016.433084
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "dijkstra",
+      "participant": "go",
+      "elapsed_ms": 42.615583
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "dijkstra",
+      "participant": "rust",
+      "elapsed_ms": 39.12775
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "dijkstra",
+      "participant": "marimay",
+      "elapsed_ms": 672.386209
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "bfs",
+      "participant": "go",
+      "elapsed_ms": 65.35875
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "bfs",
+      "participant": "marimay",
+      "elapsed_ms": 2154.735667
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "bfs",
+      "participant": "rust",
+      "elapsed_ms": 24.206167
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "dsu",
+      "participant": "marimay",
+      "elapsed_ms": 1605.434834
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "dsu",
+      "participant": "go",
+      "elapsed_ms": 26.307792
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "dsu",
+      "participant": "rust",
+      "elapsed_ms": 33.371542
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "min-heap",
+      "participant": "marimay",
+      "elapsed_ms": 1479.617833
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "min-heap",
+      "participant": "rust",
+      "elapsed_ms": 30.486667
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "min-heap",
+      "participant": "go",
+      "elapsed_ms": 56.379833
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "queue",
+      "participant": "rust",
+      "elapsed_ms": 9.603375
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "queue",
+      "participant": "marimay",
+      "elapsed_ms": 379.313125
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "queue",
+      "participant": "go",
+      "elapsed_ms": 15.284875
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "stack",
+      "participant": "rust",
+      "elapsed_ms": 9.268958
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "stack",
+      "participant": "go",
+      "elapsed_ms": 14.410416
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "stack",
+      "participant": "marimay",
+      "elapsed_ms": 354.098709
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "heap-sort",
+      "participant": "go",
+      "elapsed_ms": 39.719792
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "heap-sort",
+      "participant": "rust",
+      "elapsed_ms": 22.378125
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "heap-sort",
+      "participant": "marimay",
+      "elapsed_ms": 737.132583
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "stack",
+      "participant": "go",
+      "elapsed_ms": 15.690792
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "stack",
+      "participant": "rust",
+      "elapsed_ms": 9.364583
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "stack",
+      "participant": "marimay",
+      "elapsed_ms": 353.514375
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "queue",
+      "participant": "go",
+      "elapsed_ms": 15.87
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "queue",
+      "participant": "marimay",
+      "elapsed_ms": 379.456584
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "queue",
+      "participant": "rust",
+      "elapsed_ms": 9.205666
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "min-heap",
+      "participant": "marimay",
+      "elapsed_ms": 1511.787709
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "min-heap",
+      "participant": "go",
+      "elapsed_ms": 58.606834
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "min-heap",
+      "participant": "rust",
+      "elapsed_ms": 32.438959
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "dsu",
+      "participant": "marimay",
+      "elapsed_ms": 1627.899
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "dsu",
+      "participant": "rust",
+      "elapsed_ms": 22.163625
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "dsu",
+      "participant": "go",
+      "elapsed_ms": 24.741417
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "bfs",
+      "participant": "rust",
+      "elapsed_ms": 23.884959
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "bfs",
+      "participant": "marimay",
+      "elapsed_ms": 2167.779375
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "bfs",
+      "participant": "go",
+      "elapsed_ms": 61.044292
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "dijkstra",
+      "participant": "rust",
+      "elapsed_ms": 39.454292
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "dijkstra",
+      "participant": "go",
+      "elapsed_ms": 41.341208
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "dijkstra",
+      "participant": "marimay",
+      "elapsed_ms": 669.659958
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "insertion",
+      "participant": "go",
+      "elapsed_ms": 29.611875
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "insertion",
+      "participant": "rust",
+      "elapsed_ms": 28.115
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "insertion",
+      "participant": "marimay",
+      "elapsed_ms": 2940.886208
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "heap-sort",
+      "participant": "go",
+      "elapsed_ms": 39.506083
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "heap-sort",
+      "participant": "marimay",
+      "elapsed_ms": 716.72375
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "heap-sort",
+      "participant": "rust",
+      "elapsed_ms": 22.28425
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "stack",
+      "participant": "go",
+      "elapsed_ms": 14.813
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "stack",
+      "participant": "marimay",
+      "elapsed_ms": 347.835708
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "stack",
+      "participant": "rust",
+      "elapsed_ms": 10.495208
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "heap-sort",
+      "participant": "marimay",
+      "elapsed_ms": 715.512875
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "heap-sort",
+      "participant": "go",
+      "elapsed_ms": 39.091875
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "heap-sort",
+      "participant": "rust",
+      "elapsed_ms": 21.88225
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "insertion",
+      "participant": "marimay",
+      "elapsed_ms": 2953.576959
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "insertion",
+      "participant": "rust",
+      "elapsed_ms": 29.335375
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "insertion",
+      "participant": "go",
+      "elapsed_ms": 29.555125
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "dijkstra",
+      "participant": "rust",
+      "elapsed_ms": 39.298291
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "dijkstra",
+      "participant": "marimay",
+      "elapsed_ms": 671.365708
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "dijkstra",
+      "participant": "go",
+      "elapsed_ms": 41.157625
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "bfs",
+      "participant": "rust",
+      "elapsed_ms": 23.508625
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "bfs",
+      "participant": "go",
+      "elapsed_ms": 62.682042
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "bfs",
+      "participant": "marimay",
+      "elapsed_ms": 2183.298459
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "dsu",
+      "participant": "go",
+      "elapsed_ms": 24.821041
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "dsu",
+      "participant": "rust",
+      "elapsed_ms": 21.625292
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "dsu",
+      "participant": "marimay",
+      "elapsed_ms": 1606.037459
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "min-heap",
+      "participant": "go",
+      "elapsed_ms": 55.6435
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "min-heap",
+      "participant": "marimay",
+      "elapsed_ms": 1516.332709
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "min-heap",
+      "participant": "rust",
+      "elapsed_ms": 30.649459
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "queue",
+      "participant": "marimay",
+      "elapsed_ms": 381.187625
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "queue",
+      "participant": "go",
+      "elapsed_ms": 15.265833
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "queue",
+      "participant": "rust",
+      "elapsed_ms": 9.000916
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "min-heap",
+      "participant": "marimay",
+      "elapsed_ms": 1492.581917
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "min-heap",
+      "participant": "go",
+      "elapsed_ms": 55.576833
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "min-heap",
+      "participant": "rust",
+      "elapsed_ms": 30.819042
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "dsu",
+      "participant": "marimay",
+      "elapsed_ms": 1592.297458
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "dsu",
+      "participant": "rust",
+      "elapsed_ms": 22.157917
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "dsu",
+      "participant": "go",
+      "elapsed_ms": 24.331833
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "bfs",
+      "participant": "rust",
+      "elapsed_ms": 23.667208
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "bfs",
+      "participant": "marimay",
+      "elapsed_ms": 2164.835834
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "bfs",
+      "participant": "go",
+      "elapsed_ms": 61.69275
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "dijkstra",
+      "participant": "rust",
+      "elapsed_ms": 39.24425
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "dijkstra",
+      "participant": "go",
+      "elapsed_ms": 40.802209
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "dijkstra",
+      "participant": "marimay",
+      "elapsed_ms": 671.695083
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "insertion",
+      "participant": "go",
+      "elapsed_ms": 29.946833
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "insertion",
+      "participant": "rust",
+      "elapsed_ms": 28.146541
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "insertion",
+      "participant": "marimay",
+      "elapsed_ms": 2974.147167
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "heap-sort",
+      "participant": "go",
+      "elapsed_ms": 39.616083
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "heap-sort",
+      "participant": "marimay",
+      "elapsed_ms": 727.429583
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "heap-sort",
+      "participant": "rust",
+      "elapsed_ms": 23.137709
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "stack",
+      "participant": "marimay",
+      "elapsed_ms": 360.454791
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "stack",
+      "participant": "go",
+      "elapsed_ms": 15.965667
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "stack",
+      "participant": "rust",
+      "elapsed_ms": 9.172
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "queue",
+      "participant": "marimay",
+      "elapsed_ms": 381.588958
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "queue",
+      "participant": "rust",
+      "elapsed_ms": 9.978291
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "queue",
+      "participant": "go",
+      "elapsed_ms": 15.323625
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "min-heap",
+      "participant": "marimay",
+      "elapsed_ms": 1515.197834
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "min-heap",
+      "participant": "rust",
+      "elapsed_ms": 30.440917
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "min-heap",
+      "participant": "go",
+      "elapsed_ms": 55.203
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "queue",
+      "participant": "rust",
+      "elapsed_ms": 9.321042
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "queue",
+      "participant": "marimay",
+      "elapsed_ms": 390.956167
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "queue",
+      "participant": "go",
+      "elapsed_ms": 15.27625
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "stack",
+      "participant": "rust",
+      "elapsed_ms": 8.90525
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "stack",
+      "participant": "go",
+      "elapsed_ms": 14.394333
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "stack",
+      "participant": "marimay",
+      "elapsed_ms": 363.0005
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "heap-sort",
+      "participant": "go",
+      "elapsed_ms": 41.065083
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "heap-sort",
+      "participant": "rust",
+      "elapsed_ms": 22.036708
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "heap-sort",
+      "participant": "marimay",
+      "elapsed_ms": 723.056667
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "insertion",
+      "participant": "go",
+      "elapsed_ms": 29.842875
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "insertion",
+      "participant": "marimay",
+      "elapsed_ms": 2980.151917
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "insertion",
+      "participant": "rust",
+      "elapsed_ms": 29.510542
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "dijkstra",
+      "participant": "marimay",
+      "elapsed_ms": 682.98275
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "dijkstra",
+      "participant": "go",
+      "elapsed_ms": 42.048709
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "dijkstra",
+      "participant": "rust",
+      "elapsed_ms": 40.209459
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "bfs",
+      "participant": "marimay",
+      "elapsed_ms": 2217.153833
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "bfs",
+      "participant": "rust",
+      "elapsed_ms": 26.09825
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "bfs",
+      "participant": "go",
+      "elapsed_ms": 63.3835
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "dsu",
+      "participant": "rust",
+      "elapsed_ms": 21.7065
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "dsu",
+      "participant": "marimay",
+      "elapsed_ms": 1595.966292
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "dsu",
+      "participant": "go",
+      "elapsed_ms": 25.121417
     }
-  }
+  ]
 }

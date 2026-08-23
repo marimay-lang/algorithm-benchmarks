@@ -6,25 +6,25 @@
     "samples": 1,
     "warmups": 0,
     "languages": [
-      "ruda",
+      "marimay",
       "go",
       "rust"
     ],
-    "ruda_compiler": "/home/marimay/Projects/ai-projects/Ma/build/release/ruda",
-    "ruda_revision": "bf8edd83e85cc2ed9c84791a2ea8cf0fe07146ae",
+    "mmay_compiler": "/home/marimay/Projects/ai-projects/Ma/build/release/mmay",
+    "marimay_revision": "bf8edd83e85cc2ed9c84791a2ea8cf0fe07146ae",
     "corpus_revision": "033f17e9225d5760d40181ce13903bcda4decba3",
     "equivalence_manifest": "benchmarks/equivalence.json",
-    "equivalence_schema": "ruda.algorithm-equivalence/1",
-    "equivalence_sha256": "51702f2ad1bae31fb11b9df8550f58b2034e1e7044f3d6e7448e5001399d3535",
+    "equivalence_schema": "marimay.algorithm-equivalence/1",
+    "equivalence_sha256": "bf2f251de2d91e22d6696a50aa83babe9d1497139a305c4e1770e09c1f2f7e9b",
     "toolchains": {
-      "Ruda": "Ruda compiler 0.0.0-dev",
+      "Marimay": "Marimay compiler 0.0.0-dev",
       "Go": "go version go1.26.4 darwin/arm64",
       "Rust": "rustc 1.96.0 (ac68faa20 2026-05-25)"
     }
   },
   "summary": {
     "insertion": {
-      "ruda": {
+      "marimay": {
         "median_ms": 4271.701334,
         "min_ms": 4271.701334,
         "max_ms": 4271.701334
@@ -41,7 +41,7 @@
       }
     },
     "heap-sort": {
-      "ruda": {
+      "marimay": {
         "median_ms": 1258.775166,
         "min_ms": 1258.775166,
         "max_ms": 1258.775166
@@ -58,7 +58,7 @@
       }
     },
     "stack": {
-      "ruda": {
+      "marimay": {
         "median_ms": 691.633167,
         "min_ms": 691.633167,
         "max_ms": 691.633167
@@ -75,7 +75,7 @@
       }
     },
     "queue": {
-      "ruda": {
+      "marimay": {
         "median_ms": 724.842333,
         "min_ms": 724.842333,
         "max_ms": 724.842333
@@ -92,7 +92,7 @@
       }
     },
     "min-heap": {
-      "ruda": {
+      "marimay": {
         "median_ms": 2143.320833,
         "min_ms": 2143.320833,
         "max_ms": 2143.320833
@@ -109,7 +109,7 @@
       }
     },
     "dsu": {
-      "ruda": {
+      "marimay": {
         "median_ms": 2217.1735,
         "min_ms": 2217.1735,
         "max_ms": 2217.1735
@@ -126,7 +126,7 @@
       }
     },
     "bfs": {
-      "ruda": {
+      "marimay": {
         "median_ms": 2746.553667,
         "min_ms": 2746.553667,
         "max_ms": 2746.553667
@@ -143,7 +143,7 @@
       }
     },
     "dijkstra": {
-      "ruda": {
+      "marimay": {
         "median_ms": 1169.741084,
         "min_ms": 1169.741084,
         "max_ms": 1169.741084
@@ -162,7 +162,7 @@
   },
   "raw_ms": {
     "insertion": {
-      "ruda": [
+      "marimay": [
         4271.701334
       ],
       "go": [
@@ -173,7 +173,7 @@
       ]
     },
     "heap-sort": {
-      "ruda": [
+      "marimay": [
         1258.775166
       ],
       "go": [
@@ -184,7 +184,7 @@
       ]
     },
     "stack": {
-      "ruda": [
+      "marimay": [
         691.633167
       ],
       "go": [
@@ -195,7 +195,7 @@
       ]
     },
     "queue": {
-      "ruda": [
+      "marimay": [
         724.842333
       ],
       "go": [
@@ -206,7 +206,7 @@
       ]
     },
     "min-heap": {
-      "ruda": [
+      "marimay": [
         2143.320833
       ],
       "go": [
@@ -217,7 +217,7 @@
       ]
     },
     "dsu": {
-      "ruda": [
+      "marimay": [
         2217.1735
       ],
       "go": [
@@ -228,7 +228,7 @@
       ]
     },
     "bfs": {
-      "ruda": [
+      "marimay": [
         2746.553667
       ],
       "go": [
@@ -239,7 +239,7 @@
       ]
     },
     "dijkstra": {
-      "ruda": [
+      "marimay": [
         1169.741084
       ],
       "go": [

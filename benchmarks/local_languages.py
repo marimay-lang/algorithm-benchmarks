@@ -7,27 +7,45 @@ import subprocess
 from collections.abc import Callable, Sequence
 
 
-CORE_LANGUAGES = ["ruda", "go", "rust"]
+CORE_LANGUAGES = ["marimay", "go", "rust"]
 LOCAL_LANGUAGES = ["typescript", "v", "moonbit"]
 
 
 def parse_language_selection(value: str) -> list[str]:
     selected = [item.strip() for item in value.split(",") if item.strip()]
+    if not selected:
+        raise ValueError("languages must not be empty")
     if len(set(selected)) != len(selected):
         raise ValueError("languages must not contain duplicates")
-    if selected[: len(CORE_LANGUAGES)] != CORE_LANGUAGES:
-        raise ValueError("benchmark results require ruda,go,rust in protocol order")
-    extras = selected[len(CORE_LANGUAGES) :]
-    if any(language not in LOCAL_LANGUAGES for language in extras):
-        raise ValueError("optional local languages are typescript,v,moonbit")
-    expected_order = [language for language in LOCAL_LANGUAGES if language in extras]
-    if extras != expected_order:
-        raise ValueError("optional local languages must use typescript,v,moonbit order")
+    extras = [language for language in selected if language in LOCAL_LANGUAGES]
+    if extras:
+        if selected[: len(CORE_LANGUAGES)] != CORE_LANGUAGES:
+            raise ValueError(
+                "local comparisons require marimay,go,rust in protocol order"
+            )
+        local_suffix = selected[len(CORE_LANGUAGES) :]
+        expected = [
+            language for language in LOCAL_LANGUAGES if language in local_suffix
+        ]
+        if local_suffix != expected:
+            raise ValueError(
+                "optional local languages must use typescript,v,moonbit order"
+            )
+    else:
+        if any(language not in CORE_LANGUAGES for language in selected):
+            raise ValueError(
+                "languages must be marimay,go,rust with optional typescript,v,moonbit"
+            )
+        expected = [language for language in CORE_LANGUAGES if language in selected]
+        if selected != expected:
+            raise ValueError("languages must follow protocol order")
+        if "marimay" not in selected:
+            raise ValueError("focused comparisons must measure marimay")
     return selected
 
 
 def is_local_comparison(languages: Sequence[str]) -> bool:
-    return list(languages) != CORE_LANGUAGES
+    return any(language in LOCAL_LANGUAGES for language in languages)
 
 
 def _tool(environment_name: str, default_name: str) -> pathlib.Path:

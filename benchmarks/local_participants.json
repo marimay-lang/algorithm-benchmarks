@@ -1,5 +1,5 @@
 {
-  "schema": "ruda.local-benchmark-participants/1",
+  "schema": "marimay.local-benchmark-participants/1",
   "languages": [
     "typescript",
     "v",

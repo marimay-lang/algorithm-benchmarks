@@ -51,7 +51,7 @@ def parse_args(protocol: dict[str, object]) -> argparse.Namespace:
     assert isinstance(measurement, dict)
     parser = argparse.ArgumentParser(
         description=(
-            "Build and time identical Ruda, Go, and Rust workloads, with optional "
+            "Build and time identical Marimay, Go, and Rust workloads, with optional "
             "local-only TypeScript/Bun, V, and MoonBit participants."
         )
     )
@@ -61,7 +61,7 @@ def parse_args(protocol: dict[str, object]) -> argparse.Namespace:
     parser.add_argument(
         "--languages",
         default=",".join(LANGUAGES),
-        help="ruda,go,rust followed by an optional subset of typescript,v,moonbit",
+        help="marimay,go,rust followed by an optional subset of typescript,v,moonbit",
     )
     parser.add_argument("--skip-build", action="store_true")
     parser.add_argument(
@@ -113,7 +113,7 @@ def build_binaries(
     repository: pathlib.Path,
     build_dir: pathlib.Path,
     languages: Sequence[str],
-    ruda_binary: pathlib.Path,
+    mmay_binary: pathlib.Path,
     benchmark_names: Sequence[str],
     max_heap_bytes: int,
 ) -> dict[str, dict[str, list[str]]]:
@@ -136,15 +136,15 @@ def build_binaries(
         for name in benchmark_names:
             commands["rust"][name] = [str(rust_output), name]
 
-    if "ruda" in languages:
-        if not ruda_binary.is_file() or not os.access(ruda_binary, os.X_OK):
+    if "marimay" in languages:
+        if not mmay_binary.is_file() or not os.access(mmay_binary, os.X_OK):
             raise SystemExit(
-                f"Ruda executable not found: {ruda_binary}\n"
-                "Build Ruda or set RUDA=/absolute/path/to/ruda."
+                f"Marimay executable not found: {mmay_binary}\n"
+                "Build Marimay or set MMAY=/absolute/path/to/mmay."
             )
-        ruda_root = repository / "ruda"
-        run_checked([str(ruda_binary), "fmt", str(ruda_root), "--check"], cwd=repository)
-        run_checked([str(ruda_binary), "check", str(ruda_root)], cwd=repository)
+        marimay_root = repository / "marimay"
+        run_checked([str(mmay_binary), "fmt", str(marimay_root), "--check"], cwd=repository)
+        run_checked([str(mmay_binary), "check", str(marimay_root)], cwd=repository)
         directory_names = {
             "insertion": "insertion",
             "heap-sort": "heap_sort",
@@ -156,12 +156,12 @@ def build_binaries(
             "dijkstra": "dijkstra",
         }
         for name in benchmark_names:
-            output = build_dir / f"ruda-{name}"
+            output = build_dir / f"marimay-{name}"
             run_checked(
                 [
-                    str(ruda_binary),
+                    str(mmay_binary),
                     "build",
-                    str(ruda_root / "benchmarks" / directory_names[name]),
+                    str(marimay_root / "benchmarks" / directory_names[name]),
                     "--release",
                     "--max-heap-bytes",
                     str(max_heap_bytes),
@@ -171,7 +171,7 @@ def build_binaries(
                 cwd=repository,
                 timeout=600,
             )
-            commands["ruda"][name] = [str(output)]
+            commands["marimay"][name] = [str(output)]
     return commands
 
 
@@ -192,7 +192,7 @@ def existing_commands(
                     name,
                 ]
             else:
-                command = [str(build_dir / f"ruda-{name}")]
+                command = [str(build_dir / f"marimay-{name}")]
             if not pathlib.Path(command[0]).is_file():
                 raise SystemExit(f"missing binary for --skip-build: {command[0]}")
             commands[language][name] = command
@@ -258,13 +258,13 @@ def markdown_report(
 ) -> str:
     warmup_label = "warm-up run" if metadata["warmups"] == 1 else "warm-up runs"
     ratio_languages = [
-        language for language in languages if language != "ruda"
-    ] if "ruda" in languages else []
+        language for language in languages if language != "marimay"
+    ] if "marimay" in languages else []
     table_headers = [
         "Algorithm",
         "Workload",
         *(language_label(language) + " median" for language in languages),
-        *("Ruda / " + language_label(language) for language in ratio_languages),
+        *("Marimay / " + language_label(language) for language in ratio_languages),
         "Fastest",
     ]
     lines = [
@@ -275,9 +275,9 @@ def markdown_report(
         f"Host: `{metadata['platform']['system']} {metadata['platform']['release']} "
         f"{metadata['platform']['machine']}`; CPU: `{metadata['platform']['cpu']}`.",
         "",
-        f"Ruda compiler executable: `{metadata['artifacts']['ruda_compiler']['path']}`.",
+        f"Marimay compiler executable: `{metadata['artifacts']['mmay_compiler']['path']}`.",
         "",
-        f"Ruda source revision: `{metadata['artifacts']['ruda_compiler']['revision']}`.",
+        f"Marimay source revision: `{metadata['artifacts']['mmay_compiler']['revision']}`.",
         "",
         f"Algorithm corpus revision: `{metadata['corpus_revision']}`.",
         "",
@@ -308,7 +308,7 @@ def markdown_report(
         row = [name, str(workload["description"])]
         row.extend(f"{timings[language]['median_ms']:.2f} ms" for language in languages)
         row.extend(
-            f"{timings['ruda']['median_ms'] / timings[language]['median_ms']:.1f}×"
+            f"{timings['marimay']['median_ms'] / timings[language]['median_ms']:.1f}×"
             for language in ratio_languages
         )
         row.append(language_label(fastest_language))
@@ -374,8 +374,8 @@ def main() -> None:
         output = repository / output
     build_dir = repository / "benchmarks" / ".build"
     build_dir.mkdir(parents=True, exist_ok=True)
-    default_ruda = repository.parent / "Ma" / "build" / "release" / "ruda"
-    ruda_binary = pathlib.Path(os.environ.get("RUDA", str(default_ruda))).resolve()
+    default_mmay = repository.parent / "Ma" / "build" / "release" / "mmay"
+    mmay_binary = pathlib.Path(os.environ.get("MMAY", str(default_mmay))).resolve()
     max_heap_bytes = protocol["resource"]["max_heap_bytes"]
     core_languages = [
         language for language in args.languages if language in CORE_LANGUAGES
@@ -394,7 +394,7 @@ def main() -> None:
             repository,
             build_dir,
             core_languages,
-            ruda_binary,
+            mmay_binary,
             benchmark_names,
             max_heap_bytes,
         )
@@ -410,7 +410,7 @@ def main() -> None:
 
     metadata = capture_metadata(
         repository,
-        ruda_binary,
+        mmay_binary,
         warmups=args.warmups,
         samples=args.samples,
         timeout_seconds=args.timeout,
@@ -444,6 +444,11 @@ def main() -> None:
     )
     finish_metadata(metadata)
     metadata["languages"] = args.languages
+    metadata["measurement_scope"] = (
+        "local"
+        if is_local_comparison(args.languages)
+        else "tier1" if args.languages == LANGUAGES else "focused"
+    )
     summarized = summarize_matrix(raw)
     expected = {
         str(workload["id"]): (

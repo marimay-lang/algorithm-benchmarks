@@ -13,10 +13,10 @@ class ProtocolError(ValueError):
     pass
 
 
-PROTOCOL_SCHEMA = "ruda.performance-protocol/1"
-PROBE_RESULT_SCHEMA = "ruda.array-probes/1"
-ALGORITHM_RESULT_SCHEMA = "ruda.algorithm-benchmark/2"
-BUDGET_SCHEMA = "ruda.performance-budgets/1"
+PROTOCOL_SCHEMA = "marimay.performance-protocol/1"
+PROBE_RESULT_SCHEMA = "marimay.array-probes/1"
+ALGORITHM_RESULT_SCHEMA = "marimay.algorithm-benchmark/2"
+BUDGET_SCHEMA = "marimay.performance-budgets/1"
 TIER1_TARGETS = (
     "linux-x86_64",
     "linux-arm64",
@@ -24,7 +24,7 @@ TIER1_TARGETS = (
     "macos-x86_64",
     "windows-x86_64",
 )
-CORE_ALGORITHM_PARTICIPANTS = ["ruda", "go", "rust"]
+CORE_ALGORITHM_PARTICIPANTS = ["marimay", "go", "rust"]
 LOCAL_ALGORITHM_PARTICIPANTS = ["typescript", "v", "moonbit"]
 
 
@@ -347,7 +347,7 @@ def validate_result(
     _nonempty_string(isolation, "power_source")
     _nonempty_string(isolation, "affinity")
     artifacts = _mapping(metadata, "artifacts")
-    compiler = _mapping(artifacts, "ruda_compiler")
+    compiler = _mapping(artifacts, "mmay_compiler")
     runtime = _mapping(artifacts, "runtime")
     native_c = _mapping(artifacts, "native_c")
     for artifact in (compiler, runtime):
@@ -400,40 +400,65 @@ def validate_result(
     _sha256(manifest, "sha256")
     if schema == PROBE_RESULT_SCHEMA:
         _sha256(manifest, "source_tree_sha256")
-        expected_participants = {"ruda"}
-        expected_toolchains = {"python", "ruda", "go", "rust"}
+        expected_participants = {"marimay"}
+        expected_toolchains = {"python", "marimay", "go", "rust"}
     else:
         languages = metadata.get("languages")
-        if languages == CORE_ALGORITHM_PARTICIPANTS:
-            expected_participants = set(CORE_ALGORITHM_PARTICIPANTS)
-            expected_toolchains = {"python", *CORE_ALGORITHM_PARTICIPANTS}
-        else:
-            if not isinstance(languages, list):
-                raise ProtocolError("algorithm result lacks the complete language matrix")
-            extras = languages[len(CORE_ALGORITHM_PARTICIPANTS) :]
+        if not isinstance(languages, list) or not languages:
+            raise ProtocolError("algorithm result has no language matrix")
+        if len(set(languages)) != len(languages):
+            raise ProtocolError("algorithm language matrix contains duplicates")
+        scope = metadata.get("measurement_scope", "tier1")
+        extras = [
+            language
+            for language in languages
+            if language in LOCAL_ALGORITHM_PARTICIPANTS
+        ]
+        if extras:
+            local_suffix = languages[len(CORE_ALGORITHM_PARTICIPANTS) :]
             expected_extras = [
                 language
                 for language in LOCAL_ALGORITHM_PARTICIPANTS
-                if language in extras
+                if language in local_suffix
             ]
             if (
                 languages[: len(CORE_ALGORITHM_PARTICIPANTS)]
                 != CORE_ALGORITHM_PARTICIPANTS
-                or not extras
-                or extras != expected_extras
-                or len(set(languages)) != len(languages)
+                or local_suffix != expected_extras
             ):
                 raise ProtocolError("algorithm result has an invalid local language matrix")
+            if scope != "local":
+                raise ProtocolError("extended algorithm result must use local scope")
             if metadata.get("comparison_scope") != "local-only":
                 raise ProtocolError("extended algorithm result must be marked local-only")
             local_manifest = _mapping(metadata, "local_participants_manifest")
             for key in ("path", "schema", "sha256"):
                 _nonempty_string(local_manifest, key)
             _sha256(local_manifest, "sha256")
-            if local_manifest.get("schema") != "ruda.local-benchmark-participants/1":
+            if local_manifest.get("schema") != "marimay.local-benchmark-participants/1":
                 raise ProtocolError("extended algorithm result has the wrong local manifest")
             expected_participants = set(languages)
-            expected_toolchains = {"python", *CORE_ALGORITHM_PARTICIPANTS, *extras}
+            expected_toolchains = {
+                "python",
+                *CORE_ALGORITHM_PARTICIPANTS,
+                *extras,
+            }
+        else:
+            expected_order = [
+                language
+                for language in CORE_ALGORITHM_PARTICIPANTS
+                if language in languages
+            ]
+            if languages != expected_order:
+                raise ProtocolError("algorithm language matrix violates protocol order")
+            if scope == "tier1" and languages != CORE_ALGORITHM_PARTICIPANTS:
+                raise ProtocolError("algorithm result lacks the complete language matrix")
+            if scope not in ("tier1", "focused"):
+                raise ProtocolError("algorithm result has an invalid measurement scope")
+            if scope == "focused" and "marimay" not in languages:
+                raise ProtocolError("focused algorithm result must measure Marimay")
+            expected_participants = set(languages)
+            expected_toolchains = {"python", *CORE_ALGORITHM_PARTICIPANTS}
     toolchains = _mapping(metadata, "toolchains")
     if set(toolchains) != expected_toolchains:
         raise ProtocolError("toolchain metadata is incomplete")
@@ -532,7 +557,7 @@ def validate_compatible_results(
         raise ProtocolError("local-only algorithm results cannot be Tier 1 baselines")
     checks = [
         ("platform", _mapping(left, "platform").get("id"), _mapping(right, "platform").get("id")),
-        ("Ruda compiler", _mapping(_mapping(left, "artifacts"), "ruda_compiler").get("sha256"), _mapping(_mapping(right, "artifacts"), "ruda_compiler").get("sha256")),
+        ("Marimay compiler", _mapping(_mapping(left, "artifacts"), "mmay_compiler").get("sha256"), _mapping(_mapping(right, "artifacts"), "mmay_compiler").get("sha256")),
         ("runtime", _mapping(_mapping(left, "artifacts"), "runtime").get("sha256"), _mapping(_mapping(right, "artifacts"), "runtime").get("sha256")),
         ("resource budget", _mapping(left, "resource").get("max_heap_bytes"), _mapping(right, "resource").get("max_heap_bytes")),
         ("samples", left.get("samples"), right.get("samples")),
@@ -573,14 +598,14 @@ def validate_budget(
         _sha256(baseline, key)
     probe_metadata = _mapping(probes, "metadata")
     algorithm_metadata = _mapping(algorithms, "metadata")
-    probe_compiler = _mapping(_mapping(probe_metadata, "artifacts"), "ruda_compiler")
+    probe_compiler = _mapping(_mapping(probe_metadata, "artifacts"), "mmay_compiler")
     algorithm_compiler = _mapping(
-        _mapping(algorithm_metadata, "artifacts"), "ruda_compiler"
+        _mapping(algorithm_metadata, "artifacts"), "mmay_compiler"
     )
     bindings = (
         (
-            "Ruda revision",
-            _nonempty_string(baseline, "ruda_revision"),
+            "Marimay revision",
+            _nonempty_string(baseline, "marimay_revision"),
             _nonempty_string(probe_compiler, "revision"),
             _nonempty_string(algorithm_compiler, "revision"),
         ),
@@ -632,11 +657,78 @@ def validate_budget(
             summary_value = _mapping(
                 _mapping_value(result_workloads[workload], workload), "summary"
             )
-            ruda_summary = _mapping_value(summary_value.get("ruda"), workload)
-            actual = _finite_number(ruda_summary, "median_ms")
+            marimay_summary = _mapping_value(summary_value.get("marimay"), workload)
+            actual = _finite_number(marimay_summary, "median_ms")
             if actual > maximum:
                 failures.append(
                     f"{suite_name}/{workload}: {actual:.6f} ms > {maximum:.6f} ms"
+                )
+    return failures
+
+
+def validate_candidate_budget(
+    budget: Mapping[str, Any],
+    results: Mapping[str, Mapping[str, Any]],
+    protocol_sha256: str,
+) -> list[str]:
+    """Validate full or focused candidates against reviewed ceilings.
+
+    Unlike ``validate_budget``, this deliberately does not bind a candidate to
+    the compiler/corpus revision and exact files of the historical baseline.
+    Those bindings remain mandatory when the baseline files themselves are
+    validated.
+    """
+    if budget.get("schema") != BUDGET_SCHEMA:
+        raise ProtocolError("unsupported performance budget schema")
+    if budget.get("protocol_sha256") != protocol_sha256:
+        raise ProtocolError("budget uses an incompatible protocol")
+    review = _mapping(budget, "review")
+    if review.get("status") != "reviewed":
+        raise ProtocolError("performance budget has not been reviewed")
+    _nonempty_string(review, "reviewed_at")
+    _nonempty_string(review, "rationale")
+    platform_id = _nonempty_string(budget, "platform_id")
+    suites = _mapping(budget, "suites")
+    failures: list[str] = []
+    if not results:
+        raise ProtocolError("candidate budget validation requires a result")
+    for suite_name, result in results.items():
+        metadata = _mapping(result, "metadata")
+        actual_platform = _mapping(metadata, "platform").get("id")
+        if platform_id != actual_platform:
+            raise ProtocolError("budget platform is incompatible with results")
+        suite_budget = _mapping(suites, suite_name)
+        result_workloads = _mapping(result, "workloads")
+        if not result_workloads:
+            raise ProtocolError(f"{suite_name} candidate has no workloads")
+        unknown = set(result_workloads) - set(suite_budget)
+        if unknown:
+            names = ", ".join(sorted(unknown))
+            raise ProtocolError(f"{suite_name} budget has no workloads: {names}")
+        for workload, observation_value in result_workloads.items():
+            limit = _mapping_value(
+                suite_budget[workload], f"{suite_name}/{workload} budget"
+            )
+            maximum = _finite_number(limit, "maximum_median_ms")
+            if maximum <= 0:
+                raise ProtocolError("budget maximum must be positive")
+            for key in (
+                "baseline_median_ms",
+                "baseline_noise_fraction",
+                "allowed_regression_fraction",
+            ):
+                if _finite_number(limit, key) < 0:
+                    raise ProtocolError(f"budget {key} must be non-negative")
+            observation = _mapping_value(
+                observation_value, f"{suite_name}/{workload} result"
+            )
+            summary = _mapping(observation, "summary")
+            marimay_summary = _mapping_value(summary.get("marimay"), workload)
+            actual = _finite_number(marimay_summary, "median_ms")
+            if actual > maximum:
+                failures.append(
+                    f"{suite_name}/{workload}: {actual:.6f} ms > "
+                    f"{maximum:.6f} ms"
                 )
     return failures
 

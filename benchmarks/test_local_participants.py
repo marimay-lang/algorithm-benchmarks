@@ -33,21 +33,24 @@ class LocalParticipantTests(unittest.TestCase):
         self.assertEqual(manifest, self.manifest)
 
     def test_language_selection_preserves_tier1_default(self) -> None:
-        self.assertEqual(parse_language_selection("ruda,go,rust"), CORE_LANGUAGES)
+        self.assertEqual(parse_language_selection("marimay,go,rust"), CORE_LANGUAGES)
         self.assertFalse(is_local_comparison(CORE_LANGUAGES))
+        self.assertEqual(parse_language_selection("marimay,go"), ["marimay", "go"])
+        self.assertFalse(is_local_comparison(["marimay", "go"]))
         selected = parse_language_selection(
-            "ruda,go,rust,typescript,v,moonbit"
+            "marimay,go,rust,typescript,v,moonbit"
         )
         self.assertEqual(selected[3:], ["typescript", "v", "moonbit"])
         self.assertTrue(is_local_comparison(selected))
 
-    def test_language_selection_rejects_partial_reordered_and_duplicate_sets(self) -> None:
+    def test_language_selection_rejects_invalid_order_and_duplicate_sets(self) -> None:
         cases = (
-            "ruda,go",
-            "go,ruda,rust",
-            "ruda,go,rust,moonbit,v",
-            "ruda,go,rust,v,v",
-            "ruda,go,rust,node",
+            "",
+            "go",
+            "go,marimay,rust",
+            "marimay,go,rust,moonbit,v",
+            "marimay,go,rust,v,v",
+            "marimay,go,rust,node",
         )
         for value in cases:
             with self.subTest(value=value), self.assertRaises(ValueError):

@@ -8,7 +8,7 @@ on:
       - ".gitea/workflows/cp21-baseline.yml"
       - "benchmarks/**"
       - "go/**"
-      - "ruda/**"
+      - "marimay/**"
       - "rust/**"
       - "verify.sh"
   workflow_dispatch:
@@ -28,13 +28,13 @@ jobs:
           path: ruda-algotithms
           persist-credentials: true
 
-      - name: Check out Ruda compiler
+      - name: Check out Marimay compiler
         env:
-          RUDA_CHECKOUT_KEY: ${{ secrets.RUDA_CHECKOUT_KEY }}
+          MMAY_CHECKOUT_KEY: ${{ secrets.MMAY_CHECKOUT_KEY }}
         run: |
-          baseline_key_dir="${RUNNER_TEMP:-/tmp}/ruda-checkout"
+          baseline_key_dir="${RUNNER_TEMP:-/tmp}/marimay-checkout"
           install -d -m 700 "$baseline_key_dir"
-          printf '%s\n' "$RUDA_CHECKOUT_KEY" >"$baseline_key_dir/id_ed25519"
+          printf '%s\n' "$MMAY_CHECKOUT_KEY" >"$baseline_key_dir/id_ed25519"
           chmod 600 "$baseline_key_dir/id_ed25519"
           printf '%s\n' \
             '[gitea.example.invalid]:2222 ssh-ed25519 ARCHIVED_HOST_KEY_REMOVED' \
@@ -63,22 +63,22 @@ jobs:
           toolchain: "1.96.0"
           components: rustfmt, clippy
 
-      - name: Build release Ruda compiler and runtime
+      - name: Build release Marimay compiler and runtime
         run: |
           cmake -S Ma -B Ma/build/release \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_C_COMPILER=clang \
-            -DRUDA_WARNINGS_AS_ERRORS=ON
+            -DMMAY_WARNINGS_AS_ERRORS=ON
           cmake --build Ma/build/release --parallel
 
       - name: Verify faithful corpus and harness tests
         working-directory: ruda-algotithms
-        run: RUDA="$(cd ../Ma && pwd)/build/release/ruda" ./verify.sh
+        run: MMAY="$(cd ../Ma && pwd)/build/release/mmay" ./verify.sh
 
       - name: Collect focused probes
         working-directory: ruda-algotithms
         run: >-
-          RUDA="$(cd ../Ma && pwd)/build/release/ruda"
+          MMAY="$(cd ../Ma && pwd)/build/release/mmay"
           ./benchmarks/probes.py
           --samples 11
           --warmups 3
@@ -87,9 +87,9 @@ jobs:
       - name: Collect algorithm corpus
         working-directory: ruda-algotithms
         run: >-
-          RUDA="$(cd ../Ma && pwd)/build/release/ruda"
+          MMAY="$(cd ../Ma && pwd)/build/release/mmay"
           ./benchmarks/run.py
-          --languages ruda,go,rust
+          --languages marimay,go,rust
           --samples 11
           --warmups 3
           --output benchmarks/results/cp21-algorithms-linux-x86_64.md

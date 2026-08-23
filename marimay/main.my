@@ -81,8 +81,8 @@ fn graphsSmoke(): bool {
 
 fn main(): Result<void, IoError> {
   if !sortingSmoke() || !structuresSmoke() || !graphsSmoke() {
-    panic("Ruda algorithms smoke test failed");
+    panic("Marimay algorithms smoke test failed");
   }
-  println("Ruda algorithms: ok")?;
+  println("Marimay algorithms: ok")?;
   return Ok();
 }

@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 
-	"example.com/ruda-algorithms/graphs"
-	"example.com/ruda-algorithms/sorting"
-	"example.com/ruda-algorithms/structures"
+	"example.com/marimay-algorithms/graphs"
+	"example.com/marimay-algorithms/sorting"
+	"example.com/marimay-algorithms/structures"
 )
 
 func main() {

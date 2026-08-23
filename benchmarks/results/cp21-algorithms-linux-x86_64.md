@@ -4,17 +4,17 @@ Generated: `2026-08-22T05:20:51+00:00`
 
 Host: `Linux 6.12.57+deb13-amd64 x86_64`; CPU: `QEMU Virtual CPU version 2.5+`.
 
-Ruda compiler executable: `/workspace/OS/ruda-algotithms/Ma/build/release/ruda`.
+Marimay compiler executable: `/workspace/OS/ruda-algotithms/Ma/build/release/mmay`.
 
-Ruda source revision: `1d728451612f5ad4d6cfb78a5785b2e57605af26`.
+Marimay source revision: `1d728451612f5ad4d6cfb78a5785b2e57605af26`.
 
 Algorithm corpus revision: `c8da4676e0e80522d795a6b7fe551e93916c9fad`.
 
-Equivalence manifest: `benchmarks/equivalence.json` (`51702f2ad1bae31fb11b9df8550f58b2034e1e7044f3d6e7448e5001399d3535`).
+Equivalence manifest: `benchmarks/equivalence.json` (`bf2f251de2d91e22d6696a50aa83babe9d1497139a305c4e1770e09c1f2f7e9b`).
 
 Samples: 11 measured after 3 warm-up runs. Reported times include process startup and one fixed checksum line; compilation is excluded.
 
-| Algorithm | Workload | Ruda median | Go median | Rust median | Ruda / Go | Ruda / Rust | Fastest |
+| Algorithm | Workload | Marimay median | Go median | Rust median | Marimay / Go | Marimay / Rust | Fastest |
 |---|---|---:|---:|---:|---:|---:|---:|
 | insertion | 50 × 2,500 generated integers | 6038.62 ms | 41.84 ms | 39.91 ms | 144.3× | 151.3× | Rust |
 | heap-sort | 5 × 100,000 generated integers | 1650.28 ms | 52.11 ms | 44.15 ms | 31.7× | 37.4× | Rust |
@@ -27,7 +27,7 @@ Samples: 11 measured after 3 warm-up runs. Reported times include process startu
 
 ## Range (min–max)
 
-| Algorithm | Ruda | Go | Rust |
+| Algorithm | Marimay | Go | Rust |
 |---|---:|---:|---:|
 | insertion | 5971.71–6498.20 ms | 41.13–45.23 ms | 39.24–41.95 ms |
 | heap-sort | 1635.99–1728.05 ms | 51.35–53.09 ms | 43.42–46.18 ms |
@@ -43,14 +43,14 @@ Samples: 11 measured after 3 warm-up runs. Reported times include process startu
 - Checksums prove matching selected results, not identical abstraction boundaries.
 - All three languages call reusable sorting, structures, and graph packages.
 - Stack, queue, heap, DSU, BFS, and O(V²) Dijkstra use matching operations and layouts;
-  Ruda and Rust model absence with Option while Go returns a value/bool pair.
+  Marimay and Rust model absence with Option while Go returns a value/bool pair.
 - Checksums cover selected results and do not prove equal compiler optimization maturity.
 
 
 ## Toolchains
 
 - python: `3.12.3`
-- ruda: `Ruda compiler 0.0.0-dev`
+- marimay: `Marimay compiler 0.0.0-dev`
 - go: `go version go1.26.6 linux/amd64`
 - rust: `rustc 1.96.0 (ac68faa20 2026-05-25)`
 

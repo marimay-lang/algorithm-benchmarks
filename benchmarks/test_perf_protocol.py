@@ -21,6 +21,7 @@ from perf_protocol import (
     summarize,
     tier1_target,
     validate_budget,
+    validate_candidate_budget,
     validate_budget_files,
     validate_compatible_results,
     validate_result,
@@ -37,7 +38,7 @@ class PerformanceProtocolTests(unittest.TestCase):
 
     def valid_result(self, schema: str = PROBE_RESULT_SCHEMA) -> dict[str, object]:
         raw = [float(value) for value in range(100, 111)]
-        events = schedule(["workload"], ["ruda"], 3, 11)
+        events = schedule(["workload"], ["marimay"], 3, 11)
         for index, event in enumerate(events):
             event["elapsed_ms"] = float(index + 1)
         result = {
@@ -73,11 +74,11 @@ class PerformanceProtocolTests(unittest.TestCase):
                 },
                 "resource": {"max_heap_bytes": 67108864},
                 "artifacts": {
-                    "ruda_compiler": {
-                        "path": "/tmp/ruda",
+                    "mmay_compiler": {
+                        "path": "/tmp/marimay",
                         "sha256": "1" * 64,
                         "revision": "test-revision",
-                        "version": "Ruda test",
+                        "version": "Marimay test",
                     },
                     "runtime": {
                         "path": "/tmp/runtime.a",
@@ -101,14 +102,14 @@ class PerformanceProtocolTests(unittest.TestCase):
                 },
                 "toolchains": {
                     "python": "test",
-                    "ruda": "test",
+                    "marimay": "test",
                     "go": "test",
                     "rust": "test",
                 },
                 "corpus_revision": "test-corpus-revision",
                 "probe_manifest": {
                     "path": "benchmarks/probes.json",
-                    "schema": "ruda.array-probes-manifest/1",
+                    "schema": "marimay.array-probes-manifest/1",
                     "sha256": "4" * 64,
                     "source_tree_sha256": "5" * 64,
                 },
@@ -118,23 +119,23 @@ class PerformanceProtocolTests(unittest.TestCase):
                     "description": "unit workload",
                     "expected_checksum": 7,
                     "expected_stdout": "workload 7\n",
-                    "commands": {"ruda": ["probe"]},
-                    "raw_ms": {"ruda": raw},
-                    "summary": {"ruda": summarize(raw)},
+                    "commands": {"marimay": ["probe"]},
+                    "raw_ms": {"marimay": raw},
+                    "summary": {"marimay": summarize(raw)},
                 }
             },
             "order": events,
         }
         if schema == ALGORITHM_RESULT_SCHEMA:
-            result["metadata"]["languages"] = ["ruda", "go", "rust"]
+            result["metadata"]["languages"] = ["marimay", "go", "rust"]
             result["metadata"]["equivalence_manifest"] = {
                 "path": "benchmarks/equivalence.json",
-                "schema": "ruda.algorithm-equivalence/1",
+                "schema": "marimay.algorithm-equivalence/1",
                 "sha256": "6" * 64,
             }
             del result["metadata"]["probe_manifest"]
             raw_by_language = {
-                "ruda": raw,
+                "marimay": raw,
                 "go": [value + 20.0 for value in raw],
                 "rust": [value + 40.0 for value in raw],
             }
@@ -143,12 +144,12 @@ class PerformanceProtocolTests(unittest.TestCase):
                 key: summarize(values) for key, values in raw_by_language.items()
             }
             result["workloads"]["workload"]["commands"] = {
-                "ruda": ["ruda-probe"],
+                "marimay": ["marimay-probe"],
                 "go": ["go-probe"],
                 "rust": ["rust-probe"],
             }
             algorithm_events = schedule(
-                ["workload"], ["ruda", "go", "rust"], 3, 11
+                ["workload"], ["marimay", "go", "rust"], 3, 11
             )
             for index, event in enumerate(algorithm_events):
                 event["elapsed_ms"] = float(index + 1)
@@ -156,7 +157,7 @@ class PerformanceProtocolTests(unittest.TestCase):
         return result
 
     def valid_budget(self, result: dict[str, object]) -> dict[str, object]:
-        summary_value = result["workloads"]["workload"]["summary"]["ruda"]
+        summary_value = result["workloads"]["workload"]["summary"]["marimay"]
         entry = budget_for_summary(self.protocol, summary_value)
         return {
             "schema": BUDGET_SCHEMA,
@@ -172,7 +173,7 @@ class PerformanceProtocolTests(unittest.TestCase):
                 "probe_result_sha256": "7" * 64,
                 "algorithm_result": "benchmarks/results/algorithms.json",
                 "algorithm_result_sha256": "8" * 64,
-                "ruda_revision": "test-revision",
+                "marimay_revision": "test-revision",
                 "corpus_revision": "test-corpus-revision",
                 "probe_manifest_sha256": "4" * 64,
                 "equivalence_manifest_sha256": "6" * 64,
@@ -188,10 +189,11 @@ class PerformanceProtocolTests(unittest.TestCase):
     ) -> dict[str, object]:
         extended = copy.deepcopy(result)
         extended["metadata"]["languages"].append(language)
+        extended["metadata"]["measurement_scope"] = "local"
         extended["metadata"]["comparison_scope"] = "local-only"
         extended["metadata"]["local_participants_manifest"] = {
             "path": "benchmarks/local_participants.json",
-            "schema": "ruda.local-benchmark-participants/1",
+            "schema": "marimay.local-benchmark-participants/1",
             "sha256": "9" * 64,
         }
         extended["metadata"]["toolchains"][language] = "test"
@@ -229,12 +231,12 @@ class PerformanceProtocolTests(unittest.TestCase):
             summarize([1.0, math.inf, 2.0])
 
     def test_schedule_rotates_and_covers_each_cell(self) -> None:
-        events = schedule(["a", "b", "c"], ["ruda", "go", "rust"], 3, 11)
+        events = schedule(["a", "b", "c"], ["marimay", "go", "rust"], 3, 11)
         self.assertEqual(len(events), 14 * 3 * 3)
         first_workloads = [
             event["workload"]
             for event in events
-            if event["participant"] == "ruda" and event["round"] == 0
+            if event["participant"] == "marimay" and event["round"] == 0
         ]
         self.assertGreater(len(set(first_workloads)), 1)
         counts: dict[tuple[str, str, str], int] = {}
@@ -255,16 +257,16 @@ class PerformanceProtocolTests(unittest.TestCase):
             return float(counter)
 
         raw, order = measure_matrix(
-            {"ruda": {"w": ["probe"]}},
+            {"marimay": {"w": ["probe"]}},
             {"w": "ok\n"},
-            ["ruda"],
+            ["marimay"],
             ["w"],
             3,
             11,
             measured,
         )
         self.assertEqual(len(order), 14)
-        self.assertEqual(raw["w"]["ruda"], [4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0])
+        self.assertEqual(raw["w"]["marimay"], [4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0])
 
     def test_valid_probe_and_algorithm_results(self) -> None:
         probes = self.valid_result()
@@ -309,6 +311,49 @@ class PerformanceProtocolTests(unittest.TestCase):
         with self.assertRaisesRegex(ProtocolError, "invalid local language matrix"):
             validate_result(algorithms, self.protocol, self.protocol_sha)
 
+    def test_focused_algorithm_result_requires_marimay_and_protocol_order(self) -> None:
+        focused = self.valid_result(ALGORITHM_RESULT_SCHEMA)
+        focused["metadata"]["languages"] = ["marimay"]
+        focused["metadata"]["measurement_scope"] = "focused"
+        workload = focused["workloads"]["workload"]
+        for key in ("raw_ms", "summary", "commands"):
+            workload[key] = {"marimay": workload[key]["marimay"]}
+        events = schedule(["workload"], ["marimay"], 3, 11)
+        for index, event in enumerate(events):
+            event["elapsed_ms"] = float(index + 1)
+        focused["order"] = events
+        validate_result(focused, self.protocol, self.protocol_sha)
+        focused["metadata"]["measurement_scope"] = "tier1"
+        with self.assertRaisesRegex(ProtocolError, "complete language matrix"):
+            validate_result(focused, self.protocol, self.protocol_sha)
+        focused["metadata"]["measurement_scope"] = "focused"
+        focused["metadata"]["languages"] = ["go", "marimay"]
+        with self.assertRaisesRegex(ProtocolError, "protocol order"):
+            validate_result(focused, self.protocol, self.protocol_sha)
+
+    def test_candidate_budget_accepts_focused_new_revision(self) -> None:
+        probes = self.valid_result()
+        algorithms = self.valid_result(ALGORITHM_RESULT_SCHEMA)
+        budget = self.valid_budget(probes)
+        probes["metadata"]["artifacts"]["mmay_compiler"]["revision"] = "new"
+        algorithms["metadata"]["artifacts"]["mmay_compiler"]["revision"] = "new"
+        self.assertEqual(
+            validate_candidate_budget(
+                budget,
+                {"probes": probes, "algorithms": algorithms},
+                self.protocol_sha,
+            ),
+            [],
+        )
+        probes["workloads"]["workload"]["summary"]["marimay"]["median_ms"] = (
+            budget["suites"]["probes"]["workload"]["maximum_median_ms"] + 1.0
+        )
+        failures = validate_candidate_budget(
+            budget, {"probes": probes}, self.protocol_sha
+        )
+        self.assertEqual(len(failures), 1)
+        self.assertIn("probes/workload", failures[0])
+
     def test_tier1_platform_metadata_is_canonical_and_consistent(self) -> None:
         cases = {
             ("Linux", "x86_64"): "linux-x86_64",
@@ -342,7 +387,7 @@ class PerformanceProtocolTests(unittest.TestCase):
         with self.assertRaisesRegex(ProtocolError, "cpu"):
             validate_result(incomplete, self.protocol, self.protocol_sha)
         drift = self.valid_result()
-        drift["workloads"]["workload"]["summary"]["ruda"]["median_ms"] += 1
+        drift["workloads"]["workload"]["summary"]["marimay"]["median_ms"] += 1
         with self.assertRaisesRegex(ProtocolError, "summary drift"):
             validate_result(drift, self.protocol, self.protocol_sha)
         unavailable = self.valid_result()

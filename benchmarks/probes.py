@@ -21,6 +21,7 @@ from perf_environment import (
 from perf_protocol import (
     PROBE_RESULT_SCHEMA,
     ProtocolError,
+    load_json,
     load_protocol,
     measure_matrix,
     sha256_file,
@@ -31,10 +32,18 @@ from perf_protocol import (
 from probe_manifest import load_and_validate, manifest_sha256, source_tree_sha256
 
 
+PROBE_GROUPS = {
+    "scalar-storage": ("density",),
+    "capacity": ("growth", "reserved-growth"),
+    "nested-traversal": ("nested-traversal",),
+    "checked-integer": ("checked-loop",),
+}
+
+
 def parse_args(protocol: dict[str, Any]) -> argparse.Namespace:
     measurement = protocol["measurement"]
     parser = argparse.ArgumentParser(
-        description="Build and measure focused Ruda managed-array probes."
+        description="Build and measure focused Marimay managed-array probes."
     )
     parser.add_argument(
         "--samples", type=int, default=measurement["minimum_samples"]
@@ -46,6 +55,20 @@ def parse_args(protocol: dict[str, Any]) -> argparse.Namespace:
         "--timeout", type=int, default=measurement["timeout_seconds"]
     )
     parser.add_argument("--skip-build", action="store_true")
+    parser.add_argument(
+        "--probe",
+        action="append",
+        metavar="NAME",
+        help=(
+            "measure one probe or checkpoint group; repeatable. "
+            "Groups: capacity, nested-traversal, checked-integer"
+        ),
+    )
+    parser.add_argument(
+        "--baseline",
+        type=pathlib.Path,
+        help="optional historical probe result used for comparison context",
+    )
     parser.add_argument(
         "--output",
         type=pathlib.Path,
@@ -61,23 +84,64 @@ def parse_args(protocol: dict[str, Any]) -> argparse.Namespace:
     return args
 
 
+def select_probes(
+    probes: Sequence[dict[str, Any]], requested: Sequence[str] | None
+) -> list[dict[str, Any]]:
+    if not requested:
+        return list(probes)
+    known = {probe["id"] for probe in probes}
+    selected: set[str] = set()
+    for name in requested:
+        members = PROBE_GROUPS.get(name, (name,))
+        unknown = [member for member in members if member not in known]
+        if unknown:
+            choices = ", ".join(sorted(known | set(PROBE_GROUPS)))
+            raise ProtocolError(f"unknown probe {name!r}; expected one of: {choices}")
+        selected.update(members)
+    return [probe for probe in probes if probe["id"] in selected]
+
+
+def resolve_result(repository: pathlib.Path, path: pathlib.Path) -> pathlib.Path:
+    result = path if path.is_absolute() else repository / path
+    return result.with_suffix(".json") if result.suffix == ".md" else result
+
+
+def validate_reference_baseline(
+    baseline: dict[str, Any],
+    result: dict[str, Any],
+    protocol: dict[str, Any],
+    protocol_sha: str,
+) -> None:
+    validate_result(baseline, protocol, protocol_sha)
+    if baseline.get("schema") != PROBE_RESULT_SCHEMA:
+        raise ProtocolError("probe comparison baseline has the wrong result schema")
+    baseline_platform = baseline["metadata"]["platform"]["id"]
+    result_platform = result["metadata"]["platform"]["id"]
+    if baseline_platform != result_platform:
+        raise ProtocolError("probe comparison baseline uses a different platform")
+    missing = set(result["workloads"]) - set(baseline["workloads"])
+    if missing:
+        names = ", ".join(sorted(missing))
+        raise ProtocolError(f"probe comparison baseline lacks workloads: {names}")
+
+
 def build_probes(
     repository: pathlib.Path,
-    ruda_binary: pathlib.Path,
+    mmay_binary: pathlib.Path,
     probes: Sequence[dict[str, Any]],
     build_directory: pathlib.Path,
     max_heap_bytes: int,
 ) -> dict[str, dict[str, list[str]]]:
-    ruda_root = repository / "ruda"
-    run_checked([str(ruda_binary), "fmt", str(ruda_root), "--check"], cwd=repository)
-    run_checked([str(ruda_binary), "check", str(ruda_root)], cwd=repository)
-    commands: dict[str, dict[str, list[str]]] = {"ruda": {}}
+    marimay_root = repository / "marimay"
+    run_checked([str(mmay_binary), "fmt", str(marimay_root), "--check"], cwd=repository)
+    run_checked([str(mmay_binary), "check", str(marimay_root)], cwd=repository)
+    commands: dict[str, dict[str, list[str]]] = {"marimay": {}}
     for probe in probes:
         probe_id = probe["id"]
-        output = build_directory / f"ruda-probe-{probe_id}"
+        output = build_directory / f"marimay-probe-{probe_id}"
         run_checked(
             [
-                str(ruda_binary),
+                str(mmay_binary),
                 "build",
                 str(repository / probe["source_directory"]),
                 "--release",
@@ -89,19 +153,19 @@ def build_probes(
             cwd=repository,
             timeout=600,
         )
-        commands["ruda"][probe_id] = [str(output)]
+        commands["marimay"][probe_id] = [str(output)]
     return commands
 
 
 def existing_probes(
     probes: Sequence[dict[str, Any]], build_directory: pathlib.Path
 ) -> dict[str, dict[str, list[str]]]:
-    commands: dict[str, dict[str, list[str]]] = {"ruda": {}}
+    commands: dict[str, dict[str, list[str]]] = {"marimay": {}}
     for probe in probes:
-        path = build_directory / f"ruda-probe-{probe['id']}"
+        path = build_directory / f"marimay-probe-{probe['id']}"
         if not path.is_file() or not os.access(path, os.X_OK):
             raise ProtocolError(f"missing binary for --skip-build: {path}")
-        commands["ruda"][probe["id"]] = [str(path)]
+        commands["marimay"][probe["id"]] = [str(path)]
     return commands
 
 
@@ -133,25 +197,25 @@ def main() -> None:
     protocol_file, protocol = load_protocol(repository)
     args = parse_args(protocol)
     manifest_file, manifest = load_and_validate(repository)
-    probes = manifest["probes"]
+    probes = select_probes(manifest["probes"], args.probe)
     output = args.output if args.output.is_absolute() else repository / args.output
     if output.suffix != ".json":
         raise SystemExit("probe --output must use the .json suffix")
     build_directory = repository / "benchmarks" / ".build" / "probes"
     build_directory.mkdir(parents=True, exist_ok=True)
-    default_ruda = repository.parent / "Ma" / "build" / "release" / "ruda"
-    ruda_binary = pathlib.Path(os.environ.get("RUDA", str(default_ruda))).resolve()
+    default_mmay = repository.parent / "Ma" / "build" / "release" / "mmay"
+    mmay_binary = pathlib.Path(os.environ.get("MMAY", str(default_mmay))).resolve()
     max_heap_bytes = protocol["resource"]["max_heap_bytes"]
     commands = (
         existing_probes(probes, build_directory)
         if args.skip_build
         else build_probes(
-            repository, ruda_binary, probes, build_directory, max_heap_bytes
+            repository, mmay_binary, probes, build_directory, max_heap_bytes
         )
     )
     metadata = capture_metadata(
         repository,
-        ruda_binary,
+        mmay_binary,
         warmups=args.warmups,
         samples=args.samples,
         timeout_seconds=args.timeout,
@@ -165,6 +229,7 @@ def main() -> None:
         "sha256": manifest_sha256(repository),
         "source_tree_sha256": source_tree_sha256(repository, manifest),
     }
+    metadata["probe_selection"] = [probe["id"] for probe in probes]
     workload_ids = [probe["id"] for probe in probes]
     expected = {
         probe["id"]: f"{probe['id']} {probe['expected_checksum']}\n"
@@ -173,7 +238,7 @@ def main() -> None:
     raw, order = measure_matrix(
         commands,
         expected,
-        ["ruda"],
+        ["marimay"],
         workload_ids,
         args.warmups,
         args.samples,
@@ -189,7 +254,7 @@ def main() -> None:
             "description": probe["description"],
             "expected_checksum": probe["expected_checksum"],
             "expected_stdout": expected[probe["id"]],
-            "commands": {"ruda": commands["ruda"][probe["id"]]},
+            "commands": {"marimay": commands["marimay"][probe["id"]]},
             "raw_ms": raw[probe["id"]],
             "summary": summarized[probe["id"]],
         }
@@ -206,13 +271,22 @@ def main() -> None:
         "workloads": workloads,
         "order": order,
     }
-    validate_result(result, protocol, sha256_file(protocol_file))
+    protocol_sha = sha256_file(protocol_file)
+    validate_result(result, protocol, protocol_sha)
+    if args.baseline is not None:
+        baseline_path = resolve_result(repository, args.baseline)
+        baseline = load_json(baseline_path)
+        validate_reference_baseline(baseline, result, protocol, protocol_sha)
+        metadata["comparison_baseline"] = {
+            "path": str(baseline_path.resolve()),
+            "sha256": sha256_file(baseline_path),
+        }
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(
         json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
     for workload in workload_ids:
-        stats = summarized[workload]["ruda"]
+        stats = summarized[workload]["marimay"]
         print(
             f"{workload}: median={stats['median_ms']:.3f} ms, "
             f"MAD={stats['mad_ms']:.3f} ms, IQR={stats['iqr_ms']:.3f} ms"

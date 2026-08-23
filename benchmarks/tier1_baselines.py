@@ -16,7 +16,7 @@ from perf_protocol import (
 )
 from validate_results import result_pair
 
-REGISTRY_SCHEMA = "ruda.tier1-performance-baselines/2"
+REGISTRY_SCHEMA = "marimay.tier1-performance-baselines/2"
 CHECKPOINT_21_GATE = "checkpoint-21"
 PUBLIC_ALPHA_GATE = "public-alpha"
 CHECKPOINT_21_TARGETS = ("linux-x86_64",)

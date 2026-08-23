@@ -3,11 +3,11 @@
 set -euo pipefail
 
 repository_root=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-ruda_binary=${RUDA:-"$repository_root/../Ma/build/debug/ruda"}
+mmay_binary=${MMAY:-"$repository_root/../Ma/build/rebrand-debug/mmay"}
 
-if [[ ! -x "$ruda_binary" ]]; then
-  echo "Ruda executable not found: $ruda_binary" >&2
-  echo "Build Ruda or set RUDA=/absolute/path/to/ruda" >&2
+if [[ ! -x "$mmay_binary" ]]; then
+  echo "Marimay executable not found: $mmay_binary" >&2
+  echo "Build Marimay or set MMAY=/absolute/path/to/mmay" >&2
   exit 2
 fi
 
@@ -39,25 +39,25 @@ python3 -m unittest discover -s "$repository_root/benchmarks" -p 'test_*.py'
 python3 "$repository_root/benchmarks/validate_tier1_baselines.py" \
   --gate checkpoint-21
 
-echo "== Ruda =="
-"$ruda_binary" fmt "$repository_root/ruda" --check
-"$ruda_binary" check "$repository_root/ruda"
-"$ruda_binary" check "$repository_root/ruda/benchmarks/core"
-expect_stdout ruda-vm $'Ruda algorithms: ok\n' \
-  "$ruda_binary" run "$repository_root/ruda"
-expect_stdout ruda-test-both \
+echo "== Marimay =="
+"$mmay_binary" fmt "$repository_root/marimay" --check
+"$mmay_binary" check "$repository_root/marimay"
+"$mmay_binary" check "$repository_root/marimay/benchmarks/core"
+expect_stdout marimay-vm $'Marimay algorithms: ok\n' \
+  "$mmay_binary" run "$repository_root/marimay"
+expect_stdout marimay-test-both \
   $'test study/algorithms.sortingAlgorithms ... ok\n'\
 $'test study/algorithms.dataStructures ... ok\n'\
 $'test study/algorithms.graphAlgorithms ... ok\n'\
 $'test study/algorithms.invalidGraphInputsAreRejected ... ok\n'\
 $'test result: ok. 4 passed; 0 failed\n' \
-  "$ruda_binary" test "$repository_root/ruda" --engine both
-"$ruda_binary" build "$repository_root/ruda" --output "$verify_tmp/ruda-algorithms-debug"
-expect_stdout ruda-native-debug $'Ruda algorithms: ok\n' \
-  "$verify_tmp/ruda-algorithms-debug"
-"$ruda_binary" build "$repository_root/ruda" --release --output "$verify_tmp/ruda-algorithms-release"
-expect_stdout ruda-native-release $'Ruda algorithms: ok\n' \
-  "$verify_tmp/ruda-algorithms-release"
+  "$mmay_binary" test "$repository_root/marimay" --engine both
+"$mmay_binary" build "$repository_root/marimay" --output "$verify_tmp/marimay-algorithms-debug"
+expect_stdout marimay-native-debug $'Marimay algorithms: ok\n' \
+  "$verify_tmp/marimay-algorithms-debug"
+"$mmay_binary" build "$repository_root/marimay" --release --output "$verify_tmp/marimay-algorithms-release"
+expect_stdout marimay-native-release $'Marimay algorithms: ok\n' \
+  "$verify_tmp/marimay-algorithms-release"
 
 echo "== Go =="
 (
@@ -75,7 +75,7 @@ echo "== Rust =="
   cargo clippy --all-targets -- -D warnings
   cargo test --all-targets
   expect_stdout rust-correctness $'Rust algorithms: ok\n' \
-    cargo run --quiet --bin ruda-algorithms
+    cargo run --quiet --bin marimay-algorithms
 )
 
 echo "== Benchmark harness =="
@@ -94,6 +94,7 @@ python3 -m py_compile \
   "$repository_root/benchmarks/test_perf_environment.py" \
   "$repository_root/benchmarks/test_perf_protocol.py" \
   "$repository_root/benchmarks/test_probe_manifest.py" \
+  "$repository_root/benchmarks/test_probes.py" \
   "$repository_root/benchmarks/test_tier1_baselines.py" \
   "$repository_root/benchmarks/tier1_baselines.py" \
   "$repository_root/benchmarks/validate_equivalence.py" \

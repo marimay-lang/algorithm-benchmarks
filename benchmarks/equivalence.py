@@ -8,8 +8,8 @@ import pathlib
 from typing import Any
 
 
-SCHEMA = "ruda.algorithm-equivalence/1"
-EXPECTED_LANGUAGES = ["ruda", "go", "rust"]
+SCHEMA = "marimay.algorithm-equivalence/1"
+EXPECTED_LANGUAGES = ["marimay", "go", "rust"]
 EXPECTED_WORKLOADS = [
     "insertion",
     "heap-sort",
@@ -45,7 +45,7 @@ def validate_manifest(manifest: Any) -> dict[str, Any]:
     _require(manifest.get("schema") == SCHEMA, f"schema must be {SCHEMA}")
     _require(
         manifest.get("languages") == EXPECTED_LANGUAGES,
-        "languages must be exactly ruda, go, rust",
+        "languages must be exactly marimay, go, rust",
     )
     generator = manifest.get("generator")
     _require(isinstance(generator, dict), "generator must be an object")
@@ -74,7 +74,7 @@ def validate_manifest(manifest: Any) -> dict[str, Any]:
     _require(isinstance(global_contracts, dict), "global_source_contracts missing")
     _require(
         list(global_contracts) == EXPECTED_LANGUAGES,
-        "global source contracts must cover exactly ruda, go, rust",
+        "global source contracts must cover exactly marimay, go, rust",
     )
     for language in EXPECTED_LANGUAGES:
         contract = global_contracts[language]
@@ -109,7 +109,7 @@ def validate_manifest(manifest: Any) -> dict[str, Any]:
         _require(isinstance(implementations, dict), f"{identifier}.implementations missing")
         _require(
             list(implementations) == EXPECTED_LANGUAGES,
-            f"{identifier} must cover exactly ruda, go, rust",
+            f"{identifier} must cover exactly marimay, go, rust",
         )
         for language in EXPECTED_LANGUAGES:
             implementation = implementations[language]

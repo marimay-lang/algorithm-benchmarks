@@ -1,7 +1,7 @@
 {
-  "schema": "ruda.algorithm-equivalence/1",
+  "schema": "marimay.algorithm-equivalence/1",
   "languages": [
-    "ruda",
+    "marimay",
     "go",
     "rust"
   ],
@@ -29,7 +29,7 @@
     ],
     "excludes": [
       "compilation",
-      "ruda run and VM execution",
+      "mmay run and VM execution",
       "debug-runtime archive measurements",
       "invalid-input probes"
     ]
@@ -40,8 +40,8 @@
     "language_boundary": "Rust graph indices use usize, so a negative index is unrepresentable rather than accepted"
   },
   "global_source_contracts": {
-    "ruda": {
-      "path": "ruda/benchmarks/core/benchmarks.ruda",
+    "marimay": {
+      "path": "marimay/benchmarks/core/benchmarks.my",
       "required_fragments": [
         "import * as graphs from \"study/algorithms/graphs\";",
         "import * as sorting from \"study/algorithms/sorting\";",
@@ -60,9 +60,9 @@
     "go": {
       "path": "go/cmd/benchmark/main.go",
       "required_fragments": [
-        "example.com/ruda-algorithms/graphs",
-        "example.com/ruda-algorithms/sorting",
-        "example.com/ruda-algorithms/structures"
+        "example.com/marimay-algorithms/graphs",
+        "example.com/marimay-algorithms/sorting",
+        "example.com/marimay-algorithms/structures"
       ],
       "forbidden_fragments": [
         "func insertionSort(",
@@ -74,9 +74,9 @@
     "rust": {
       "path": "rust/src/bin/benchmark.rs",
       "required_fragments": [
-        "use ruda_algorithms::graphs::{self, Edge};",
-        "use ruda_algorithms::sorting;",
-        "use ruda_algorithms::structures::{Dsu, MinHeap, Queue, Stack};"
+        "use marimay_algorithms::graphs::{self, Edge};",
+        "use marimay_algorithms::sorting;",
+        "use marimay_algorithms::structures::{Dsu, MinHeap, Queue, Stack};"
       ],
       "forbidden_fragments": [
         "fn insertion_sort(",
@@ -96,7 +96,7 @@
       "representation": "one contiguous logical array of signed integers",
       "checks": "checksum the first, middle, and last sorted values after every call",
       "implementations": {
-        "ruda": {
+        "marimay": {
           "required_fragments": [
             "repeat < 50",
             "generatedValues(2500, repeat + 1)",
@@ -128,7 +128,7 @@
       "representation": "one contiguous logical array of signed integers",
       "checks": "checksum the first, middle, and last sorted values after every call",
       "implementations": {
-        "ruda": {
+        "marimay": {
           "required_fragments": [
             "repeat < 5",
             "generatedValues(100_000, repeat + 101)",
@@ -160,7 +160,7 @@
       "representation": "package-owned stack over one growable signed-integer array with no shadow logical size",
       "checks": "checksum every value in LIFO removal order",
       "implementations": {
-        "ruda": {
+        "marimay": {
           "required_fragments": [
             "index < 1_000_000",
             "structures.newStack()",
@@ -195,7 +195,7 @@
       "representation": "package-owned FIFO queue over one growable signed-integer array and a logical head index",
       "checks": "checksum every value in FIFO removal order",
       "implementations": {
-        "ruda": {
+        "marimay": {
           "required_fragments": [
             "index < 1_000_000",
             "structures.newQueue()",
@@ -230,7 +230,7 @@
       "representation": "package-owned binary min-heap over one growable signed-integer array with no shadow logical size",
       "checks": "checksum every value in ascending removal order",
       "implementations": {
-        "ruda": {
+        "marimay": {
           "required_fragments": [
             "index < 500_000",
             "structures.newMinHeap()",
@@ -265,7 +265,7 @@
       "representation": "package-owned parent and rank arrays plus a component count",
       "checks": "start with the final component count and checksum every 97th representative",
       "implementations": {
-        "ruda": {
+        "marimay": {
           "required_fragments": [
             "const size = 100_000;",
             "operation < 5_000_000",
@@ -303,7 +303,7 @@
       "representation": "nested integer arrays with four neighbors per node; Option/pair reports invalid input",
       "checks": "checksum distances at (start + size / 2) % size and (start + size / 3) % size",
       "implementations": {
-        "ruda": {
+        "marimay": {
           "required_fragments": [
             "const size = 20_000;",
             "repeat < 300",
@@ -338,7 +338,7 @@
       "representation": "nested arrays of records with target and signed weight fields; Option/pair reports invalid input",
       "checks": "checksum distances to node size - 1 and node size / 2",
       "implementations": {
-        "ruda": {
+        "marimay": {
           "required_fragments": [
             "const size = 800;",
             "repeat < 80",

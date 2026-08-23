@@ -34,26 +34,26 @@ class EquivalenceManifestTests(unittest.TestCase):
     def test_rejects_missing_language_contract(self) -> None:
         manifest = copy.deepcopy(self.manifest)
         del manifest["workloads"][0]["implementations"]["rust"]
-        with self.assertRaisesRegex(EquivalenceError, "exactly ruda, go, rust"):
+        with self.assertRaisesRegex(EquivalenceError, "exactly marimay, go, rust"):
             validate_manifest(manifest)
 
     def test_rejects_missing_reusable_source_fragment(self) -> None:
         manifest = copy.deepcopy(self.manifest)
-        manifest["global_source_contracts"]["ruda"]["path"] = "ruda/missing.ruda"
-        with self.assertRaisesRegex(EquivalenceError, "cannot read ruda"):
+        manifest["global_source_contracts"]["marimay"]["path"] = "marimay/missing.my"
+        with self.assertRaisesRegex(EquivalenceError, "cannot read marimay"):
             validate_sources(self.repository, manifest)
 
     def test_rejects_forbidden_inline_source_fragment(self) -> None:
         manifest = copy.deepcopy(self.manifest)
         marker = "FORBIDDEN_CP20_INLINE_MARKER"
-        manifest["global_source_contracts"]["ruda"]["forbidden_fragments"].append(
+        manifest["global_source_contracts"]["marimay"]["forbidden_fragments"].append(
             marker
         )
         with tempfile.TemporaryDirectory() as directory:
             repository = pathlib.Path(directory)
             self._copy_benchmark_sources(repository, manifest)
-            ruda_contract = manifest["global_source_contracts"]["ruda"]
-            path = repository / ruda_contract["path"]
+            marimay_contract = manifest["global_source_contracts"]["marimay"]
+            path = repository / marimay_contract["path"]
             path.write_text(path.read_text(encoding="utf-8") + marker, encoding="utf-8")
             with self.assertRaisesRegex(EquivalenceError, "forbidden inline"):
                 validate_sources(repository, manifest)

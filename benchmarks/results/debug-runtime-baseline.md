@@ -1,15 +1,15 @@
 # Archived debug-runtime baseline
 
 Status: retained as toolchain-configuration evidence; do not compare this table
-as optimized Ruda versus Go/Rust.
+as optimized Marimay versus Go/Rust.
 
 Generated on 2026-08-18 on Apple M2 with three measured samples after one
-warm-up run. The harness invoked `build/debug/ruda build --release`: generated C
+warm-up run. The harness invoked `build/debug/mmay build --release`: generated C
 used `-O2`, but the output linked the unoptimized native runtime archive embedded
-by the debug compiler build. The Ruda DSU inline benchmark also lacked path
+by the debug compiler build. The Marimay DSU inline benchmark also lacked path
 compression in this archived run.
 
-| Algorithm | Ruda median | Go median | Rust median |
+| Algorithm | Marimay median | Go median | Rust median |
 |---|---:|---:|---:|
 | insertion | 17915.10 ms | 29.95 ms | 28.38 ms |
 | heap sort | 4481.92 ms | 39.77 ms | 22.56 ms |

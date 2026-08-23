@@ -1,12 +1,12 @@
 # Benchmark methodology
 
-`run.py` сравнивает восемь одинаковых детерминированных workload в Ruda, Go и
-Rust. `probes.py` отдельно измеряет девять focused Ruda workload, которые
+`run.py` сравнивает восемь одинаковых детерминированных workload в Marimay, Go и
+Rust. `probes.py` отдельно измеряет девять focused Marimay workload, которые
 разделяют стоимость scalar get/set, доказуемых и динамических bounds,
 growth/reserve, плотного scalar storage, nested traversal и checked integer
-loops. Для Ruda оба harness вызывают `ruda build --release` с фиксированным
+loops. Для Marimay оба harness вызывают `mmay build --release` с фиксированным
 managed-heap budget, а затем измеряют native executable напрямую. Компиляция и
-`ruda run`/VM в эти результаты не входят.
+`mmay run`/VM в эти результаты не входят.
 
 Machine-readable workload contract находится в
 [`equivalence.json`](equivalence.json). Он фиксирует LCG, checksum, размеры,
@@ -25,11 +25,11 @@ release profile, 3 warmup и не менее 11 нечётных measured sample
 ## Checkpoint 21 and public-alpha commands
 
 ```sh
-RUDA=/absolute/path/to/release/ruda \
+MMAY=/absolute/path/to/release/mmay \
   ./benchmarks/probes.py --samples 11 --warmups 3 \
   --output benchmarks/results/cp21-probes-PLATFORM.json
-RUDA=/absolute/path/to/release/ruda \
-  ./benchmarks/run.py --languages ruda,go,rust --samples 11 --warmups 3 \
+MMAY=/absolute/path/to/release/mmay \
+  ./benchmarks/run.py --languages marimay,go,rust --samples 11 --warmups 3 \
   --output benchmarks/results/cp21-algorithms-PLATFORM.md
 ./benchmarks/validate_results.py \
   benchmarks/results/cp21-probes-PLATFORM.json \
@@ -46,15 +46,35 @@ Linux arm64, macOS arm64, macOS x86_64 и Windows x86_64. Поэтому зав�
 checkpoint 21 не выдаётся за полную Tier 1 готовность публичной альфы. Linux
 baseline отдельно проверяется `make benchmark-validate-platform`.
 
-По умолчанию используется `../Ma/build/release/ruda`. После checkpoint 13
+По умолчанию используется `../Ma/build/release/mmay`. После checkpoint 13
 requested output profile выбирает согласованный release runtime независимо от
 build profile compiler executable. Harness проверяет release runtime manifest,
 а не полагается на имя compiler path.
 
 `--skip-build` допустим только для немедленного локального повтора уже
 проверенных artifacts. Published baseline command всегда сначала собирает
-исполняемые файлы. Tier 1 algorithm report содержит полный `ruda,go,rust`
-набор в protocol order; частичная language matrix не принимается этой схемой.
+исполняемые файлы. Tier 1 algorithm report содержит полный `marimay,go,rust`
+набор в protocol order. Focused checkpoint report может выбрать ordered subset
+через `--languages` и помечается `measurement_scope=focused`; он сравнивается
+только как candidate и не может стать reviewed Tier 1 baseline.
+
+После checkpoint 24 focused performance gates могут собирать только нужную
+группу probes, не меняя measurement protocol:
+
+```sh
+./benchmarks/probes.py --probe capacity --output benchmarks/results/cp25-capacity-PLATFORM.json
+./benchmarks/probes.py --probe nested-traversal --output benchmarks/results/cp26-nested-PLATFORM.json
+./benchmarks/probes.py --probe checked-integer --output benchmarks/results/cp27-integer-PLATFORM.json
+./benchmarks/validate_results.py benchmarks/results/cp25-capacity-PLATFORM.json
+```
+
+`capacity` выбирает `growth` и `reserved-growth`; `nested-traversal` и
+`checked-integer` выбирают одноимённый nested probe и `checked-loop`.
+Валидатор принимает полный или focused candidate и сравнивает присутствующие
+workload с reviewed platform ceilings. Строгая привязка exact paths/SHA-256
+сохраняется для самих checkpoint-21 baseline. `--baseline` принимает
+исторический algorithm report того же platform/workload set как comparison
+context, но не подменяет reviewed budget.
 
 ## Локальные дополнительные языки
 
@@ -62,9 +82,9 @@ TypeScript/Bun, V и MoonBit подключаются только явным р
 матрицы:
 
 ```sh
-RUDA=/absolute/path/to/release/ruda \
+MMAY=/absolute/path/to/release/mmay \
   ./benchmarks/run.py \
-  --languages ruda,go,rust,typescript,v,moonbit \
+  --languages marimay,go,rust,typescript,v,moonbit \
   --samples 11 --warmups 3 \
   --output benchmarks/results/local-six-languages.md
 ```
@@ -80,7 +100,7 @@ workload IDs и checksum с canonical [`equivalence.json`](equivalence.json), н
 использоваться `validate_results.py`, reviewed budget или Tier 1 registry.
 `verify.sh` проверяет manifest, source contracts и негативные protocol tests,
 но не требует и не устанавливает Bun, V или MoonBit. Поэтому стандартный CI и
-`make benchmark` остаются на `ruda,go,rust`.
+`make benchmark` остаются на `marimay,go,rust`.
 
 ## Что измеряется
 
@@ -113,7 +133,7 @@ revisions и resource budget.
 
 Валидатор отклоняет debug runtime, неполные metadata, NaN/Infinity,
 недостаточные samples, несовместимую baseline и дрейф checksum/source manifest.
-Порог — не cross-language ratio. Для каждого Ruda workload и platform он равен
+Порог — не cross-language ratio. Для каждого Marimay workload и platform он равен
 `baseline median × (1 + max(10%, noise envelope))`, где envelope — максимум из
 2%, `3 × MAD / median` и `IQR / median`.
 

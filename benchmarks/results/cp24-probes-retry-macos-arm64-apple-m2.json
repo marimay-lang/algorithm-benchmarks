@@ -1,9 +1,9 @@
 {
-  "schema": "ruda.array-probes/1",
+  "schema": "marimay.array-probes/1",
   "protocol": {
-    "schema": "ruda.performance-protocol/1",
+    "schema": "marimay.performance-protocol/1",
     "path": "benchmarks/performance_protocol.json",
-    "sha256": "0b43886b4e02ee72e8ea4be8eca6c3fb228336bcf525522723a4b40c3b862b19"
+    "sha256": "a94f5be850eb26fd821b3630b16254f145a8e30c1b8e7a63fd7230ed761dd4a8"
   },
   "metadata": {
     "generated_at": "2026-08-22T15:58:03+07:00",
@@ -41,16 +41,16 @@
       "max_heap_bytes": 67108864
     },
     "artifacts": {
-      "ruda_compiler": {
-        "path": "/home/marimay/Projects/ai-projects/Ma/build/release/ruda",
+      "mmay_compiler": {
+        "path": "/home/marimay/Projects/ai-projects/Ma/build/release/mmay",
         "sha256": "cca6dee03590a964d976996c2c8c64801f0c5e12f1678f7a1a8d8d5a10f11fc2",
         "revision": "17b7a1f1dcffd17659d84244c5f9981cdba867ea",
-        "version": "Ruda compiler 0.0.0-dev\nruntime 0.0.0-dev\nlanguage 0.1-design\nbytecode unavailable\nstandard-library unavailable\nbootstrap-stage 0\nhost Darwin/arm64\ntargets native-host"
+        "version": "Marimay compiler 0.0.0-dev\nruntime 0.0.0-dev\nlanguage 0.1-design\nbytecode unavailable\nstandard-library unavailable\nbootstrap-stage 0\nhost Darwin/arm64\ntargets native-host"
       },
       "runtime": {
-        "path": "/home/marimay/Projects/ai-projects/Ma/build/release/native-runtime/release/libruda_native_runtime_release.a",
+        "path": "/home/marimay/Projects/ai-projects/Ma/build/release/native-runtime/release/libmmay_native_runtime_release.a",
         "sha256": "298fc09c2e120d0493fed58fe09b2ec45ebc883943710dc1477de713a89ef7b9",
-        "manifest_path": "/home/marimay/Projects/ai-projects/Ma/build/release/native-runtime/release/ruda-native-runtime.manifest",
+        "manifest_path": "/home/marimay/Projects/ai-projects/Ma/build/release/native-runtime/release/mmay-native-runtime.manifest",
         "manifest_sha256": "326b650acb58b1d66f98291cf9177ef825ae461a45fc84b9be5ddc6016e661f4",
         "profile": "release",
         "runtime": "0.0.0-dev",
@@ -83,16 +83,16 @@
     },
     "toolchains": {
       "python": "3.9.6",
-      "ruda": "Ruda compiler 0.0.0-dev",
+      "marimay": "Marimay compiler 0.0.0-dev",
       "go": "go version go1.26.4 darwin/arm64",
       "rust": "rustc 1.96.0 (ac68faa20 2026-05-25)"
     },
     "corpus_revision": "e74bd93b89b13b8aebd537d40326d7630f5ed461",
     "probe_manifest": {
       "path": "benchmarks/probes.json",
-      "schema": "ruda.array-probes-manifest/1",
-      "sha256": "25bcb922a294a316784e8cf382c239fc62e9b7cbe7d88618c3f61a326c4bd6ab",
-      "source_tree_sha256": "571d2aa80904e20b90c7b893c32c7e9e63a8b0c04484d72fa5bfe6c5e3a5d650"
+      "schema": "marimay.array-probes-manifest/1",
+      "sha256": "f7a8a378036cfcb1d121a2e49a6d32ba3a3a34840821a0d4e9dc806d3802af0a",
+      "source_tree_sha256": "20764d6be339813a07e181021f649c57be38251f556a5d00d6eed9248968e219"
     }
   },
   "workloads": {
@@ -102,12 +102,12 @@
       "expected_checksum": 16031036,
       "expected_stdout": "scalar-get 16031036\n",
       "commands": {
-        "ruda": [
-          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/ruda-probe-scalar-get"
+        "marimay": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/marimay-probe-scalar-get"
         ]
       },
       "raw_ms": {
-        "ruda": [
+        "marimay": [
           90.127584,
           90.447125,
           89.545,
@@ -122,7 +122,7 @@
         ]
       },
       "summary": {
-        "ruda": {
+        "marimay": {
           "median_ms": 90.127584,
           "mad_ms": 0.31954100000000096,
           "q1_ms": 89.667875,
@@ -140,12 +140,12 @@
       "expected_checksum": 2051754,
       "expected_stdout": "scalar-set 2051754\n",
       "commands": {
-        "ruda": [
-          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/ruda-probe-scalar-set"
+        "marimay": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/marimay-probe-scalar-set"
         ]
       },
       "raw_ms": {
-        "ruda": [
+        "marimay": [
           108.712125,
           107.94575,
           107.971458,
@@ -160,7 +160,7 @@
         ]
       },
       "summary": {
-        "ruda": {
+        "marimay": {
           "median_ms": 108.041459,
           "mad_ms": 0.27616600000000346,
           "q1_ms": 107.94575,
@@ -178,12 +178,12 @@
       "expected_checksum": 48334393,
       "expected_stdout": "proven-bounds 48334393\n",
       "commands": {
-        "ruda": [
-          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/ruda-probe-proven-bounds"
+        "marimay": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/marimay-probe-proven-bounds"
         ]
       },
       "raw_ms": {
-        "ruda": [
+        "marimay": [
           232.473542,
           235.8595,
           235.621792,
@@ -198,7 +198,7 @@
         ]
       },
       "summary": {
-        "ruda": {
+        "marimay": {
           "median_ms": 235.785125,
           "mad_ms": 0.7480830000000083,
           "q1_ms": 232.955458,
@@ -216,12 +216,12 @@
       "expected_checksum": 999770104,
       "expected_stdout": "unproven-bounds 999770104\n",
       "commands": {
-        "ruda": [
-          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/ruda-probe-unproven-bounds"
+        "marimay": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/marimay-probe-unproven-bounds"
         ]
       },
       "raw_ms": {
-        "ruda": [
+        "marimay": [
           228.385,
           227.908,
           228.659709,
@@ -236,7 +236,7 @@
         ]
       },
       "summary": {
-        "ruda": {
+        "marimay": {
           "median_ms": 228.163416,
           "mad_ms": 0.3089160000000106,
           "q1_ms": 227.908,
@@ -254,12 +254,12 @@
       "expected_checksum": 125500,
       "expected_stdout": "growth 125500\n",
       "commands": {
-        "ruda": [
-          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/ruda-probe-growth"
+        "marimay": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/marimay-probe-growth"
         ]
       },
       "raw_ms": {
-        "ruda": [
+        "marimay": [
           100.05175,
           98.475666,
           97.8165,
@@ -274,7 +274,7 @@
         ]
       },
       "summary": {
-        "ruda": {
+        "marimay": {
           "median_ms": 98.47625,
           "mad_ms": 0.1492500000000092,
           "q1_ms": 98.34875,
@@ -292,12 +292,12 @@
       "expected_checksum": 125500,
       "expected_stdout": "reserved-growth 125500\n",
       "commands": {
-        "ruda": [
-          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/ruda-probe-reserved-growth"
+        "marimay": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/marimay-probe-reserved-growth"
         ]
       },
       "raw_ms": {
-        "ruda": [
+        "marimay": [
           97.314083,
           96.114375,
           95.729208,
@@ -312,7 +312,7 @@
         ]
       },
       "summary": {
-        "ruda": {
+        "marimay": {
           "median_ms": 96.152292,
           "mad_ms": 0.1472090000000037,
           "q1_ms": 96.005125,
@@ -330,12 +330,12 @@
       "expected_checksum": 499977433,
       "expected_stdout": "density 499977433\n",
       "commands": {
-        "ruda": [
-          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/ruda-probe-density"
+        "marimay": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/marimay-probe-density"
         ]
       },
       "raw_ms": {
-        "ruda": [
+        "marimay": [
           402.000083,
           395.876291,
           398.154042,
@@ -350,7 +350,7 @@
         ]
       },
       "summary": {
-        "ruda": {
+        "marimay": {
           "median_ms": 397.384542,
           "mad_ms": 1.284667000000013,
           "q1_ms": 395.876291,
@@ -368,12 +368,12 @@
       "expected_checksum": 786370800,
       "expected_stdout": "nested-traversal 786370800\n",
       "commands": {
-        "ruda": [
-          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/ruda-probe-nested-traversal"
+        "marimay": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/marimay-probe-nested-traversal"
         ]
       },
       "raw_ms": {
-        "ruda": [
+        "marimay": [
           196.781834,
           194.916541,
           193.417875,
@@ -388,7 +388,7 @@
         ]
       },
       "summary": {
-        "ruda": {
+        "marimay": {
           "median_ms": 194.13825,
           "mad_ms": 0.7782909999999958,
           "q1_ms": 193.417875,
@@ -406,12 +406,12 @@
       "expected_checksum": 72846317,
       "expected_stdout": "checked-loop 72846317\n",
       "commands": {
-        "ruda": [
-          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/ruda-probe-checked-loop"
+        "marimay": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/marimay-probe-checked-loop"
         ]
       },
       "raw_ms": {
-        "ruda": [
+        "marimay": [
           306.10925,
           305.69,
           306.114084,
@@ -426,7 +426,7 @@
         ]
       },
       "summary": {
-        "ruda": {
+        "marimay": {
           "median_ms": 306.10925,
           "mad_ms": 0.4192499999999768,
           "q1_ms": 305.677458,
@@ -444,882 +444,882 @@
       "phase": "warmup",
       "round": 0,
       "workload": "scalar-get",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 563.042333
     },
     {
       "phase": "warmup",
       "round": 0,
       "workload": "scalar-set",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 409.710709
     },
     {
       "phase": "warmup",
       "round": 0,
       "workload": "proven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 539.251792
     },
     {
       "phase": "warmup",
       "round": 0,
       "workload": "unproven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 534.553875
     },
     {
       "phase": "warmup",
       "round": 0,
       "workload": "growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 410.108583
     },
     {
       "phase": "warmup",
       "round": 0,
       "workload": "reserved-growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 381.579958
     },
     {
       "phase": "warmup",
       "round": 0,
       "workload": "density",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 688.199333
     },
     {
       "phase": "warmup",
       "round": 0,
       "workload": "nested-traversal",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 500.551708
     },
     {
       "phase": "warmup",
       "round": 0,
       "workload": "checked-loop",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 601.921959
     },
     {
       "phase": "warmup",
       "round": 1,
       "workload": "scalar-get",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 90.470584
     },
     {
       "phase": "warmup",
       "round": 1,
       "workload": "checked-loop",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 297.646958
     },
     {
       "phase": "warmup",
       "round": 1,
       "workload": "nested-traversal",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 193.229042
     },
     {
       "phase": "warmup",
       "round": 1,
       "workload": "density",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 397.193417
     },
     {
       "phase": "warmup",
       "round": 1,
       "workload": "reserved-growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 96.203459
     },
     {
       "phase": "warmup",
       "round": 1,
       "workload": "growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 98.660375
     },
     {
       "phase": "warmup",
       "round": 1,
       "workload": "unproven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 228.166417
     },
     {
       "phase": "warmup",
       "round": 1,
       "workload": "proven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 233.831667
     },
     {
       "phase": "warmup",
       "round": 1,
       "workload": "scalar-set",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 108.4795
     },
     {
       "phase": "warmup",
       "round": 2,
       "workload": "proven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 233.315417
     },
     {
       "phase": "warmup",
       "round": 2,
       "workload": "unproven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 228.493208
     },
     {
       "phase": "warmup",
       "round": 2,
       "workload": "growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 98.39625
     },
     {
       "phase": "warmup",
       "round": 2,
       "workload": "reserved-growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 95.8315
     },
     {
       "phase": "warmup",
       "round": 2,
       "workload": "density",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 447.912792
     },
     {
       "phase": "warmup",
       "round": 2,
       "workload": "nested-traversal",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 193.382667
     },
     {
       "phase": "warmup",
       "round": 2,
       "workload": "checked-loop",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 305.307875
     },
     {
       "phase": "warmup",
       "round": 2,
       "workload": "scalar-get",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 91.098459
     },
     {
       "phase": "warmup",
       "round": 2,
       "workload": "scalar-set",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 108.156958
     },
     {
       "phase": "sample",
       "round": 0,
       "workload": "proven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 232.473542
     },
     {
       "phase": "sample",
       "round": 0,
       "workload": "scalar-set",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 108.712125
     },
     {
       "phase": "sample",
       "round": 0,
       "workload": "scalar-get",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 90.127584
     },
     {
       "phase": "sample",
       "round": 0,
       "workload": "checked-loop",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 306.10925
     },
     {
       "phase": "sample",
       "round": 0,
       "workload": "nested-traversal",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 196.781834
     },
     {
       "phase": "sample",
       "round": 0,
       "workload": "density",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 402.000083
     },
     {
       "phase": "sample",
       "round": 0,
       "workload": "reserved-growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 97.314083
     },
     {
       "phase": "sample",
       "round": 0,
       "workload": "growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 100.05175
     },
     {
       "phase": "sample",
       "round": 0,
       "workload": "unproven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 228.385
     },
     {
       "phase": "sample",
       "round": 1,
       "workload": "growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 98.475666
     },
     {
       "phase": "sample",
       "round": 1,
       "workload": "reserved-growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 96.114375
     },
     {
       "phase": "sample",
       "round": 1,
       "workload": "density",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 395.876291
     },
     {
       "phase": "sample",
       "round": 1,
       "workload": "nested-traversal",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 194.916541
     },
     {
       "phase": "sample",
       "round": 1,
       "workload": "checked-loop",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 305.69
     },
     {
       "phase": "sample",
       "round": 1,
       "workload": "scalar-get",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 90.447125
     },
     {
       "phase": "sample",
       "round": 1,
       "workload": "scalar-set",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 107.94575
     },
     {
       "phase": "sample",
       "round": 1,
       "workload": "proven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 235.8595
     },
     {
       "phase": "sample",
       "round": 1,
       "workload": "unproven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 227.908
     },
     {
       "phase": "sample",
       "round": 2,
       "workload": "growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 97.8165
     },
     {
       "phase": "sample",
       "round": 2,
       "workload": "unproven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 228.659709
     },
     {
       "phase": "sample",
       "round": 2,
       "workload": "proven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 235.621792
     },
     {
       "phase": "sample",
       "round": 2,
       "workload": "scalar-set",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 107.971458
     },
     {
       "phase": "sample",
       "round": 2,
       "workload": "scalar-get",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 89.545
     },
     {
       "phase": "sample",
       "round": 2,
       "workload": "checked-loop",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 306.114084
     },
     {
       "phase": "sample",
       "round": 2,
       "workload": "nested-traversal",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 193.417875
     },
     {
       "phase": "sample",
       "round": 2,
       "workload": "density",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 398.154042
     },
     {
       "phase": "sample",
       "round": 2,
       "workload": "reserved-growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 95.729208
     },
     {
       "phase": "sample",
       "round": 3,
       "workload": "density",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 398.229584
     },
     {
       "phase": "sample",
       "round": 3,
       "workload": "nested-traversal",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 193.742833
     },
     {
       "phase": "sample",
       "round": 3,
       "workload": "checked-loop",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 306.169958
     },
     {
       "phase": "sample",
       "round": 3,
       "workload": "scalar-get",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 90.36475
     },
     {
       "phase": "sample",
       "round": 3,
       "workload": "scalar-set",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 108.041459
     },
     {
       "phase": "sample",
       "round": 3,
       "workload": "proven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 232.188625
     },
     {
       "phase": "sample",
       "round": 3,
       "workload": "unproven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 227.948042
     },
     {
       "phase": "sample",
       "round": 3,
       "workload": "growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 98.618
     },
     {
       "phase": "sample",
       "round": 3,
       "workload": "reserved-growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 96.152292
     },
     {
       "phase": "sample",
       "round": 4,
       "workload": "density",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 395.600125
     },
     {
       "phase": "sample",
       "round": 4,
       "workload": "reserved-growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 96.34675
     },
     {
       "phase": "sample",
       "round": 4,
       "workload": "growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 98.34875
     },
     {
       "phase": "sample",
       "round": 4,
       "workload": "unproven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 229.126125
     },
     {
       "phase": "sample",
       "round": 4,
       "workload": "proven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 232.955458
     },
     {
       "phase": "sample",
       "round": 4,
       "workload": "scalar-set",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 108.65475
     },
     {
       "phase": "sample",
       "round": 4,
       "workload": "scalar-get",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 89.870625
     },
     {
       "phase": "sample",
       "round": 4,
       "workload": "checked-loop",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 305.677458
     },
     {
       "phase": "sample",
       "round": 4,
       "workload": "nested-traversal",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 195.604667
     },
     {
       "phase": "sample",
       "round": 5,
       "workload": "checked-loop",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 307.38025
     },
     {
       "phase": "sample",
       "round": 5,
       "workload": "scalar-get",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 90.999583
     },
     {
       "phase": "sample",
       "round": 5,
       "workload": "scalar-set",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 107.847958
     },
     {
       "phase": "sample",
       "round": 5,
       "workload": "proven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 236.416042
     },
     {
       "phase": "sample",
       "round": 5,
       "workload": "unproven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 228.08075
     },
     {
       "phase": "sample",
       "round": 5,
       "workload": "growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 99.099708
     },
     {
       "phase": "sample",
       "round": 5,
       "workload": "reserved-growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 96.005083
     },
     {
       "phase": "sample",
       "round": 5,
       "workload": "density",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 396.865667
     },
     {
       "phase": "sample",
       "round": 5,
       "workload": "nested-traversal",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 193.62825
     },
     {
       "phase": "sample",
       "round": 6,
       "workload": "checked-loop",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 305.63525
     },
     {
       "phase": "sample",
       "round": 6,
       "workload": "nested-traversal",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 194.13825
     },
     {
       "phase": "sample",
       "round": 6,
       "workload": "density",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 397.28725
     },
     {
       "phase": "sample",
       "round": 6,
       "workload": "reserved-growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 96.611167
     },
     {
       "phase": "sample",
       "round": 6,
       "workload": "growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 98.6255
     },
     {
       "phase": "sample",
       "round": 6,
       "workload": "unproven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 228.715875
     },
     {
       "phase": "sample",
       "round": 6,
       "workload": "proven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 236.138125
     },
     {
       "phase": "sample",
       "round": 6,
       "workload": "scalar-set",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 108.317625
     },
     {
       "phase": "sample",
       "round": 6,
       "workload": "scalar-get",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 89.667875
     },
     {
       "phase": "sample",
       "round": 7,
       "workload": "scalar-set",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 107.961125
     },
     {
       "phase": "sample",
       "round": 7,
       "workload": "proven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 235.785125
     },
     {
       "phase": "sample",
       "round": 7,
       "workload": "unproven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 227.810917
     },
     {
       "phase": "sample",
       "round": 7,
       "workload": "growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 98.47625
     },
     {
       "phase": "sample",
       "round": 7,
       "workload": "reserved-growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 96.005125
     },
     {
       "phase": "sample",
       "round": 7,
       "workload": "density",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 398.669209
     },
     {
       "phase": "sample",
       "round": 7,
       "workload": "nested-traversal",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 194.9295
     },
     {
       "phase": "sample",
       "round": 7,
       "workload": "checked-loop",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 306.223
     },
     {
       "phase": "sample",
       "round": 7,
       "workload": "scalar-get",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 91.256541
     },
     {
       "phase": "sample",
       "round": 8,
       "workload": "scalar-set",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 108.334459
     },
     {
       "phase": "sample",
       "round": 8,
       "workload": "scalar-get",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 89.648083
     },
     {
       "phase": "sample",
       "round": 8,
       "workload": "checked-loop",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 304.235625
     },
     {
       "phase": "sample",
       "round": 8,
       "workload": "nested-traversal",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 193.325417
     },
     {
       "phase": "sample",
       "round": 8,
       "workload": "density",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 395.508292
     },
     {
       "phase": "sample",
       "round": 8,
       "workload": "reserved-growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 96.014667
     },
     {
       "phase": "sample",
       "round": 8,
       "workload": "growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 98.363584
     },
     {
       "phase": "sample",
       "round": 8,
       "workload": "unproven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 227.8545
     },
     {
       "phase": "sample",
       "round": 8,
       "workload": "proven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 233.574167
     },
     {
       "phase": "sample",
       "round": 9,
       "workload": "unproven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 230.38575
     },
     {
       "phase": "sample",
       "round": 9,
       "workload": "growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 98.782
     },
     {
       "phase": "sample",
       "round": 9,
       "workload": "reserved-growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 96.268041
     },
     {
       "phase": "sample",
       "round": 9,
       "workload": "density",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 397.384542
     },
     {
       "phase": "sample",
       "round": 9,
       "workload": "nested-traversal",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 193.40475
     },
     {
       "phase": "sample",
       "round": 9,
       "workload": "checked-loop",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 306.028791
     },
     {
       "phase": "sample",
       "round": 9,
       "workload": "scalar-get",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 90.334959
     },
     {
       "phase": "sample",
       "round": 9,
       "workload": "scalar-set",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 107.719416
     },
     {
       "phase": "sample",
       "round": 9,
       "workload": "proven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 236.533208
     },
     {
       "phase": "sample",
       "round": 10,
       "workload": "unproven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 228.163416
     },
     {
       "phase": "sample",
       "round": 10,
       "workload": "proven-bounds",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 236.567167
     },
     {
       "phase": "sample",
       "round": 10,
       "workload": "scalar-set",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 108.588041
     },
     {
       "phase": "sample",
       "round": 10,
       "workload": "scalar-get",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 89.975083
     },
     {
       "phase": "sample",
       "round": 10,
       "workload": "checked-loop",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 306.535083
     },
     {
       "phase": "sample",
       "round": 10,
       "workload": "nested-traversal",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 195.938
     },
     {
       "phase": "sample",
       "round": 10,
       "workload": "density",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 399.624583
     },
     {
       "phase": "sample",
       "round": 10,
       "workload": "reserved-growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 96.96825
     },
     {
       "phase": "sample",
       "round": 10,
       "workload": "growth",
-      "participant": "ruda",
+      "participant": "marimay",
       "elapsed_ms": 98.294041
     }
   ]
