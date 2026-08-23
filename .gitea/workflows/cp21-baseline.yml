@@ -25,7 +25,7 @@ jobs:
       - name: Check out benchmark corpus
         uses: actions/checkout@v4
         with:
-          path: ruda-algotithms
+          path: algorithm-benchmarks
           persist-credentials: true
 
       - name: Check out Marimay compiler
@@ -45,7 +45,7 @@ jobs:
             >"$baseline_key_dir/known_hosts"
           GIT_SSH_COMMAND="ssh -i $baseline_key_dir/id_ed25519 -o IdentitiesOnly=yes -o UserKnownHostsFile=$baseline_key_dir/known_hosts" \
             git clone --branch main --depth 1 \
-              ssh://git@gitea.example.invalid:2222/OS/Ruda.git Ma
+              ssh://git@gitea.example.invalid:2222/Marimay/marimay.git marimay
           rm -- "$baseline_key_dir/id_ed25519" "$baseline_key_dir/known_hosts"
           rmdir "$baseline_key_dir"
 
@@ -69,29 +69,29 @@ jobs:
 
       - name: Build release Marimay compiler and runtime
         run: |
-          cmake -S Ma -B Ma/build/release \
+          cmake -S marimay -B marimay/build/release \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_C_COMPILER=clang \
             -DMMAY_WARNINGS_AS_ERRORS=ON
-          cmake --build Ma/build/release --parallel
+          cmake --build marimay/build/release --parallel
 
       - name: Verify faithful corpus and harness tests
-        working-directory: ruda-algotithms
-        run: MMAY="$(cd ../Ma && pwd)/build/release/mmay" ./verify.sh
+        working-directory: algorithm-benchmarks
+        run: MMAY="$(cd ../marimay && pwd)/build/release/mmay" ./verify.sh
 
       - name: Collect focused probes
-        working-directory: ruda-algotithms
+        working-directory: algorithm-benchmarks
         run: >-
-          MMAY="$(cd ../Ma && pwd)/build/release/mmay"
+          MMAY="$(cd ../marimay && pwd)/build/release/mmay"
           ./benchmarks/probes.py
           --samples 11
           --warmups 3
           --output benchmarks/results/cp21-probes-linux-x86_64.json
 
       - name: Collect algorithm corpus
-        working-directory: ruda-algotithms
+        working-directory: algorithm-benchmarks
         run: >-
-          MMAY="$(cd ../Ma && pwd)/build/release/mmay"
+          MMAY="$(cd ../marimay && pwd)/build/release/mmay"
           ./benchmarks/run.py
           --languages marimay,go,rust
           --samples 11
@@ -99,7 +99,7 @@ jobs:
           --output benchmarks/results/cp21-algorithms-linux-x86_64.md
 
       - name: Validate reports and derive review candidate
-        working-directory: ruda-algotithms
+        working-directory: algorithm-benchmarks
         run: >-
           ./benchmarks/derive_budget.py
           benchmarks/results/cp21-probes-linux-x86_64.json
@@ -111,14 +111,14 @@ jobs:
         with:
           name: cp21-linux-x86_64-${{ gitea.sha }}
           path: |
-            ruda-algotithms/benchmarks/results/cp21-probes-linux-x86_64.json
-            ruda-algotithms/benchmarks/results/cp21-algorithms-linux-x86_64.json
-            ruda-algotithms/benchmarks/results/cp21-algorithms-linux-x86_64.md
-            ruda-algotithms/benchmarks/budgets/cp21-linux-x86_64.json
+            algorithm-benchmarks/benchmarks/results/cp21-probes-linux-x86_64.json
+            algorithm-benchmarks/benchmarks/results/cp21-algorithms-linux-x86_64.json
+            algorithm-benchmarks/benchmarks/results/cp21-algorithms-linux-x86_64.md
+            algorithm-benchmarks/benchmarks/budgets/cp21-linux-x86_64.json
           if-no-files-found: error
 
       - name: Publish candidate evidence branch
-        working-directory: ruda-algotithms
+        working-directory: algorithm-benchmarks
         env:
           EVIDENCE_BRANCH: evidence/cp21-linux-x86_64-${{ gitea.sha }}
         run: |
