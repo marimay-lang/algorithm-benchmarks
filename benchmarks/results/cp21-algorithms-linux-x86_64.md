@@ -1,14 +1,14 @@
 # Latest algorithm benchmark
 
-Generated: `2026-08-22T05:20:51+00:00`
+Generated: `2026-08-23T03:56:22+00:00`
 
 Host: `Linux 6.12.57+deb13-amd64 x86_64`; CPU: `QEMU Virtual CPU version 2.5+`.
 
 Marimay compiler executable: `/workspace/OS/ruda-algotithms/Ma/build/release/mmay`.
 
-Marimay source revision: `1d728451612f5ad4d6cfb78a5785b2e57605af26`.
+Marimay source revision: `589e19d807e709c9bbca242642b00d80a880f82e`.
 
-Algorithm corpus revision: `c8da4676e0e80522d795a6b7fe551e93916c9fad`.
+Algorithm corpus revision: `2fa0cb206131be1da5bb290945a9da45ba2cbf8e`.
 
 Equivalence manifest: `benchmarks/equivalence.json` (`bf2f251de2d91e22d6696a50aa83babe9d1497139a305c4e1770e09c1f2f7e9b`).
 
@@ -16,34 +16,34 @@ Samples: 11 measured after 3 warm-up runs. Reported times include process startu
 
 | Algorithm | Workload | Marimay median | Go median | Rust median | Marimay / Go | Marimay / Rust | Fastest |
 |---|---|---:|---:|---:|---:|---:|---:|
-| insertion | 50 × 2,500 generated integers | 6038.62 ms | 41.84 ms | 39.91 ms | 144.3× | 151.3× | Rust |
-| heap-sort | 5 × 100,000 generated integers | 1650.28 ms | 52.11 ms | 44.15 ms | 31.7× | 37.4× | Rust |
-| stack | 1,000,000 push + pop | 515.24 ms | 14.74 ms | 8.30 ms | 35.0× | 62.1× | Rust |
-| queue | 1,000,000 enqueue + dequeue | 593.95 ms | 15.33 ms | 7.95 ms | 38.8× | 74.7× | Rust |
-| min-heap | 500,000 insert + remove-min | 3292.64 ms | 75.10 ms | 57.12 ms | 43.8× | 57.6× | Rust |
-| dsu | 100,000 nodes; 5,000,000 unions | 3234.76 ms | 47.04 ms | 38.94 ms | 68.8× | 83.1× | Rust |
-| bfs | 300 × 20,000 nodes, degree 4 | 4479.39 ms | 107.75 ms | 47.69 ms | 41.6× | 93.9× | Rust |
-| dijkstra | 80 × 800 nodes, O(V²) | 1845.18 ms | 69.11 ms | 39.42 ms | 26.7× | 46.8× | Rust |
+| insertion | 50 × 2,500 generated integers | 61.07 ms | 41.90 ms | 40.36 ms | 1.5× | 1.5× | Rust |
+| heap-sort | 5 × 100,000 generated integers | 79.39 ms | 52.15 ms | 44.06 ms | 1.5× | 1.8× | Rust |
+| stack | 1,000,000 push + pop | 25.89 ms | 14.27 ms | 7.90 ms | 1.8× | 3.3× | Rust |
+| queue | 1,000,000 enqueue + dequeue | 27.17 ms | 14.72 ms | 7.76 ms | 1.8× | 3.5× | Rust |
+| min-heap | 500,000 insert + remove-min | 113.76 ms | 73.66 ms | 56.97 ms | 1.5× | 2.0× | Rust |
+| dsu | 100,000 nodes; 5,000,000 unions | 55.28 ms | 47.25 ms | 38.62 ms | 1.2× | 1.4× | Rust |
+| bfs | 300 × 20,000 nodes, degree 4 | 112.40 ms | 106.68 ms | 48.37 ms | 1.1× | 2.3× | Rust |
+| dijkstra | 80 × 800 nodes, O(V²) | 78.13 ms | 68.48 ms | 39.36 ms | 1.1× | 2.0× | Rust |
 
 ## Range (min–max)
 
 | Algorithm | Marimay | Go | Rust |
 |---|---:|---:|---:|
-| insertion | 5971.71–6498.20 ms | 41.13–45.23 ms | 39.24–41.95 ms |
-| heap-sort | 1635.99–1728.05 ms | 51.35–53.09 ms | 43.42–46.18 ms |
-| stack | 507.45–526.66 ms | 13.74–17.41 ms | 7.93–9.19 ms |
-| queue | 586.33–608.30 ms | 13.65–19.00 ms | 7.64–9.01 ms |
-| min-heap | 3237.68–3355.25 ms | 72.95–79.02 ms | 55.62–65.55 ms |
-| dsu | 3206.77–3358.04 ms | 46.45–51.66 ms | 37.46–41.97 ms |
-| bfs | 4401.60–4990.60 ms | 102.42–112.70 ms | 46.20–49.35 ms |
-| dijkstra | 1824.55–1948.19 ms | 66.92–72.10 ms | 38.76–41.42 ms |
+| insertion | 60.45–64.16 ms | 40.94–49.23 ms | 39.65–40.96 ms |
+| heap-sort | 78.19–81.07 ms | 51.25–54.31 ms | 42.84–46.23 ms |
+| stack | 25.43–27.55 ms | 13.83–16.02 ms | 7.29–8.41 ms |
+| queue | 26.05–28.56 ms | 13.44–18.00 ms | 7.21–8.40 ms |
+| min-heap | 111.52–123.02 ms | 72.22–76.15 ms | 55.85–62.34 ms |
+| dsu | 54.88–57.58 ms | 46.19–49.26 ms | 37.44–39.45 ms |
+| bfs | 110.44–116.40 ms | 104.53–111.16 ms | 46.91–53.59 ms |
+| dijkstra | 76.90–84.35 ms | 66.65–70.98 ms | 38.44–41.16 ms |
 
 ## Interpretation limits
 
 - Checksums prove matching selected results, not identical abstraction boundaries.
-- All three languages call reusable sorting, structures, and graph packages.
+- Every participant calls reusable sorting, structures, and graph code.
 - Stack, queue, heap, DSU, BFS, and O(V²) Dijkstra use matching operations and layouts;
-  Marimay and Rust model absence with Option while Go returns a value/bool pair.
+  absence representation follows each host language without changing timed valid inputs.
 - Checksums cover selected results and do not prove equal compiler optimization maturity.
 
 

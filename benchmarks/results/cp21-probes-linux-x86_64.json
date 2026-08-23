@@ -6,7 +6,7 @@
     "sha256": "a94f5be850eb26fd821b3630b16254f145a8e30c1b8e7a63fd7230ed761dd4a8"
   },
   "metadata": {
-    "generated_at": "2026-08-22T05:20:00+00:00",
+    "generated_at": "2026-08-23T03:55:43+00:00",
     "platform": {
       "id": "linux-x86_64",
       "system": "Linux",
@@ -18,17 +18,17 @@
     "isolation": {
       "mode": "dedicated-runner-contract",
       "load_average_at_start": [
-        8.87255859375,
-        3.84375,
-        3.5810546875
+        6.89990234375,
+        2.4658203125,
+        0.9208984375
       ],
       "power_source": "runner-policy",
       "affinity": "not-requested",
       "sample_selection": "none",
       "load_average_at_end": [
-        5.0810546875,
-        3.50048828125,
-        3.4755859375
+        6.89990234375,
+        2.4658203125,
+        0.9208984375
       ]
     },
     "warmups": 3,
@@ -43,15 +43,15 @@
     "artifacts": {
       "mmay_compiler": {
         "path": "/workspace/OS/ruda-algotithms/Ma/build/release/mmay",
-        "sha256": "2554d3c0a8ede8042edec84b2dc93e63775d47381d4e73d108a15072f78031df",
-        "revision": "1d728451612f5ad4d6cfb78a5785b2e57605af26",
+        "sha256": "423bd6154239b85c2797ee936af9600f80b42efe9fe850b75d4d1f8b9ab08560",
+        "revision": "589e19d807e709c9bbca242642b00d80a880f82e",
         "version": "Marimay compiler 0.0.0-dev\nruntime 0.0.0-dev\nlanguage 0.1-design\nbytecode unavailable\nstandard-library unavailable\nbootstrap-stage 0\nhost Linux/x86_64\ntargets native-host"
       },
       "runtime": {
         "path": "/workspace/OS/ruda-algotithms/Ma/build/release/native-runtime/release/libmmay_native_runtime_release.a",
-        "sha256": "37a7490eadc10ca00ed50f2e4aaecdae69038df7f8129d6c5fb1b31ed5dce469",
+        "sha256": "abd2c3793881d06b9f7d7fedb53b2d9a8b920c344a34f866fd595de7a8e1f74f",
         "manifest_path": "/workspace/OS/ruda-algotithms/Ma/build/release/native-runtime/release/mmay-native-runtime.manifest",
-        "manifest_sha256": "22303dcb35ea4b0dc5094b06a1f01ca167b3fd0a11aec746a10fc8d419692e90",
+        "manifest_sha256": "855b5e0db4c20794f20bed396de4c01c681738bfb616652d75512d016562f6ee",
         "profile": "release",
         "runtime": "0.0.0-dev",
         "host": "Linux",
@@ -87,13 +87,24 @@
       "go": "go version go1.26.6 linux/amd64",
       "rust": "rustc 1.96.0 (ac68faa20 2026-05-25)"
     },
-    "corpus_revision": "c8da4676e0e80522d795a6b7fe551e93916c9fad",
+    "corpus_revision": "2fa0cb206131be1da5bb290945a9da45ba2cbf8e",
     "probe_manifest": {
       "path": "benchmarks/probes.json",
       "schema": "marimay.array-probes-manifest/1",
       "sha256": "f7a8a378036cfcb1d121a2e49a6d32ba3a3a34840821a0d4e9dc806d3802af0a",
       "source_tree_sha256": "20764d6be339813a07e181021f649c57be38251f556a5d00d6eed9248968e219"
-    }
+    },
+    "probe_selection": [
+      "scalar-get",
+      "scalar-set",
+      "proven-bounds",
+      "unproven-bounds",
+      "growth",
+      "reserved-growth",
+      "density",
+      "nested-traversal",
+      "checked-loop"
+    ]
   },
   "workloads": {
     "scalar-get": {
@@ -108,28 +119,28 @@
       },
       "raw_ms": {
         "marimay": [
-          169.434802,
-          171.510891,
-          170.79814,
-          178.73747,
-          169.929883,
-          172.015872,
-          170.828516,
-          169.259832,
-          170.271919,
-          170.772841,
-          174.416242
+          16.309372,
+          15.95331,
+          15.960333,
+          15.599693,
+          16.137348,
+          15.968679,
+          16.65861,
+          15.930006,
+          16.05431,
+          16.062335,
+          15.924856
         ]
       },
       "summary": {
         "marimay": {
-          "median_ms": 170.79814,
-          "mad_ms": 0.8682569999999998,
-          "q1_ms": 169.929883,
-          "q3_ms": 172.015872,
-          "iqr_ms": 2.085989000000012,
-          "min_ms": 169.259832,
-          "max_ms": 178.73747,
+          "median_ms": 15.968679,
+          "mad_ms": 0.08563100000000112,
+          "q1_ms": 15.930006,
+          "q3_ms": 16.137348,
+          "iqr_ms": 0.2073419999999988,
+          "min_ms": 15.599693,
+          "max_ms": 16.65861,
           "noise_fraction": 0.02
         }
       }
@@ -146,29 +157,29 @@
       },
       "raw_ms": {
         "marimay": [
-          173.176748,
-          177.873814,
-          165.915404,
-          167.948421,
-          165.412517,
-          167.280373,
-          165.351661,
-          169.101103,
-          163.732162,
-          167.016337,
-          169.450692
+          8.506074,
+          8.679661,
+          9.012448,
+          8.32374,
+          8.93412,
+          8.502106,
+          8.580654,
+          8.813943,
+          8.474093,
+          8.602666,
+          8.527794
         ]
       },
       "summary": {
         "marimay": {
-          "median_ms": 167.280373,
-          "mad_ms": 1.867855999999989,
-          "q1_ms": 165.412517,
-          "q3_ms": 169.450692,
-          "iqr_ms": 4.038174999999995,
-          "min_ms": 163.732162,
-          "max_ms": 177.873814,
-          "noise_fraction": 0.033498060169915855
+          "median_ms": 8.580654,
+          "mad_ms": 0.09900700000000029,
+          "q1_ms": 8.502106,
+          "q3_ms": 8.813943,
+          "iqr_ms": 0.3118370000000006,
+          "min_ms": 8.32374,
+          "max_ms": 9.012448,
+          "noise_fraction": 0.036341868580180556
         }
       }
     },
@@ -184,29 +195,29 @@
       },
       "raw_ms": {
         "marimay": [
-          345.675178,
-          342.91408,
-          344.459499,
-          347.970422,
-          344.285412,
-          351.876778,
-          349.46684,
-          338.954073,
-          348.021489,
-          345.294393,
-          341.999808
+          28.099989,
+          30.039839,
+          28.960884,
+          28.987294,
+          28.181524,
+          28.199928,
+          27.700547,
+          28.517669,
+          28.331887,
+          27.989231,
+          27.60694
         ]
       },
       "summary": {
         "marimay": {
-          "median_ms": 345.294393,
-          "mad_ms": 2.6760289999999713,
-          "q1_ms": 342.91408,
-          "q3_ms": 348.021489,
-          "iqr_ms": 5.1074089999999615,
-          "min_ms": 338.954073,
-          "max_ms": 351.876778,
-          "noise_fraction": 0.023249977881916878
+          "median_ms": 28.199928,
+          "mad_ms": 0.3177410000000016,
+          "q1_ms": 27.989231,
+          "q3_ms": 28.960884,
+          "iqr_ms": 0.9716529999999999,
+          "min_ms": 27.60694,
+          "max_ms": 30.039839,
+          "noise_fraction": 0.034455868114273196
         }
       }
     },
@@ -222,29 +233,29 @@
       },
       "raw_ms": {
         "marimay": [
-          396.73727,
-          411.126178,
-          395.410862,
-          408.89207,
-          401.991105,
-          403.390099,
-          399.12147,
-          406.90577,
-          406.391261,
-          410.185596,
-          402.055536
+          34.595912,
+          35.085947,
+          35.806555,
+          34.851074,
+          35.185374,
+          34.240071,
+          34.665854,
+          35.50719,
+          35.213968,
+          35.423002,
+          35.184682
         ]
       },
       "summary": {
         "marimay": {
-          "median_ms": 403.390099,
-          "mad_ms": 4.268629000000033,
-          "q1_ms": 399.12147,
-          "q3_ms": 408.89207,
-          "iqr_ms": 9.770600000000002,
-          "min_ms": 395.410862,
-          "max_ms": 411.126178,
-          "noise_fraction": 0.03174566513096321
+          "median_ms": 35.184682,
+          "mad_ms": 0.32250799999999913,
+          "q1_ms": 34.665854,
+          "q3_ms": 35.423002,
+          "iqr_ms": 0.7571479999999937,
+          "min_ms": 34.240071,
+          "max_ms": 35.806555,
+          "noise_fraction": 0.02749844378300754
         }
       }
     },
@@ -260,29 +271,29 @@
       },
       "raw_ms": {
         "marimay": [
-          142.976616,
-          141.567422,
-          141.102556,
-          142.801164,
-          142.084285,
-          143.495312,
-          142.286776,
-          142.106406,
-          141.606194,
-          147.876363,
-          143.332345
+          5.476288,
+          4.939676,
+          5.495224,
+          5.193395,
+          5.076125,
+          5.307941,
+          5.430683,
+          4.996264,
+          5.19562,
+          5.42327,
+          5.443557
         ]
       },
       "summary": {
         "marimay": {
-          "median_ms": 142.286776,
-          "mad_ms": 0.6898400000000038,
-          "q1_ms": 141.606194,
-          "q3_ms": 143.332345,
-          "iqr_ms": 1.7261510000000158,
-          "min_ms": 141.102556,
-          "max_ms": 147.876363,
-          "noise_fraction": 0.02
+          "median_ms": 5.307941,
+          "mad_ms": 0.13561600000000062,
+          "q1_ms": 5.076125,
+          "q3_ms": 5.443557,
+          "iqr_ms": 0.367432,
+          "min_ms": 4.939676,
+          "max_ms": 5.495224,
+          "noise_fraction": 0.07664893034794507
         }
       }
     },
@@ -298,29 +309,29 @@
       },
       "raw_ms": {
         "marimay": [
-          143.275919,
-          139.588013,
-          142.492253,
-          144.644947,
-          138.662831,
-          141.744205,
-          138.037004,
-          142.272889,
-          139.934466,
-          143.244179,
-          150.290529
+          5.326617,
+          4.662544,
+          5.07395,
+          4.764878,
+          4.975274,
+          4.508864,
+          4.80908,
+          4.535724,
+          4.840339,
+          4.851681,
+          4.837765
         ]
       },
       "summary": {
         "marimay": {
-          "median_ms": 142.272889,
-          "mad_ms": 2.338423000000006,
-          "q1_ms": 139.588013,
-          "q3_ms": 143.275919,
-          "iqr_ms": 3.687905999999998,
-          "min_ms": 138.037004,
-          "max_ms": 150.290529,
-          "noise_fraction": 0.049308543948946015
+          "median_ms": 4.837765,
+          "mad_ms": 0.13750899999999966,
+          "q1_ms": 4.662544,
+          "q3_ms": 4.975274,
+          "iqr_ms": 0.3127300000000002,
+          "min_ms": 4.508864,
+          "max_ms": 5.326617,
+          "noise_fraction": 0.08527222798130933
         }
       }
     },
@@ -336,29 +347,29 @@
       },
       "raw_ms": {
         "marimay": [
-          571.277525,
-          577.542744,
-          569.011299,
-          583.153911,
-          577.398744,
-          567.673189,
-          578.824218,
-          584.49107,
-          580.277696,
-          574.290671,
-          574.862579
+          42.180798,
+          41.755857,
+          43.605235,
+          41.343148,
+          41.076295,
+          42.05932,
+          41.8744,
+          44.112052,
+          44.589271,
+          42.501873,
+          41.667039
         ]
       },
       "summary": {
         "marimay": {
-          "median_ms": 577.398744,
-          "mad_ms": 3.1080729999999903,
-          "q1_ms": 571.277525,
-          "q3_ms": 580.277696,
-          "iqr_ms": 9.000171000000023,
-          "min_ms": 567.673189,
-          "max_ms": 584.49107,
-          "noise_fraction": 0.02
+          "median_ms": 42.05932,
+          "mad_ms": 0.44255300000000375,
+          "q1_ms": 41.667039,
+          "q3_ms": 43.605235,
+          "iqr_ms": 1.9381959999999978,
+          "min_ms": 41.076295,
+          "max_ms": 44.589271,
+          "noise_fraction": 0.04608243785206222
         }
       }
     },
@@ -374,29 +385,29 @@
       },
       "raw_ms": {
         "marimay": [
-          318.817552,
-          316.295672,
-          316.143374,
-          310.344905,
-          312.483142,
-          313.3327,
-          311.819141,
-          317.922116,
-          312.336666,
-          309.379917,
-          315.733964
+          23.866186,
+          24.258424,
+          23.661599,
+          24.466267,
+          24.476887,
+          24.574912,
+          24.148036,
+          24.398207,
+          24.310603,
+          25.172418,
+          24.554894
         ]
       },
       "summary": {
         "marimay": {
-          "median_ms": 313.3327,
-          "mad_ms": 2.810674000000006,
-          "q1_ms": 311.819141,
-          "q3_ms": 316.295672,
-          "iqr_ms": 4.476531000000023,
-          "min_ms": 309.379917,
-          "max_ms": 318.817552,
-          "noise_fraction": 0.026910762904733588
+          "median_ms": 24.398207,
+          "mad_ms": 0.15668700000000158,
+          "q1_ms": 24.148036,
+          "q3_ms": 24.554894,
+          "iqr_ms": 0.4068579999999997,
+          "min_ms": 23.661599,
+          "max_ms": 25.172418,
+          "noise_fraction": 0.02
         }
       }
     },
@@ -412,28 +423,28 @@
       },
       "raw_ms": {
         "marimay": [
-          478.304297,
-          491.602802,
-          474.904645,
-          477.194017,
-          476.09626,
-          480.513929,
-          473.358365,
-          477.01505,
-          479.44737,
-          478.407033,
-          483.371932
+          56.611887,
+          56.670057,
+          57.030898,
+          57.096852,
+          56.732575,
+          56.765887,
+          56.84137,
+          57.621801,
+          58.736494,
+          57.789318,
+          56.462956
         ]
       },
       "summary": {
         "marimay": {
-          "median_ms": 478.304297,
-          "mad_ms": 2.208037000000047,
-          "q1_ms": 476.09626,
-          "q3_ms": 480.513929,
-          "iqr_ms": 4.417669000000046,
-          "min_ms": 473.358365,
-          "max_ms": 491.602802,
+          "median_ms": 56.84137,
+          "mad_ms": 0.22948299999999477,
+          "q1_ms": 56.670057,
+          "q3_ms": 57.621801,
+          "iqr_ms": 0.9517439999999979,
+          "min_ms": 56.462956,
+          "max_ms": 58.736494,
           "noise_fraction": 0.02
         }
       }
@@ -445,882 +456,882 @@
       "round": 0,
       "workload": "scalar-get",
       "participant": "marimay",
-      "elapsed_ms": 171.097451
+      "elapsed_ms": 16.469774
     },
     {
       "phase": "warmup",
       "round": 0,
       "workload": "scalar-set",
       "participant": "marimay",
-      "elapsed_ms": 164.96361
+      "elapsed_ms": 8.870951
     },
     {
       "phase": "warmup",
       "round": 0,
       "workload": "proven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 344.981422
+      "elapsed_ms": 28.059434
     },
     {
       "phase": "warmup",
       "round": 0,
       "workload": "unproven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 419.044217
+      "elapsed_ms": 35.630535
     },
     {
       "phase": "warmup",
       "round": 0,
       "workload": "growth",
       "participant": "marimay",
-      "elapsed_ms": 151.657863
+      "elapsed_ms": 5.330895
     },
     {
       "phase": "warmup",
       "round": 0,
       "workload": "reserved-growth",
       "participant": "marimay",
-      "elapsed_ms": 147.95474
+      "elapsed_ms": 4.864665
     },
     {
       "phase": "warmup",
       "round": 0,
       "workload": "density",
       "participant": "marimay",
-      "elapsed_ms": 604.227288
+      "elapsed_ms": 43.064406
     },
     {
       "phase": "warmup",
       "round": 0,
       "workload": "nested-traversal",
       "participant": "marimay",
-      "elapsed_ms": 347.941747
+      "elapsed_ms": 25.897306
     },
     {
       "phase": "warmup",
       "round": 0,
       "workload": "checked-loop",
       "participant": "marimay",
-      "elapsed_ms": 495.121428
+      "elapsed_ms": 57.55185
     },
     {
       "phase": "warmup",
       "round": 1,
       "workload": "scalar-get",
       "participant": "marimay",
-      "elapsed_ms": 180.586762
+      "elapsed_ms": 16.641869
     },
     {
       "phase": "warmup",
       "round": 1,
       "workload": "checked-loop",
       "participant": "marimay",
-      "elapsed_ms": 475.366214
+      "elapsed_ms": 59.7942
     },
     {
       "phase": "warmup",
       "round": 1,
       "workload": "nested-traversal",
       "participant": "marimay",
-      "elapsed_ms": 322.120471
+      "elapsed_ms": 26.236325
     },
     {
       "phase": "warmup",
       "round": 1,
       "workload": "density",
       "participant": "marimay",
-      "elapsed_ms": 580.342166
+      "elapsed_ms": 44.065523
     },
     {
       "phase": "warmup",
       "round": 1,
       "workload": "reserved-growth",
       "participant": "marimay",
-      "elapsed_ms": 138.723324
+      "elapsed_ms": 4.785236
     },
     {
       "phase": "warmup",
       "round": 1,
       "workload": "growth",
       "participant": "marimay",
-      "elapsed_ms": 143.49941
+      "elapsed_ms": 5.348519
     },
     {
       "phase": "warmup",
       "round": 1,
       "workload": "unproven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 407.16095
+      "elapsed_ms": 35.253963
     },
     {
       "phase": "warmup",
       "round": 1,
       "workload": "proven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 347.883407
+      "elapsed_ms": 27.899202
     },
     {
       "phase": "warmup",
       "round": 1,
       "workload": "scalar-set",
       "participant": "marimay",
-      "elapsed_ms": 172.759112
+      "elapsed_ms": 8.525661
     },
     {
       "phase": "warmup",
       "round": 2,
       "workload": "proven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 342.572848
+      "elapsed_ms": 28.467474
     },
     {
       "phase": "warmup",
       "round": 2,
       "workload": "unproven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 399.103726
+      "elapsed_ms": 33.813728
     },
     {
       "phase": "warmup",
       "round": 2,
       "workload": "growth",
       "participant": "marimay",
-      "elapsed_ms": 143.415913
+      "elapsed_ms": 4.964142
     },
     {
       "phase": "warmup",
       "round": 2,
       "workload": "reserved-growth",
       "participant": "marimay",
-      "elapsed_ms": 141.405527
+      "elapsed_ms": 4.923886
     },
     {
       "phase": "warmup",
       "round": 2,
       "workload": "density",
       "participant": "marimay",
-      "elapsed_ms": 571.476852
+      "elapsed_ms": 42.726888
     },
     {
       "phase": "warmup",
       "round": 2,
       "workload": "nested-traversal",
       "participant": "marimay",
-      "elapsed_ms": 312.252708
+      "elapsed_ms": 24.770029
     },
     {
       "phase": "warmup",
       "round": 2,
       "workload": "checked-loop",
       "participant": "marimay",
-      "elapsed_ms": 496.851667
+      "elapsed_ms": 57.580194
     },
     {
       "phase": "warmup",
       "round": 2,
       "workload": "scalar-get",
       "participant": "marimay",
-      "elapsed_ms": 170.473057
+      "elapsed_ms": 16.246362
     },
     {
       "phase": "warmup",
       "round": 2,
       "workload": "scalar-set",
       "participant": "marimay",
-      "elapsed_ms": 164.964953
+      "elapsed_ms": 8.405985
     },
     {
       "phase": "sample",
       "round": 0,
       "workload": "proven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 345.675178
+      "elapsed_ms": 28.099989
     },
     {
       "phase": "sample",
       "round": 0,
       "workload": "scalar-set",
       "participant": "marimay",
-      "elapsed_ms": 173.176748
+      "elapsed_ms": 8.506074
     },
     {
       "phase": "sample",
       "round": 0,
       "workload": "scalar-get",
       "participant": "marimay",
-      "elapsed_ms": 169.434802
+      "elapsed_ms": 16.309372
     },
     {
       "phase": "sample",
       "round": 0,
       "workload": "checked-loop",
       "participant": "marimay",
-      "elapsed_ms": 478.304297
+      "elapsed_ms": 56.611887
     },
     {
       "phase": "sample",
       "round": 0,
       "workload": "nested-traversal",
       "participant": "marimay",
-      "elapsed_ms": 318.817552
+      "elapsed_ms": 23.866186
     },
     {
       "phase": "sample",
       "round": 0,
       "workload": "density",
       "participant": "marimay",
-      "elapsed_ms": 571.277525
+      "elapsed_ms": 42.180798
     },
     {
       "phase": "sample",
       "round": 0,
       "workload": "reserved-growth",
       "participant": "marimay",
-      "elapsed_ms": 143.275919
+      "elapsed_ms": 5.326617
     },
     {
       "phase": "sample",
       "round": 0,
       "workload": "growth",
       "participant": "marimay",
-      "elapsed_ms": 142.976616
+      "elapsed_ms": 5.476288
     },
     {
       "phase": "sample",
       "round": 0,
       "workload": "unproven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 396.73727
+      "elapsed_ms": 34.595912
     },
     {
       "phase": "sample",
       "round": 1,
       "workload": "growth",
       "participant": "marimay",
-      "elapsed_ms": 141.567422
+      "elapsed_ms": 4.939676
     },
     {
       "phase": "sample",
       "round": 1,
       "workload": "reserved-growth",
       "participant": "marimay",
-      "elapsed_ms": 139.588013
+      "elapsed_ms": 4.662544
     },
     {
       "phase": "sample",
       "round": 1,
       "workload": "density",
       "participant": "marimay",
-      "elapsed_ms": 577.542744
+      "elapsed_ms": 41.755857
     },
     {
       "phase": "sample",
       "round": 1,
       "workload": "nested-traversal",
       "participant": "marimay",
-      "elapsed_ms": 316.295672
+      "elapsed_ms": 24.258424
     },
     {
       "phase": "sample",
       "round": 1,
       "workload": "checked-loop",
       "participant": "marimay",
-      "elapsed_ms": 491.602802
+      "elapsed_ms": 56.670057
     },
     {
       "phase": "sample",
       "round": 1,
       "workload": "scalar-get",
       "participant": "marimay",
-      "elapsed_ms": 171.510891
+      "elapsed_ms": 15.95331
     },
     {
       "phase": "sample",
       "round": 1,
       "workload": "scalar-set",
       "participant": "marimay",
-      "elapsed_ms": 177.873814
+      "elapsed_ms": 8.679661
     },
     {
       "phase": "sample",
       "round": 1,
       "workload": "proven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 342.91408
+      "elapsed_ms": 30.039839
     },
     {
       "phase": "sample",
       "round": 1,
       "workload": "unproven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 411.126178
+      "elapsed_ms": 35.085947
     },
     {
       "phase": "sample",
       "round": 2,
       "workload": "growth",
       "participant": "marimay",
-      "elapsed_ms": 141.102556
+      "elapsed_ms": 5.495224
     },
     {
       "phase": "sample",
       "round": 2,
       "workload": "unproven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 395.410862
+      "elapsed_ms": 35.806555
     },
     {
       "phase": "sample",
       "round": 2,
       "workload": "proven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 344.459499
+      "elapsed_ms": 28.960884
     },
     {
       "phase": "sample",
       "round": 2,
       "workload": "scalar-set",
       "participant": "marimay",
-      "elapsed_ms": 165.915404
+      "elapsed_ms": 9.012448
     },
     {
       "phase": "sample",
       "round": 2,
       "workload": "scalar-get",
       "participant": "marimay",
-      "elapsed_ms": 170.79814
+      "elapsed_ms": 15.960333
     },
     {
       "phase": "sample",
       "round": 2,
       "workload": "checked-loop",
       "participant": "marimay",
-      "elapsed_ms": 474.904645
+      "elapsed_ms": 57.030898
     },
     {
       "phase": "sample",
       "round": 2,
       "workload": "nested-traversal",
       "participant": "marimay",
-      "elapsed_ms": 316.143374
+      "elapsed_ms": 23.661599
     },
     {
       "phase": "sample",
       "round": 2,
       "workload": "density",
       "participant": "marimay",
-      "elapsed_ms": 569.011299
+      "elapsed_ms": 43.605235
     },
     {
       "phase": "sample",
       "round": 2,
       "workload": "reserved-growth",
       "participant": "marimay",
-      "elapsed_ms": 142.492253
+      "elapsed_ms": 5.07395
     },
     {
       "phase": "sample",
       "round": 3,
       "workload": "density",
       "participant": "marimay",
-      "elapsed_ms": 583.153911
+      "elapsed_ms": 41.343148
     },
     {
       "phase": "sample",
       "round": 3,
       "workload": "nested-traversal",
       "participant": "marimay",
-      "elapsed_ms": 310.344905
+      "elapsed_ms": 24.466267
     },
     {
       "phase": "sample",
       "round": 3,
       "workload": "checked-loop",
       "participant": "marimay",
-      "elapsed_ms": 477.194017
+      "elapsed_ms": 57.096852
     },
     {
       "phase": "sample",
       "round": 3,
       "workload": "scalar-get",
       "participant": "marimay",
-      "elapsed_ms": 178.73747
+      "elapsed_ms": 15.599693
     },
     {
       "phase": "sample",
       "round": 3,
       "workload": "scalar-set",
       "participant": "marimay",
-      "elapsed_ms": 167.948421
+      "elapsed_ms": 8.32374
     },
     {
       "phase": "sample",
       "round": 3,
       "workload": "proven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 347.970422
+      "elapsed_ms": 28.987294
     },
     {
       "phase": "sample",
       "round": 3,
       "workload": "unproven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 408.89207
+      "elapsed_ms": 34.851074
     },
     {
       "phase": "sample",
       "round": 3,
       "workload": "growth",
       "participant": "marimay",
-      "elapsed_ms": 142.801164
+      "elapsed_ms": 5.193395
     },
     {
       "phase": "sample",
       "round": 3,
       "workload": "reserved-growth",
       "participant": "marimay",
-      "elapsed_ms": 144.644947
+      "elapsed_ms": 4.764878
     },
     {
       "phase": "sample",
       "round": 4,
       "workload": "density",
       "participant": "marimay",
-      "elapsed_ms": 577.398744
+      "elapsed_ms": 41.076295
     },
     {
       "phase": "sample",
       "round": 4,
       "workload": "reserved-growth",
       "participant": "marimay",
-      "elapsed_ms": 138.662831
+      "elapsed_ms": 4.975274
     },
     {
       "phase": "sample",
       "round": 4,
       "workload": "growth",
       "participant": "marimay",
-      "elapsed_ms": 142.084285
+      "elapsed_ms": 5.076125
     },
     {
       "phase": "sample",
       "round": 4,
       "workload": "unproven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 401.991105
+      "elapsed_ms": 35.185374
     },
     {
       "phase": "sample",
       "round": 4,
       "workload": "proven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 344.285412
+      "elapsed_ms": 28.181524
     },
     {
       "phase": "sample",
       "round": 4,
       "workload": "scalar-set",
       "participant": "marimay",
-      "elapsed_ms": 165.412517
+      "elapsed_ms": 8.93412
     },
     {
       "phase": "sample",
       "round": 4,
       "workload": "scalar-get",
       "participant": "marimay",
-      "elapsed_ms": 169.929883
+      "elapsed_ms": 16.137348
     },
     {
       "phase": "sample",
       "round": 4,
       "workload": "checked-loop",
       "participant": "marimay",
-      "elapsed_ms": 476.09626
+      "elapsed_ms": 56.732575
     },
     {
       "phase": "sample",
       "round": 4,
       "workload": "nested-traversal",
       "participant": "marimay",
-      "elapsed_ms": 312.483142
+      "elapsed_ms": 24.476887
     },
     {
       "phase": "sample",
       "round": 5,
       "workload": "checked-loop",
       "participant": "marimay",
-      "elapsed_ms": 480.513929
+      "elapsed_ms": 56.765887
     },
     {
       "phase": "sample",
       "round": 5,
       "workload": "scalar-get",
       "participant": "marimay",
-      "elapsed_ms": 172.015872
+      "elapsed_ms": 15.968679
     },
     {
       "phase": "sample",
       "round": 5,
       "workload": "scalar-set",
       "participant": "marimay",
-      "elapsed_ms": 167.280373
+      "elapsed_ms": 8.502106
     },
     {
       "phase": "sample",
       "round": 5,
       "workload": "proven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 351.876778
+      "elapsed_ms": 28.199928
     },
     {
       "phase": "sample",
       "round": 5,
       "workload": "unproven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 403.390099
+      "elapsed_ms": 34.240071
     },
     {
       "phase": "sample",
       "round": 5,
       "workload": "growth",
       "participant": "marimay",
-      "elapsed_ms": 143.495312
+      "elapsed_ms": 5.307941
     },
     {
       "phase": "sample",
       "round": 5,
       "workload": "reserved-growth",
       "participant": "marimay",
-      "elapsed_ms": 141.744205
+      "elapsed_ms": 4.508864
     },
     {
       "phase": "sample",
       "round": 5,
       "workload": "density",
       "participant": "marimay",
-      "elapsed_ms": 567.673189
+      "elapsed_ms": 42.05932
     },
     {
       "phase": "sample",
       "round": 5,
       "workload": "nested-traversal",
       "participant": "marimay",
-      "elapsed_ms": 313.3327
+      "elapsed_ms": 24.574912
     },
     {
       "phase": "sample",
       "round": 6,
       "workload": "checked-loop",
       "participant": "marimay",
-      "elapsed_ms": 473.358365
+      "elapsed_ms": 56.84137
     },
     {
       "phase": "sample",
       "round": 6,
       "workload": "nested-traversal",
       "participant": "marimay",
-      "elapsed_ms": 311.819141
+      "elapsed_ms": 24.148036
     },
     {
       "phase": "sample",
       "round": 6,
       "workload": "density",
       "participant": "marimay",
-      "elapsed_ms": 578.824218
+      "elapsed_ms": 41.8744
     },
     {
       "phase": "sample",
       "round": 6,
       "workload": "reserved-growth",
       "participant": "marimay",
-      "elapsed_ms": 138.037004
+      "elapsed_ms": 4.80908
     },
     {
       "phase": "sample",
       "round": 6,
       "workload": "growth",
       "participant": "marimay",
-      "elapsed_ms": 142.286776
+      "elapsed_ms": 5.430683
     },
     {
       "phase": "sample",
       "round": 6,
       "workload": "unproven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 399.12147
+      "elapsed_ms": 34.665854
     },
     {
       "phase": "sample",
       "round": 6,
       "workload": "proven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 349.46684
+      "elapsed_ms": 27.700547
     },
     {
       "phase": "sample",
       "round": 6,
       "workload": "scalar-set",
       "participant": "marimay",
-      "elapsed_ms": 165.351661
+      "elapsed_ms": 8.580654
     },
     {
       "phase": "sample",
       "round": 6,
       "workload": "scalar-get",
       "participant": "marimay",
-      "elapsed_ms": 170.828516
+      "elapsed_ms": 16.65861
     },
     {
       "phase": "sample",
       "round": 7,
       "workload": "scalar-set",
       "participant": "marimay",
-      "elapsed_ms": 169.101103
+      "elapsed_ms": 8.813943
     },
     {
       "phase": "sample",
       "round": 7,
       "workload": "proven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 338.954073
+      "elapsed_ms": 28.517669
     },
     {
       "phase": "sample",
       "round": 7,
       "workload": "unproven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 406.90577
+      "elapsed_ms": 35.50719
     },
     {
       "phase": "sample",
       "round": 7,
       "workload": "growth",
       "participant": "marimay",
-      "elapsed_ms": 142.106406
+      "elapsed_ms": 4.996264
     },
     {
       "phase": "sample",
       "round": 7,
       "workload": "reserved-growth",
       "participant": "marimay",
-      "elapsed_ms": 142.272889
+      "elapsed_ms": 4.535724
     },
     {
       "phase": "sample",
       "round": 7,
       "workload": "density",
       "participant": "marimay",
-      "elapsed_ms": 584.49107
+      "elapsed_ms": 44.112052
     },
     {
       "phase": "sample",
       "round": 7,
       "workload": "nested-traversal",
       "participant": "marimay",
-      "elapsed_ms": 317.922116
+      "elapsed_ms": 24.398207
     },
     {
       "phase": "sample",
       "round": 7,
       "workload": "checked-loop",
       "participant": "marimay",
-      "elapsed_ms": 477.01505
+      "elapsed_ms": 57.621801
     },
     {
       "phase": "sample",
       "round": 7,
       "workload": "scalar-get",
       "participant": "marimay",
-      "elapsed_ms": 169.259832
+      "elapsed_ms": 15.930006
     },
     {
       "phase": "sample",
       "round": 8,
       "workload": "scalar-set",
       "participant": "marimay",
-      "elapsed_ms": 163.732162
+      "elapsed_ms": 8.474093
     },
     {
       "phase": "sample",
       "round": 8,
       "workload": "scalar-get",
       "participant": "marimay",
-      "elapsed_ms": 170.271919
+      "elapsed_ms": 16.05431
     },
     {
       "phase": "sample",
       "round": 8,
       "workload": "checked-loop",
       "participant": "marimay",
-      "elapsed_ms": 479.44737
+      "elapsed_ms": 58.736494
     },
     {
       "phase": "sample",
       "round": 8,
       "workload": "nested-traversal",
       "participant": "marimay",
-      "elapsed_ms": 312.336666
+      "elapsed_ms": 24.310603
     },
     {
       "phase": "sample",
       "round": 8,
       "workload": "density",
       "participant": "marimay",
-      "elapsed_ms": 580.277696
+      "elapsed_ms": 44.589271
     },
     {
       "phase": "sample",
       "round": 8,
       "workload": "reserved-growth",
       "participant": "marimay",
-      "elapsed_ms": 139.934466
+      "elapsed_ms": 4.840339
     },
     {
       "phase": "sample",
       "round": 8,
       "workload": "growth",
       "participant": "marimay",
-      "elapsed_ms": 141.606194
+      "elapsed_ms": 5.19562
     },
     {
       "phase": "sample",
       "round": 8,
       "workload": "unproven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 406.391261
+      "elapsed_ms": 35.213968
     },
     {
       "phase": "sample",
       "round": 8,
       "workload": "proven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 348.021489
+      "elapsed_ms": 28.331887
     },
     {
       "phase": "sample",
       "round": 9,
       "workload": "unproven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 410.185596
+      "elapsed_ms": 35.423002
     },
     {
       "phase": "sample",
       "round": 9,
       "workload": "growth",
       "participant": "marimay",
-      "elapsed_ms": 147.876363
+      "elapsed_ms": 5.42327
     },
     {
       "phase": "sample",
       "round": 9,
       "workload": "reserved-growth",
       "participant": "marimay",
-      "elapsed_ms": 143.244179
+      "elapsed_ms": 4.851681
     },
     {
       "phase": "sample",
       "round": 9,
       "workload": "density",
       "participant": "marimay",
-      "elapsed_ms": 574.290671
+      "elapsed_ms": 42.501873
     },
     {
       "phase": "sample",
       "round": 9,
       "workload": "nested-traversal",
       "participant": "marimay",
-      "elapsed_ms": 309.379917
+      "elapsed_ms": 25.172418
     },
     {
       "phase": "sample",
       "round": 9,
       "workload": "checked-loop",
       "participant": "marimay",
-      "elapsed_ms": 478.407033
+      "elapsed_ms": 57.789318
     },
     {
       "phase": "sample",
       "round": 9,
       "workload": "scalar-get",
       "participant": "marimay",
-      "elapsed_ms": 170.772841
+      "elapsed_ms": 16.062335
     },
     {
       "phase": "sample",
       "round": 9,
       "workload": "scalar-set",
       "participant": "marimay",
-      "elapsed_ms": 167.016337
+      "elapsed_ms": 8.602666
     },
     {
       "phase": "sample",
       "round": 9,
       "workload": "proven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 345.294393
+      "elapsed_ms": 27.989231
     },
     {
       "phase": "sample",
       "round": 10,
       "workload": "unproven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 402.055536
+      "elapsed_ms": 35.184682
     },
     {
       "phase": "sample",
       "round": 10,
       "workload": "proven-bounds",
       "participant": "marimay",
-      "elapsed_ms": 341.999808
+      "elapsed_ms": 27.60694
     },
     {
       "phase": "sample",
       "round": 10,
       "workload": "scalar-set",
       "participant": "marimay",
-      "elapsed_ms": 169.450692
+      "elapsed_ms": 8.527794
     },
     {
       "phase": "sample",
       "round": 10,
       "workload": "scalar-get",
       "participant": "marimay",
-      "elapsed_ms": 174.416242
+      "elapsed_ms": 15.924856
     },
     {
       "phase": "sample",
       "round": 10,
       "workload": "checked-loop",
       "participant": "marimay",
-      "elapsed_ms": 483.371932
+      "elapsed_ms": 56.462956
     },
     {
       "phase": "sample",
       "round": 10,
       "workload": "nested-traversal",
       "participant": "marimay",
-      "elapsed_ms": 315.733964
+      "elapsed_ms": 24.554894
     },
     {
       "phase": "sample",
       "round": 10,
       "workload": "density",
       "participant": "marimay",
-      "elapsed_ms": 574.862579
+      "elapsed_ms": 41.667039
     },
     {
       "phase": "sample",
       "round": 10,
       "workload": "reserved-growth",
       "participant": "marimay",
-      "elapsed_ms": 150.290529
+      "elapsed_ms": 4.837765
     },
     {
       "phase": "sample",
       "round": 10,
       "workload": "growth",
       "participant": "marimay",
-      "elapsed_ms": 143.332345
+      "elapsed_ms": 5.443557
     }
   ]
 }
