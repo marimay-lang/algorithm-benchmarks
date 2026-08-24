@@ -98,7 +98,7 @@
       "implementations": {
         "marimay": {
           "required_fragments": [
-            "repeat < 50",
+            "for repeat in 0..50",
             "generatedValues(2500, repeat + 1)",
             "sorting.insertionSort(values);"
           ]
@@ -130,7 +130,7 @@
       "implementations": {
         "marimay": {
           "required_fragments": [
-            "repeat < 5",
+            "for repeat in 0..5",
             "generatedValues(100_000, repeat + 101)",
             "sorting.heapSort(values);"
           ]
@@ -162,7 +162,7 @@
       "implementations": {
         "marimay": {
           "required_fragments": [
-            "index < 1_000_000",
+            "for index in 0..1_000_000",
             "structures.newStack()",
             "stack.push(state % 1001);",
             "stack.pop()"
@@ -197,7 +197,7 @@
       "implementations": {
         "marimay": {
           "required_fragments": [
-            "index < 1_000_000",
+            "for index in 0..1_000_000",
             "structures.newQueue()",
             "queue.enqueue(state % 1001);",
             "queue.dequeue()"
@@ -232,7 +232,7 @@
       "implementations": {
         "marimay": {
           "required_fragments": [
-            "index < 500_000",
+            "for index in 0..500_000",
             "structures.newMinHeap()",
             "heap.push(state % 10001);",
             "heap.pop()"
@@ -268,7 +268,7 @@
         "marimay": {
           "required_fragments": [
             "const size = 100_000;",
-            "operation < 5_000_000",
+            "for operation in 0..5_000_000",
             "structures.newDsu(size)",
             "dsu.union(left, right);",
             "index += 97"
@@ -306,7 +306,7 @@
         "marimay": {
           "required_fragments": [
             "const size = 20_000;",
-            "repeat < 300",
+            "for repeat in 0..300",
             "graphs.bfs(adjacency, repeat)",
             "(node + size - 7) % size"
           ]
@@ -341,7 +341,7 @@
         "marimay": {
           "required_fragments": [
             "const size = 800;",
-            "repeat < 80",
+            "for repeat in 0..80",
             "let adjacency: [][]graphs.Edge = [];",
             "edges.push(graphs.edge(node + 7, 3));",
             "graphs.dijkstra(adjacency, repeat)"
