@@ -92,7 +92,7 @@
       "path": "benchmarks/probes.json",
       "schema": "marimay.array-probes-manifest/1",
       "sha256": "f7a8a378036cfcb1d121a2e49a6d32ba3a3a34840821a0d4e9dc806d3802af0a",
-      "source_tree_sha256": "20764d6be339813a07e181021f649c57be38251f556a5d00d6eed9248968e219"
+      "source_tree_sha256": "02fb82aba396474bc8ce8ea942a4160406e9e42841f72309b7227809d1b15929"
     }
   },
   "workloads": {

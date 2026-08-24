@@ -10,7 +10,7 @@ Marimay source revision: `d6afbe792685ef12fe1ce9e6e053ad9758ddce8d`.
 
 Algorithm corpus revision: `57ad442f62ee644c82bd48243913c55cf0d27dac`.
 
-Equivalence manifest: `benchmarks/equivalence.json` (`bf2f251de2d91e22d6696a50aa83babe9d1497139a305c4e1770e09c1f2f7e9b`).
+Equivalence manifest: `benchmarks/equivalence.json` (`64ddc892dcac9a30a9e4b86aa669d1dff5a12aea65c3f353e180958f23a8c27a`).
 
 Samples: 11 measured after 3 warm-up runs. Reported times include process startup and one fixed checksum line; compilation is excluded.
 

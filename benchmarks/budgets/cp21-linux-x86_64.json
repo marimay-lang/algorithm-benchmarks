@@ -10,13 +10,13 @@
   },
   "baseline": {
     "probe_result": "benchmarks/results/cp21-probes-linux-x86_64.json",
-    "probe_result_sha256": "daad9f3220dbcb371a5599ad43ffcb3405316a480e0674ff8e31cb9d28ce663e",
+    "probe_result_sha256": "925f8d0363dcd1635c035a1b49efb751f7bb772c7fea30d7f6ef173313ace9be",
     "algorithm_result": "benchmarks/results/cp21-algorithms-linux-x86_64.json",
-    "algorithm_result_sha256": "decc584a351c25f5b1302eca124c151f9c22238c10cd3f2d8eeb568da5a1797e",
+    "algorithm_result_sha256": "82154c841a74b9d9732637aa94ef9ef1614191dd7ca56386843811ece051116f",
     "marimay_revision": "1d728451612f5ad4d6cfb78a5785b2e57605af26",
     "corpus_revision": "c8da4676e0e80522d795a6b7fe551e93916c9fad",
     "probe_manifest_sha256": "f7a8a378036cfcb1d121a2e49a6d32ba3a3a34840821a0d4e9dc806d3802af0a",
-    "equivalence_manifest_sha256": "bf2f251de2d91e22d6696a50aa83babe9d1497139a305c4e1770e09c1f2f7e9b"
+    "equivalence_manifest_sha256": "64ddc892dcac9a30a9e4b86aa669d1dff5a12aea65c3f353e180958f23a8c27a"
   },
   "suites": {
     "probes": {

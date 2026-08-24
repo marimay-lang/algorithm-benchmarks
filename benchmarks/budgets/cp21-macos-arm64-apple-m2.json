@@ -10,13 +10,13 @@
   },
   "baseline": {
     "probe_result": "benchmarks/results/cp21-probes-macos-arm64-apple-m2.json",
-    "probe_result_sha256": "3340980928d85d8d9245b0356072fbc220331f108f3a7f98d31e858967cba9f2",
+    "probe_result_sha256": "0b42347540795d6ea2605597666a8318dfef6f4b78864a5c630a541e88817180",
     "algorithm_result": "benchmarks/results/cp21-algorithms-macos-arm64-apple-m2.json",
-    "algorithm_result_sha256": "ab28835c356545243451a6d45c58534032800e1f43fa0d05a475740788a56c71",
+    "algorithm_result_sha256": "818969be79d7fb3ca7e1fcd1fe8ac18b4dca2ceab541ae5c033848e024134081",
     "marimay_revision": "d6afbe792685ef12fe1ce9e6e053ad9758ddce8d",
     "corpus_revision": "57ad442f62ee644c82bd48243913c55cf0d27dac",
     "probe_manifest_sha256": "f7a8a378036cfcb1d121a2e49a6d32ba3a3a34840821a0d4e9dc806d3802af0a",
-    "equivalence_manifest_sha256": "bf2f251de2d91e22d6696a50aa83babe9d1497139a305c4e1770e09c1f2f7e9b"
+    "equivalence_manifest_sha256": "64ddc892dcac9a30a9e4b86aa669d1dff5a12aea65c3f353e180958f23a8c27a"
   },
   "suites": {
     "probes": {

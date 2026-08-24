@@ -91,7 +91,7 @@
     "equivalence_manifest": {
       "path": "benchmarks/equivalence.json",
       "schema": "marimay.algorithm-equivalence/1",
-      "sha256": "bf2f251de2d91e22d6696a50aa83babe9d1497139a305c4e1770e09c1f2f7e9b"
+      "sha256": "64ddc892dcac9a30a9e4b86aa669d1dff5a12aea65c3f353e180958f23a8c27a"
     },
     "languages": [
       "marimay",
