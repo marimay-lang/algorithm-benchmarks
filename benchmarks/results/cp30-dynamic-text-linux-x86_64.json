@@ -1,0 +1,239 @@
+{
+  "schema": "marimay.feature-probes/1",
+  "protocol": {
+    "schema": "marimay.performance-protocol/1",
+    "path": "benchmarks/performance_protocol.json",
+    "sha256": "a94f5be850eb26fd821b3630b16254f145a8e30c1b8e7a63fd7230ed761dd4a8"
+  },
+  "metadata": {
+    "generated_at": "2026-08-24T09:17:49+00:00",
+    "platform": {
+      "id": "linux-x86_64",
+      "system": "Linux",
+      "release": "6.12.57+deb13-amd64",
+      "machine": "x86_64",
+      "cpu": "QEMU Virtual CPU version 2.5+",
+      "logical_cpus": 4
+    },
+    "isolation": {
+      "mode": "dedicated-runner-contract",
+      "load_average_at_start": [
+        5.85986328125,
+        7.1318359375,
+        5.91796875
+      ],
+      "power_source": "runner-policy",
+      "affinity": "not-requested",
+      "sample_selection": "none",
+      "load_average_at_end": [
+        5.85986328125,
+        7.1318359375,
+        5.91796875
+      ]
+    },
+    "warmups": 3,
+    "samples": 11,
+    "timeout_seconds": 300,
+    "clock": "perf_counter_ns",
+    "order": "rotating-balanced-v1",
+    "command": "./benchmarks/feature_probes.py --feature dynamic-text --samples 11 --warmups 3 --output benchmarks/results/cp30-dynamic-text-linux-x86_64.json",
+    "resource": {
+      "max_heap_bytes": 67108864
+    },
+    "artifacts": {
+      "mmay_compiler": {
+        "path": "/workspace/Marimay/algorithm-benchmarks/marimay/build/release/mmay",
+        "sha256": "f6b6753dcc5d0736eb1771d56a8bb670d3e5d15b0ec99b75bf45627c785230ad",
+        "revision": "97cbc0e152bfbdc06a9806bafbf8515dd6ee17e3",
+        "version": "Marimay compiler 0.1.0-alpha.1\nrelease-channel private-preview\nrelease-claim local-checker-backed-slice\npublication-ready false\nruntime 0.1.0-alpha.1\nlanguage 0.1-design\nbytecode unavailable (none)\nstandard-library 0.1.0-alpha.1 (bounded-preview; alpha-source)\nbootstrap-stage 0\nhost Linux/x86_64\ntargets native-host\navailable-commands build check fmt help run test version\nstaged-commands add audit bench doc exec explain fix fuzz generate init list outdated remove update vendor vet why"
+      },
+      "runtime": {
+        "path": "/workspace/Marimay/algorithm-benchmarks/marimay/build/release/native-runtime/release/libmmay_native_runtime_release.a",
+        "sha256": "97f406dbbfd942a2783f9bbbbd12a8f5d6e65ed7757697e5a09399132e335f83",
+        "manifest_path": "/workspace/Marimay/algorithm-benchmarks/marimay/build/release/native-runtime/release/mmay-native-runtime.manifest",
+        "manifest_sha256": "f775d1332abe279851bc0728b72c895f0d52bebf0978d3cdb47e444c66816e67",
+        "profile": "release",
+        "runtime": "0.1.0-alpha.1",
+        "host": "Linux",
+        "processor": "x86_64",
+        "compiler": "Clang-18.1.3"
+      },
+      "native_c": {
+        "compiler_path": "/usr/bin/clang",
+        "compiler_version": "Ubuntu clang version 18.1.3 (1ubuntu1); configured Clang 18.1.3",
+        "linker_path": "/usr/bin/clang",
+        "linker_version": "Ubuntu clang version 18.1.3 (1ubuntu1); configured Clang 18.1.3",
+        "output_profile": "release",
+        "flags": [
+          "-std=c17",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Werror",
+          "-fno-fast-math",
+          "-frounding-math",
+          "-ffp-contract=off",
+          "-fexcess-precision=standard",
+          "-lm"
+        ]
+      }
+    },
+    "toolchains": {
+      "python": "3.12.3",
+      "marimay": "Marimay compiler 0.1.0-alpha.1",
+      "go": "go version go1.26.6 linux/amd64",
+      "rust": "rustc 1.96.0 (ac68faa20 2026-05-25)"
+    },
+    "corpus_revision": "4a0d56662e167a18f9b2ee8690af31fcd0ad958b",
+    "comparison_scope": "local-only",
+    "feature_manifest": {
+      "path": "benchmarks/feature_probes.json",
+      "schema": "marimay.feature-probes-manifest/1",
+      "sha256": "2b54fb9e048f11320dd756343d4b2d31c1c2c115ecb535fa3465accfe47a895d",
+      "source_tree_sha256": "21eef5a224ab324f30336ba7faacc7fc6600904cb118542ed279ed8696a62cfc"
+    }
+  },
+  "workloads": {
+    "dynamic-text": {
+      "category": "text-format-parse",
+      "description": "interpolation, primitive integer and bool formatting, string concatenation, and parseInt",
+      "expected_checksum": 25313115,
+      "expected_stdout": "dynamic-text 25313115\n",
+      "commands": {
+        "marimay": [
+          "/workspace/Marimay/algorithm-benchmarks/algorithm-benchmarks/benchmarks/.build/features/marimay-feature-dynamic-text"
+        ]
+      },
+      "raw_ms": {
+        "marimay": [
+          68.508016,
+          68.756224,
+          69.426827,
+          69.441395,
+          68.434899,
+          71.493152,
+          69.213335,
+          68.729373,
+          70.015978,
+          68.78072,
+          70.876259
+        ]
+      },
+      "summary": {
+        "marimay": {
+          "median_ms": 69.213335,
+          "mad_ms": 0.48396200000000533,
+          "q1_ms": 68.729373,
+          "q3_ms": 70.015978,
+          "iqr_ms": 1.2866050000000087,
+          "min_ms": 68.434899,
+          "max_ms": 71.493152,
+          "noise_fraction": 0.020976969250217692
+        }
+      }
+    }
+  },
+  "order": [
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 70.561276
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 71.507137
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 71.183918
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 68.508016
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 68.756224
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 69.426827
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 69.441395
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 68.434899
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 71.493152
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 69.213335
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 68.729373
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 70.015978
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 68.78072
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 70.876259
+    }
+  ]
+}
