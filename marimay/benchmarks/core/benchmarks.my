@@ -14,16 +14,16 @@ fn addChecksum(checksum: int, value: int): int {
 fn generatedValues(size: int, seed: int): []int {
   let values: []int = [];
   let state = seed;
-  for let index = 0; index < size; index += 1 {
+  for index in 0..size {
     state = (state * 25173 + 13849) % 65536;
-    values.push(state % 20001 - 10000);
+    const _ = values.push(state % 20001 - 10000);
   }
   return values;
 }
 
 public fn benchmarkInsertion(): int {
   let checksum = 0;
-  for let repeat = 0; repeat < 50; repeat += 1 {
+  for repeat in 0..50 {
     let values = generatedValues(2500, repeat + 1);
     sorting.insertionSort(values);
     checksum = addChecksum(checksum, values[0]);
@@ -35,7 +35,7 @@ public fn benchmarkInsertion(): int {
 
 public fn benchmarkHeapSort(): int {
   let checksum = 0;
-  for let repeat = 0; repeat < 5; repeat += 1 {
+  for repeat in 0..5 {
     let values = generatedValues(100_000, repeat + 101);
     sorting.heapSort(values);
     checksum = addChecksum(checksum, values[0]);
@@ -48,15 +48,15 @@ public fn benchmarkHeapSort(): int {
 public fn benchmarkStack(): int {
   const stack = structures.newStack();
   let state = 7;
-  for let index = 0; index < 1_000_000; index += 1 {
+  for index in 0..1_000_000 {
     state = (state * 25173 + 13849) % 65536;
     stack.push(state % 1001);
   }
   let checksum = 0;
   while !stack.empty() {
     const value = match stack.pop() {
-      case Some(current) => current;
-      case None => panic("non-empty stack returned None");
+      Some(current) => current,
+      None => panic("non-empty stack returned None"),
     };
     checksum = addChecksum(checksum, value);
   }
@@ -66,15 +66,15 @@ public fn benchmarkStack(): int {
 public fn benchmarkQueue(): int {
   const queue = structures.newQueue();
   let state = 11;
-  for let index = 0; index < 1_000_000; index += 1 {
+  for index in 0..1_000_000 {
     state = (state * 25173 + 13849) % 65536;
     queue.enqueue(state % 1001);
   }
   let checksum = 0;
   while !queue.empty() {
     const value = match queue.dequeue() {
-      case Some(current) => current;
-      case None => panic("non-empty queue returned None");
+      Some(current) => current,
+      None => panic("non-empty queue returned None"),
     };
     checksum = addChecksum(checksum, value);
   }
@@ -84,15 +84,15 @@ public fn benchmarkQueue(): int {
 public fn benchmarkMinHeap(): int {
   const heap = structures.newMinHeap();
   let state = 13;
-  for let index = 0; index < 500_000; index += 1 {
+  for index in 0..500_000 {
     state = (state * 25173 + 13849) % 65536;
     heap.push(state % 10001);
   }
   let checksum = 0;
   while !heap.empty() {
     const value = match heap.pop() {
-      case Some(current) => current;
-      case None => panic("non-empty heap returned None");
+      Some(current) => current,
+      None => panic("non-empty heap returned None"),
     };
     checksum = addChecksum(checksum, value);
   }
@@ -102,14 +102,16 @@ public fn benchmarkMinHeap(): int {
 public fn benchmarkDsu(): int {
   const size = 100_000;
   const dsu = structures.newDsu(size);
-  for let operation = 0; operation < 5_000_000; operation += 1 {
+  for operation in 0..5_000_000 {
     const left = operation % size;
     const right = (operation * 17 + 3) % size;
     dsu.union(left, right);
   }
   let checksum = dsu.components();
-  for let index = 0; index < size; index += 97 {
+  let index = 0;
+  while index < size {
     checksum = addChecksum(checksum, dsu.find(index));
+    index += 97;
   }
   return checksum;
 }
@@ -117,16 +119,16 @@ public fn benchmarkDsu(): int {
 public fn benchmarkBfs(): int {
   const size = 20_000;
   let adjacency: [][]int = [];
-  for let node = 0; node < size; node += 1 {
-    adjacency.push(
+  for node in 0..size {
+    const _ = adjacency.push(
       [(node + 1) % size, (node + size - 1) % size, (node + 7) % size, (node + size - 7) % size],
     );
   }
   let checksum = 0;
-  for let repeat = 0; repeat < 300; repeat += 1 {
+  for repeat in 0..300 {
     const distances = match graphs.bfs(adjacency, repeat) {
-      case Some(values) => values;
-      case None => panic("valid BFS graph rejected");
+      Some(values) => values,
+      None => panic("valid BFS graph rejected"),
     };
     checksum = addChecksum(checksum, distances[(repeat + size / 2) % size]);
     checksum = addChecksum(checksum, distances[(repeat + size / 3) % size]);
@@ -137,21 +139,21 @@ public fn benchmarkBfs(): int {
 public fn benchmarkDijkstra(): int {
   const size = 800;
   let adjacency: [][]graphs.Edge = [];
-  for let node = 0; node < size; node += 1 {
+  for node in 0..size {
     let edges: []graphs.Edge = [];
     if node + 1 < size {
-      edges.push(graphs.edge(node + 1, 1));
+      const _ = edges.push(graphs.edge(node + 1, 1));
     }
     if node + 7 < size {
-      edges.push(graphs.edge(node + 7, 3));
+      const _ = edges.push(graphs.edge(node + 7, 3));
     }
-    adjacency.push(edges);
+    const _ = adjacency.push(edges);
   }
   let checksum = 0;
-  for let repeat = 0; repeat < 80; repeat += 1 {
+  for repeat in 0..80 {
     const distances = match graphs.dijkstra(adjacency, repeat) {
-      case Some(values) => values;
-      case None => panic("valid Dijkstra graph rejected");
+      Some(values) => values,
+      None => panic("valid Dijkstra graph rejected"),
     };
     checksum = addChecksum(checksum, distances[size - 1]);
     checksum = addChecksum(checksum, distances[size / 2]);

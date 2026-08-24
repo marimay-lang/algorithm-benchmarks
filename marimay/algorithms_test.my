@@ -8,9 +8,7 @@ fn sortingAlgorithms(): void {
   sorting.insertionSort(insertionValues);
   let heapValues = arrayOf(9, 4, 7, 1, -2, 6, 5);
   sorting.heapSort(heapValues);
-  if insertionValues[0] != -1 || insertionValues[1] != 0 || insertionValues[4] != 5 || heapValues[0] != -2 || heapValues[
-    6
-  ] != 9 {
+  if insertionValues[0] != -1 || insertionValues[1] != 0 || insertionValues[4] != 5 || heapValues[0] != -2 || heapValues[6] != 9 {
     panic("sorting algorithms failed");
   }
 }
@@ -22,16 +20,16 @@ fn dataStructures(): void {
   stack.push(20);
   stack.push(30);
   const stackValue = match stack.pop() {
-    case Some(value) => value;
-    case None => panic("stack unexpectedly empty");
+    Some(value) => value,
+    None => panic("stack unexpectedly empty"),
   };
   const queue = structures.newQueue();
   queue.enqueue(10);
   queue.enqueue(20);
   queue.enqueue(30);
   const queueValue = match queue.dequeue() {
-    case Some(value) => value;
-    case None => panic("queue unexpectedly empty");
+    Some(value) => value,
+    None => panic("queue unexpectedly empty"),
   };
   const heap = structures.newMinHeap();
   heap.push(7);
@@ -39,8 +37,8 @@ fn dataStructures(): void {
   heap.push(9);
   heap.push(1);
   const minimum = match heap.pop() {
-    case Some(value) => value;
-    case None => panic("heap unexpectedly empty");
+    Some(value) => value,
+    None => panic("heap unexpectedly empty"),
   };
   const dsu = structures.newDsu(5);
   dsu.union(0, 1);
@@ -50,15 +48,17 @@ fn dataStructures(): void {
   const emptyQueue = structures.newQueue();
   const emptyHeap = structures.newMinHeap();
   const emptyResultsAreNone = match emptyStack.pop() {
-    case Some(_) => false;
-    case None => true;
-  } && match emptyQueue.dequeue() {
-    case Some(_) => false;
-    case None => true;
-  } && match emptyHeap.pop() {
-    case Some(_) => false;
-    case None => true;
-  };
+    Some(_) => false,
+    None => true,
+  }
+    && match emptyQueue.dequeue() {
+      Some(_) => false,
+      None => true,
+    }
+    && match emptyHeap.pop() {
+      Some(_) => false,
+      None => true,
+    };
   if stackValue != 30 || stack.length() != 2 || queueValue != 10 || queue.length() != 2 || minimum != 1 || !dsu.connected(
     0,
     2,
@@ -71,8 +71,8 @@ fn dataStructures(): void {
 fn graphAlgorithms(): void {
   const adjacency: graphs.IntAdjacency = [[1, 2], [0, 3], [0, 3], [1, 2]];
   const distances = match graphs.bfs(adjacency, 0) {
-    case Some(value) => value;
-    case None => panic("valid BFS graph rejected");
+    Some(value) => value,
+    None => panic("valid BFS graph rejected"),
   };
   const weighted: graphs.WeightedAdjacency = [
     [graphs.edge(1, 4), graphs.edge(2, 1)],
@@ -81,8 +81,8 @@ fn graphAlgorithms(): void {
     [],
   ];
   const shortest = match graphs.dijkstra(weighted, 0) {
-    case Some(value) => value;
-    case None => panic("valid Dijkstra graph rejected");
+    Some(value) => value,
+    None => panic("valid Dijkstra graph rejected"),
   };
   if distances[3] != 2 || shortest[1] != 3 || shortest[3] != 4 {
     panic("graph algorithms failed");
@@ -95,24 +95,24 @@ fn invalidGraphInputsAreRejected(): void {
   const invalidEndpoint: graphs.WeightedAdjacency = [[graphs.edge(2, 1)], []];
   const negativeWeight: graphs.WeightedAdjacency = [[graphs.edge(1, -1)], []];
   const bfsStartRejected = match graphs.bfs([], -1) {
-    case Some(_) => false;
-    case None => true;
+    Some(_) => false,
+    None => true,
   };
   const bfsNeighborRejected = match graphs.bfs(invalidNeighbor, 0) {
-    case Some(_) => false;
-    case None => true;
+    Some(_) => false,
+    None => true,
   };
   const dijkstraStartRejected = match graphs.dijkstra([], -1) {
-    case Some(_) => false;
-    case None => true;
+    Some(_) => false,
+    None => true,
   };
   const dijkstraEndpointRejected = match graphs.dijkstra(invalidEndpoint, 0) {
-    case Some(_) => false;
-    case None => true;
+    Some(_) => false,
+    None => true,
   };
   const dijkstraWeightRejected = match graphs.dijkstra(negativeWeight, 0) {
-    case Some(_) => false;
-    case None => true;
+    Some(_) => false,
+    None => true,
   };
   if !bfsStartRejected || !bfsNeighborRejected || !dijkstraStartRejected || !dijkstraEndpointRejected || !dijkstraWeightRejected {
     panic("invalid graph input was accepted");

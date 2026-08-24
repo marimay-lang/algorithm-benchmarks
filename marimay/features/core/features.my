@@ -11,18 +11,18 @@ fn addFeatureChecksum(checksum: int, value: int): int {
 
 public fn probeDynamicText(): int {
   let checksum = 0;
-  for let iteration = 0; iteration < 50_000; iteration += 1 {
+  for iteration in 0..50_000 {
     const parsed = convert.parseInt($"{iteration}");
     checksum = match parsed {
-      case Ok(value) => addFeatureChecksum(checksum, value % 1009);
-      case Err(_) => -1;
+      Ok(value) => addFeatureChecksum(checksum, value % 1009),
+      Err(_) => -1,
     };
     const decorated = $"{iteration}|{iteration % 2 == 0}";
     const rejected = convert.parseInt(decorated);
     checksum = match rejected {
-      case Ok(_) => -1;
-      case Err(convert.InvalidDigit { offset }) => addFeatureChecksum(checksum, offset);
-      case Err(_) => -1;
+      Ok(_) => -1,
+      Err(convert.InvalidDigit { offset }) => addFeatureChecksum(checksum, offset),
+      Err(_) => -1,
     };
   }
   return checksum;
