@@ -7,7 +7,7 @@
 ## Состав
 
 ```text
-marimay-algotithms/
+algorithm-benchmarks/
   marimay/
     mmay.mod
     sorting/{insertion,heap}.my
@@ -15,6 +15,7 @@ marimay-algotithms/
     graphs/{bfs,dijkstra}.my
     benchmarks/{core,insertion,heap_sort,stack,queue,min_heap,dsu,bfs,dijkstra}/
     probes/{core,scalar_get,scalar_set,proven_bounds,unproven_bounds,growth,reserved_growth,density,nested_traversal,checked_loop}/
+    features/{core,dynamic_text}/
     algorithms_test.my
   go/
     sorting/
@@ -27,7 +28,7 @@ marimay-algotithms/
   typescript/src/{sorting,structures,graphs,benchmark}.ts
   v/{sorting,structures,graphs,cmd/benchmark}/
   moonbit/{sorting,structures,graphs,cmd/benchmark}/
-  benchmarks/{run.py,probes.py,validate_results.py,results/,budgets/}
+  benchmarks/{run.py,probes.py,feature_probes.py,validate_results.py,results/,budgets/}
   verify.sh
 ```
 
@@ -44,7 +45,7 @@ marimay-algotithms/
 ## Полная проверка
 
 По умолчанию скрипт ищет Marimay в соседнем репозитории
-`../Ma/build/rebrand-debug/mmay`:
+`../marimay/build/debug/mmay`:
 
 ```sh
 ./verify.sh
@@ -66,7 +67,7 @@ make verify
 
 - Marimay: canonical format check и `mmay check` для библиотек и benchmark-кода,
   VM run, четыре explicit tests через `--engine both`, Debug/Release native
-  build и побайтовое сравнение stdout всех трёх исполнений;
+  build, отдельный native `dynamic-text` checksum и побайтовое сравнение stdout;
 - Go: `gofmt`, `go vet`, `go test ./...`, `go run .`;
 - Rust: `cargo fmt --check`, strict Clippy, все tests и запуск основного binary.
 - Общий machine-readable
@@ -111,6 +112,13 @@ MoonBit — через `moon build --release --target native`; компиляц�
 Tier 1 baseline. Штатный `make benchmark` по-прежнему измеряет только
 `marimay,go,rust`.
 
+Новые языковые возможности измеряются отдельным `make benchmark-features`.
+Feature-probes используют release runtime и сохраняют raw samples, но остаются
+local-only и не меняют исторические array/native budgets без review.
+Push в `main` запускает Linux x86_64 runner: он повторяет 9 focused probes и 8
+canonical algorithms против reviewed checkpoint-21 ceilings, отдельно собирает
+`dynamic-text` candidate и публикует все raw samples в evidence branch.
+
 Воспроизводимый checkpoint-21 baseline, focused array probes, raw samples,
 artifact hashes и reviewed macOS arm64 budget находятся в
 [`benchmarks/results/`](benchmarks/results/) и
@@ -118,9 +126,9 @@ artifact hashes и reviewed macOS arm64 budget находятся в
 validation commands: [`benchmarks/README.md`](benchmarks/README.md).
 
 Развёрнутые выводы и места оптимизации зафиксированы в основном Marimay-репозитории:
-[`algorithm-benchmark-findings.md`](../Ma/docs/research/algorithm-benchmark-findings.md).
+[`algorithm-benchmark-findings.md`](../marimay/docs/research/algorithm-benchmark-findings.md).
 Предложение по `[][]int` и соседние ergonomics-наблюдения вынесены отдельно:
-[`array-type-shorthand-proposal.md`](../Ma/docs/design/array-type-shorthand-proposal.md).
+[`array-type-shorthand-proposal.md`](../marimay/docs/design/array-type-shorthand-proposal.md).
 
 ## Общие контрольные примеры
 

@@ -1,0 +1,11 @@
+import { Error as IoError, println } from "std/io";
+
+import { probeDynamicText } from "study/algorithms/features/core";
+
+fn main(): Result<void, IoError> {
+  if probeDynamicText() != 25_313_115 {
+    panic("dynamic-text feature probe checksum mismatch");
+  }
+  println("dynamic-text 25313115")?;
+  return Ok();
+}

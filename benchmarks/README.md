@@ -46,7 +46,7 @@ Linux arm64, macOS arm64, macOS x86_64 и Windows x86_64. Поэтому зав�
 checkpoint 21 не выдаётся за полную Tier 1 готовность публичной альфы. Linux
 baseline отдельно проверяется `make benchmark-validate-platform`.
 
-По умолчанию используется `../Ma/build/release/mmay`. После checkpoint 13
+По умолчанию используется `../marimay/build/release/mmay`. После checkpoint 13
 requested output profile выбирает согласованный release runtime независимо от
 build profile compiler executable. Harness проверяет release runtime manifest,
 а не полагается на имя compiler path.
@@ -75,6 +75,31 @@ workload с reviewed platform ceilings. Строгая привязка exact pa
 сохраняется для самих checkpoint-21 baseline. `--baseline` принимает
 исторический algorithm report того же platform/workload set как comparison
 context, но не подменяет reviewed budget.
+
+## Local-only language feature probes
+
+Новые языковые возможности измеряются отдельно от исторического array/native
+manifest, чтобы не менять его source hashes и reviewed budgets. Feature-probe
+использует тот же release profile, 64 MiB managed heap, 3 warmup + 11 samples,
+raw timings и noise statistics, но имеет отдельную schema и всегда помечен
+`comparison_scope=local-only`:
+
+```sh
+MMAY=/absolute/path/to/release/mmay \
+  ./benchmarks/feature_probes.py --feature dynamic-text \
+  --output benchmarks/results/cp30-dynamic-text-local.json
+```
+
+`dynamic-text` измеряет интерполяцию, форматирование `int`/`bool`, сборку строк
+и `parseInt` в одном детерминированном цикле. Первый отчёт является candidate,
+а не reviewed budget; публиковать threshold можно только отдельным решением и
+повторяемым baseline по D056.
+
+Workflow `cp21-baseline.yml` сохраняет историческое имя файла, но на каждом
+push в `main` выполняет текущую CP30 regression matrix на Linux x86_64. Он
+проверяет 9 probes и 8 algorithms против reviewed checkpoint-21 ceilings,
+собирает отдельный `cp30-dynamic-text-linux-x86_64.json` без автоматического
+threshold и публикует raw evidence в `evidence/cp30-linux-x86_64-<revision>`.
 
 ## Локальные дополнительные языки
 

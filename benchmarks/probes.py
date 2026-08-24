@@ -203,7 +203,7 @@ def main() -> None:
         raise SystemExit("probe --output must use the .json suffix")
     build_directory = repository / "benchmarks" / ".build" / "probes"
     build_directory.mkdir(parents=True, exist_ok=True)
-    default_mmay = repository.parent / "Ma" / "build" / "release" / "mmay"
+    default_mmay = repository.parent / "marimay" / "build" / "release" / "mmay"
     mmay_binary = pathlib.Path(os.environ.get("MMAY", str(default_mmay))).resolve()
     max_heap_bytes = protocol["resource"]["max_heap_bytes"]
     commands = (

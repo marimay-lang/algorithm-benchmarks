@@ -1,4 +1,4 @@
-.PHONY: benchmark benchmark-probes benchmark-validate
+.PHONY: benchmark benchmark-probes benchmark-features benchmark-validate
 .PHONY: benchmark-validate-public-alpha benchmark-validate-platform verify
 
 benchmark:
@@ -6,6 +6,9 @@ benchmark:
 
 benchmark-probes:
 	./benchmarks/probes.py
+
+benchmark-features:
+	./benchmarks/feature_probes.py
 
 benchmark-validate-platform:
 	./benchmarks/validate_results.py \

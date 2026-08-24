@@ -1,0 +1,29 @@
+import * as convert from "std/convert";
+
+fn addFeatureChecksum(checksum: int, value: int): int {
+  const modulus = 1_000_000_007;
+  let normalized = value % modulus;
+  if normalized < 0 {
+    normalized += modulus;
+  }
+  return (checksum + normalized) % modulus;
+}
+
+public fn probeDynamicText(): int {
+  let checksum = 0;
+  for let iteration = 0; iteration < 50_000; iteration += 1 {
+    const parsed = convert.parseInt($"{iteration}");
+    checksum = match parsed {
+      case Ok(value) => addFeatureChecksum(checksum, value % 1009);
+      case Err(_) => -1;
+    };
+    const decorated = $"{iteration}|{iteration % 2 == 0}";
+    const rejected = convert.parseInt(decorated);
+    checksum = match rejected {
+      case Ok(_) => -1;
+      case Err(convert.InvalidDigit { offset }) => addFeatureChecksum(checksum, offset);
+      case Err(_) => -1;
+    };
+  }
+  return checksum;
+}

@@ -1,4 +1,4 @@
-name: Checkpoint 21 Linux x86_64 baseline
+name: Linux x86_64 benchmark regression
 
 on:
   push:
@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   baseline:
-    name: Linux x86_64 raw baseline
+    name: CP30 algorithms, probes, and dynamic text
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -86,7 +86,7 @@ jobs:
           ./benchmarks/probes.py
           --samples 11
           --warmups 3
-          --output benchmarks/results/cp21-probes-linux-x86_64.json
+          --output benchmarks/results/cp30-probes-linux-x86_64.json
 
       - name: Collect algorithm corpus
         working-directory: algorithm-benchmarks
@@ -96,39 +96,49 @@ jobs:
           --languages marimay,go,rust
           --samples 11
           --warmups 3
-          --output benchmarks/results/cp21-algorithms-linux-x86_64.md
+          --output benchmarks/results/cp30-algorithms-linux-x86_64.md
 
-      - name: Validate reports and derive review candidate
+      - name: Collect dynamic-text feature candidate
         working-directory: algorithm-benchmarks
         run: >-
-          ./benchmarks/derive_budget.py
-          benchmarks/results/cp21-probes-linux-x86_64.json
-          benchmarks/results/cp21-algorithms-linux-x86_64.json
-          --output benchmarks/budgets/cp21-linux-x86_64.json
+          MMAY="$(cd ../marimay && pwd)/build/release/mmay"
+          ./benchmarks/feature_probes.py
+          --feature dynamic-text
+          --samples 11
+          --warmups 3
+          --output benchmarks/results/cp30-dynamic-text-linux-x86_64.json
 
-      - name: Preserve every raw sample and candidate budget
+      - name: Validate reports against reviewed budgets
+        working-directory: algorithm-benchmarks
+        run: >-
+          ./benchmarks/validate_results.py
+          benchmarks/results/cp30-probes-linux-x86_64.json
+          benchmarks/results/cp30-algorithms-linux-x86_64.json
+          --baseline benchmarks/results/cp21-algorithms-linux-x86_64.json
+
+      - name: Preserve every raw sample
         uses: actions/upload-artifact@v3
         with:
-          name: cp21-linux-x86_64-${{ gitea.sha }}
+          name: cp30-linux-x86_64-${{ gitea.sha }}
           path: |
-            algorithm-benchmarks/benchmarks/results/cp21-probes-linux-x86_64.json
-            algorithm-benchmarks/benchmarks/results/cp21-algorithms-linux-x86_64.json
-            algorithm-benchmarks/benchmarks/results/cp21-algorithms-linux-x86_64.md
-            algorithm-benchmarks/benchmarks/budgets/cp21-linux-x86_64.json
+            algorithm-benchmarks/benchmarks/results/cp30-probes-linux-x86_64.json
+            algorithm-benchmarks/benchmarks/results/cp30-algorithms-linux-x86_64.json
+            algorithm-benchmarks/benchmarks/results/cp30-algorithms-linux-x86_64.md
+            algorithm-benchmarks/benchmarks/results/cp30-dynamic-text-linux-x86_64.json
           if-no-files-found: error
 
-      - name: Publish candidate evidence branch
+      - name: Publish CP30 evidence branch
         working-directory: algorithm-benchmarks
         env:
-          EVIDENCE_BRANCH: evidence/cp21-linux-x86_64-${{ gitea.sha }}
+          EVIDENCE_BRANCH: evidence/cp30-linux-x86_64-${{ gitea.sha }}
         run: |
           git config user.name "Gitea Actions"
           git config user.email "actions@marimay.invalid"
           git switch -c "$EVIDENCE_BRANCH"
           git add \
-            benchmarks/results/cp21-probes-linux-x86_64.json \
-            benchmarks/results/cp21-algorithms-linux-x86_64.json \
-            benchmarks/results/cp21-algorithms-linux-x86_64.md \
-            benchmarks/budgets/cp21-linux-x86_64.json
-          git commit -m "Collect checkpoint 21 Linux x86_64 candidate"
+            benchmarks/results/cp30-probes-linux-x86_64.json \
+            benchmarks/results/cp30-algorithms-linux-x86_64.json \
+            benchmarks/results/cp30-algorithms-linux-x86_64.md \
+            benchmarks/results/cp30-dynamic-text-linux-x86_64.json
+          git commit -m "Collect checkpoint 30 Linux x86_64 evidence"
           git push origin "HEAD:refs/heads/$EVIDENCE_BRANCH"

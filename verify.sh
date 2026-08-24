@@ -3,7 +3,7 @@
 set -euo pipefail
 
 repository_root=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-mmay_binary=${MMAY:-"$repository_root/../Ma/build/rebrand-debug/mmay"}
+mmay_binary=${MMAY:-"$repository_root/../marimay/build/debug/mmay"}
 
 if [[ ! -x "$mmay_binary" ]]; then
   echo "Marimay executable not found: $mmay_binary" >&2
@@ -58,6 +58,10 @@ expect_stdout marimay-native-debug $'Marimay algorithms: ok\n' \
 "$mmay_binary" build "$repository_root/marimay" --release --output "$verify_tmp/marimay-algorithms-release"
 expect_stdout marimay-native-release $'Marimay algorithms: ok\n' \
   "$verify_tmp/marimay-algorithms-release"
+"$mmay_binary" build "$repository_root/marimay/features/dynamic_text" \
+  --release --output "$verify_tmp/marimay-feature-dynamic-text"
+expect_stdout marimay-feature-dynamic-text $'dynamic-text 25313115\n' \
+  "$verify_tmp/marimay-feature-dynamic-text"
 
 echo "== Go =="
 (
@@ -82,6 +86,8 @@ echo "== Benchmark harness =="
 python3 -m py_compile \
   "$repository_root/benchmarks/derive_budget.py" \
   "$repository_root/benchmarks/equivalence.py" \
+  "$repository_root/benchmarks/feature_manifest.py" \
+  "$repository_root/benchmarks/feature_probes.py" \
   "$repository_root/benchmarks/local_languages.py" \
   "$repository_root/benchmarks/local_participants.py" \
   "$repository_root/benchmarks/perf_environment.py" \
@@ -90,6 +96,8 @@ python3 -m py_compile \
   "$repository_root/benchmarks/probes.py" \
   "$repository_root/benchmarks/run.py" \
   "$repository_root/benchmarks/test_equivalence.py" \
+  "$repository_root/benchmarks/test_feature_manifest.py" \
+  "$repository_root/benchmarks/test_feature_probes.py" \
   "$repository_root/benchmarks/test_local_participants.py" \
   "$repository_root/benchmarks/test_perf_environment.py" \
   "$repository_root/benchmarks/test_perf_protocol.py" \

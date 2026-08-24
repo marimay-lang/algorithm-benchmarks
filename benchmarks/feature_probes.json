@@ -1,0 +1,14 @@
+{
+  "schema": "marimay.feature-probes-manifest/1",
+  "core_source": "marimay/features/core/features.my",
+  "features": [
+    {
+      "id": "dynamic-text",
+      "category": "text-format-parse",
+      "description": "interpolation, primitive integer and bool formatting, string concatenation, and parseInt",
+      "function": "probeDynamicText",
+      "source_directory": "marimay/features/dynamic_text",
+      "expected_checksum": 25313115
+    }
+  ]
+}
