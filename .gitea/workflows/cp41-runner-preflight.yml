@@ -35,7 +35,7 @@ jobs:
 
       - name: Require stable hardware counters
         run: |
-          perf_bin=$(find /usr/lib/linux-tools -type f -name perf -print -quit)
+          perf_bin=$(find /usr/lib/linux-tools -name perf -print -quit)
           test -n "$perf_bin"
           "$perf_bin" --version
           for attempt in 1 2 3; do
