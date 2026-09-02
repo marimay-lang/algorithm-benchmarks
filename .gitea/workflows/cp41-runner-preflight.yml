@@ -1,5 +1,7 @@
 name: CP41 dedicated runner preflight
 
+# This short gate prevents a full baseline on a runner without usable counters.
+
 on:
   push:
     branches:
