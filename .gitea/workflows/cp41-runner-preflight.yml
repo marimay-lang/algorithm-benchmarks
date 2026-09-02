@@ -23,7 +23,7 @@ jobs:
         run: |
           apt-get update
           DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
-            linux-perf python3 util-linux
+            linux-tools-common linux-tools-generic python3 util-linux
 
       - name: Record dedicated-host identity
         run: |
