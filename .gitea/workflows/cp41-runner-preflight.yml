@@ -39,8 +39,5 @@ jobs:
           for attempt in 1 2 3; do
             perf stat -x, \
               -e cycles,instructions,branches,branch-misses,cache-references,cache-misses \
-              -- taskset -c 0 python3 -c 'total = 0
-for value in range(10000000):
-    total += value
-assert total == 49999995000000'
+              -- taskset -c 0 python3 -c 'total = sum(range(10000000)); assert total == 49999995000000'
           done
