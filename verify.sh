@@ -85,6 +85,8 @@ echo "== Rust =="
 echo "== Benchmark harness =="
 python3 -m py_compile \
   "$repository_root/benchmarks/derive_budget.py" \
+  "$repository_root/benchmarks/cp41_codegen.py" \
+  "$repository_root/benchmarks/cp41_perf.py" \
   "$repository_root/benchmarks/equivalence.py" \
   "$repository_root/benchmarks/feature_manifest.py" \
   "$repository_root/benchmarks/feature_probes.py" \
@@ -96,6 +98,8 @@ python3 -m py_compile \
   "$repository_root/benchmarks/probes.py" \
   "$repository_root/benchmarks/run.py" \
   "$repository_root/benchmarks/test_equivalence.py" \
+  "$repository_root/benchmarks/test_cp41_codegen.py" \
+  "$repository_root/benchmarks/test_cp41_perf.py" \
   "$repository_root/benchmarks/test_feature_manifest.py" \
   "$repository_root/benchmarks/test_feature_probes.py" \
   "$repository_root/benchmarks/test_local_participants.py" \
