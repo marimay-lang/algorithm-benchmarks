@@ -1,0 +1,243 @@
+name: CP41 Linux x86_64 before and after evidence
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  BEFORE_REF: 5963290287a6d5e41cf144065ba424d5902d569f
+  AFTER_REF: ff5a542859080bae4831c693032b6675c329dab6
+  EVIDENCE_REF: evidence/cp41-linux-x86_64
+
+jobs:
+  evidence:
+    name: Dedicated D056 timing, codegen, and counters
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Check out benchmark corpus
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.EVIDENCE_REF }}
+          path: algorithm-benchmarks
+          persist-credentials: true
+
+      - name: Check out exact before and after compilers
+        env:
+          MMAY_CHECKOUT_KEY: ${{ secrets.RUDA_CHECKOUT_KEY }}
+        run: |
+          if [ -z "$MMAY_CHECKOUT_KEY" ]; then
+            echo "Marimay compiler checkout key is not configured" >&2
+            exit 1
+          fi
+          key_dir="${RUNNER_TEMP:-/tmp}/marimay-cp41-checkout"
+          install -d -m 700 "$key_dir"
+          printf '%s\n' "$MMAY_CHECKOUT_KEY" >"$key_dir/id_ed25519"
+          chmod 600 "$key_dir/id_ed25519"
+          printf '%s\n' \
+            '[gitea.example.invalid]:2222 ssh-ed25519 ARCHIVED_HOST_KEY_REMOVED' \
+            >"$key_dir/known_hosts"
+          export GIT_SSH_COMMAND="ssh -i $key_dir/id_ed25519 -o IdentitiesOnly=yes -o UserKnownHostsFile=$key_dir/known_hosts"
+          for phase in before after; do
+            ref_name=BEFORE_REF
+            if [ "$phase" = after ]; then ref_name=AFTER_REF; fi
+            eval "ref=\${$ref_name}"
+            git clone --no-checkout --filter=blob:none \
+              ssh://git@gitea.example.invalid:2222/Marimay/marimay.git "marimay-$phase"
+            git -C "marimay-$phase" fetch --depth 1 origin "$ref"
+            git -C "marimay-$phase" checkout --detach FETCH_HEAD
+            test "$(git -C "marimay-$phase" rev-parse HEAD)" = "$ref"
+          done
+          rm -- "$key_dir/id_ed25519" "$key_dir/known_hosts"
+          rmdir "$key_dir"
+
+      - name: Install pinned measurement toolchains
+        run: |
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
+            build-essential clang-18 cmake gcc-aarch64-linux-gnu \
+            libc6-dev-arm64-cross linux-tools-common linux-tools-generic \
+            llvm-18 python3 util-linux
+
+      - name: Install Go 1.26 toolchain
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.26.6"
+          cache: false
+
+      - name: Install Rust 1.96 toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: "1.96.0"
+          components: rustfmt, clippy
+
+      - name: Record dedicated runner identity
+        run: |
+          uname -a
+          lscpu
+          cat /proc/sys/kernel/perf_event_paranoid
+          cat /proc/loadavg
+          nproc
+          clang-18 --version
+          llvm-objdump-18 --version
+
+      - name: Build exact release compilers
+        run: |
+          for phase in before after; do
+            cmake -S "marimay-$phase" -B "marimay-$phase/build/release" \
+              -DCMAKE_BUILD_TYPE=Release \
+              -DCMAKE_C_COMPILER=clang-18 \
+              -DMMAY_WARNINGS_AS_ERRORS=ON
+            cmake --build "marimay-$phase/build/release" --parallel
+          done
+
+      - name: Verify corpus and both compiler revisions
+        run: |
+          for phase in before after; do
+            MMAY="$(pwd)/marimay-$phase/build/release/mmay" \
+              ./algorithm-benchmarks/verify.sh
+          done
+
+      - name: Collect identical D056 wall-clock distributions
+        working-directory: algorithm-benchmarks
+        run: |
+          for phase in before after; do
+            mmay="$(cd "../marimay-$phase" && pwd)/build/release/mmay"
+            MMAY="$mmay" ./benchmarks/probes.py \
+              --samples 11 --warmups 3 \
+              --output "benchmarks/results/cp41-$phase-probes-linux-x86_64.json"
+            MMAY="$mmay" ./benchmarks/run.py \
+              --languages marimay,go,rust --samples 11 --warmups 3 \
+              --output "benchmarks/results/cp41-$phase-algorithms-linux-x86_64.md"
+            install -d "benchmarks/cp41-artifacts/$phase/bin"
+            install -m 0755 benchmarks/.build/marimay-* \
+              "benchmarks/cp41-artifacts/$phase/bin/"
+          done
+
+      - name: Retain same-compiler cross-target code generation
+        working-directory: algorithm-benchmarks
+        run: |
+          set -euo pipefail
+          for phase in before after; do
+            ref_name=BEFORE_REF
+            if [ "$phase" = after ]; then ref_name=AFTER_REF; fi
+            eval "compiler_revision=\${$ref_name}"
+            compiler="$(cd "../marimay-$phase" && pwd)"
+            mmay="$compiler/build/release/mmay"
+            output="benchmarks/cp41-artifacts/$phase"
+            for pair in stack:stack queue:queue heap-sort:heap_sort min-heap:min_heap; do
+              workload=${pair%%:*}
+              source_dir=${pair#*:}
+              rm -rf -- marimay/.mmay
+              "$mmay" build "marimay/benchmarks/$source_dir" --release \
+                --max-heap-bytes 67108864 \
+                --output "$output/bin/marimay-$workload"
+              generated=$(find marimay/.mmay/build/native/release \
+                -name program.c -print -quit)
+              test -n "$generated"
+              install -m 0644 "$generated" "$output/$workload.c"
+              common_flags=(
+                -std=c17 -O2 -Wall -Wextra -Wpedantic -Wconversion -Wshadow
+                -Werror -fno-fast-math -frounding-math -ffp-contract=off
+                -fexcess-precision=standard
+                "-I$compiler/bootstrap/include" "-I$compiler/runtime/include"
+              )
+              x86_command=(
+                clang-18 -target x86_64-linux-gnu "${common_flags[@]}"
+                -fsave-optimization-record
+                "-foptimization-record-file=$output/$workload.x86_64.opt.yaml"
+                -c "$output/$workload.c" -o "$output/$workload.x86_64.o"
+              )
+              printf '%q ' "${x86_command[@]}" \
+                >"$output/$workload.x86_64.command.txt"
+              printf '\n' >>"$output/$workload.x86_64.command.txt"
+              "${x86_command[@]}"
+              arm_command=(
+                clang-18 -target aarch64-linux-gnu
+                --sysroot=/usr/aarch64-linux-gnu --gcc-toolchain=/usr
+                "${common_flags[@]}" -fsave-optimization-record
+                "-foptimization-record-file=$output/$workload.arm64.opt.yaml"
+                -c "$output/$workload.c" -o "$output/$workload.arm64.o"
+              )
+              printf '%q ' "${arm_command[@]}" \
+                >"$output/$workload.arm64.command.txt"
+              printf '\n' >>"$output/$workload.arm64.command.txt"
+              "${arm_command[@]}"
+              llvm-nm-18 --format=posix --print-size --size-sort --radix=x \
+                "$output/$workload.x86_64.o" \
+                >"$output/$workload.x86_64.nm"
+              llvm-nm-18 --format=posix --print-size --size-sort --radix=x \
+                "$output/$workload.arm64.o" \
+                >"$output/$workload.arm64.nm"
+              llvm-objdump-18 -d --no-show-raw-insn --symbolize-operands \
+                --x86-asm-syntax=intel "$output/$workload.x86_64.o" \
+                >"$output/$workload.x86_64.disasm"
+              llvm-objdump-18 -d --no-show-raw-insn --symbolize-operands \
+                "$output/$workload.arm64.o" \
+                >"$output/$workload.arm64.disasm"
+            done
+            ./benchmarks/cp41_codegen.py \
+              --input "$output" --phase "$phase" \
+              --compiler-revision "$compiler_revision" \
+              --output "benchmarks/results/cp41-$phase-codegen-linux-x86_64.json"
+          done
+
+      - name: Validate wall-clock reports against D056
+        working-directory: algorithm-benchmarks
+        run: |
+          for phase in before after; do
+            ./benchmarks/validate_results.py \
+              "benchmarks/results/cp41-$phase-probes-linux-x86_64.json" \
+              "benchmarks/results/cp41-$phase-algorithms-linux-x86_64.json"
+          done
+
+      - name: Preserve supplemental evidence before counter gate
+        uses: actions/upload-artifact@v3
+        with:
+          name: cp41-supplemental-${{ gitea.sha }}
+          path: |
+            algorithm-benchmarks/benchmarks/results/cp41-*-linux-x86_64.*
+            algorithm-benchmarks/benchmarks/cp41-artifacts/**
+          if-no-files-found: error
+
+      - name: Require stable before and after hardware counters
+        working-directory: algorithm-benchmarks
+        run: |
+          perf_bin=$(find /usr/lib/linux-tools -name perf -print -quit)
+          perf_bin=$(readlink -f "$perf_bin")
+          test -x "$perf_bin"
+          ./benchmarks/cp41_perf.py \
+            --binary-dir benchmarks/cp41-artifacts/before/bin \
+            --perf "$perf_bin" --phase before \
+            --compiler-revision "$BEFORE_REF" \
+            --warmups 3 --samples 11 \
+            --output benchmarks/results/cp41-before-counters-linux-x86_64.json
+          ./benchmarks/cp41_perf.py \
+            --binary-dir benchmarks/cp41-artifacts/after/bin \
+            --perf "$perf_bin" --phase after \
+            --compiler-revision "$AFTER_REF" \
+            --warmups 3 --samples 11 \
+            --output benchmarks/results/cp41-after-counters-linux-x86_64.json
+
+      - name: Preserve complete CP41 evidence
+        uses: actions/upload-artifact@v3
+        with:
+          name: cp41-complete-${{ gitea.sha }}
+          path: |
+            algorithm-benchmarks/benchmarks/results/cp41-*-linux-x86_64.*
+            algorithm-benchmarks/benchmarks/cp41-artifacts/**
+          if-no-files-found: error
+
+      - name: Publish CP41 evidence branch
+        working-directory: algorithm-benchmarks
+        env:
+          RESULT_BRANCH: evidence/cp41-complete-${{ gitea.sha }}
+        run: |
+          git config user.name "Gitea Actions"
+          git config user.email "actions@marimay.invalid"
+          git switch -c "$RESULT_BRANCH"
+          git add benchmarks/results/cp41-*-linux-x86_64.*
+          git commit -m "Collect checkpoint 41 Linux x86_64 evidence"
+          git push origin "HEAD:refs/heads/$RESULT_BRANCH"
