@@ -35,9 +35,11 @@ jobs:
 
       - name: Require stable hardware counters
         run: |
-          perf --version
+          perf_bin=$(find /usr/lib/linux-tools -type f -name perf -print -quit)
+          test -n "$perf_bin"
+          "$perf_bin" --version
           for attempt in 1 2 3; do
-            perf stat -x, \
+            "$perf_bin" stat -x, \
               -e cycles,instructions,branches,branch-misses,cache-references,cache-misses \
               -- taskset -c 0 python3 -c 'total = sum(range(10000000)); assert total == 49999995000000'
           done
