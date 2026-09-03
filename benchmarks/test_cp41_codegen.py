@@ -2,7 +2,13 @@ from __future__ import annotations
 
 import unittest
 
-from cp41_codegen import parse_disassembly, parse_nm, stack_addressed_operations
+from cp41_codegen import (
+    generated_hot_symbols,
+    parse_disassembly,
+    parse_nm,
+    select_hot_symbol,
+    stack_addressed_operations,
+)
 
 
 class Checkpoint41CodegenTests(unittest.TestCase):
@@ -32,6 +38,28 @@ class Checkpoint41CodegenTests(unittest.TestCase):
                 "x86_64",
             ),
             2,
+        )
+
+    def test_selects_retained_core_or_inlined_entry(self) -> None:
+        entry = "mmay_g_f_0123456789abcdef0123456789abcdef"
+        core = "mmay_g_f_fedcba9876543210fedcba9876543210"
+        source = (
+            f"static int {core}(void);\n"
+            f"static int {entry}(void) {{\n"
+            f"  mmay_g_s = {core}(mmay_g_x, mmay_g_p);\n"
+            "}\n"
+            "int main(void) { "
+            f"mmay_g_s = {entry}(&mmay_g_x, &mmay_g_p, &mmay_g_result, "
+            "&mmay_g_start, &mmay_g_end); }\n"
+        )
+        self.assertEqual(generated_hot_symbols(source), (entry, core))
+        self.assertEqual(
+            select_hot_symbol({entry: 100, core: 80}, source),
+            (core, entry, True),
+        )
+        self.assertEqual(
+            select_hot_symbol({entry: 100}, source),
+            (entry, entry, False),
         )
         self.assertEqual(
             stack_addressed_operations(

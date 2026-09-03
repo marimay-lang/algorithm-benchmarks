@@ -16,6 +16,18 @@ WORKLOADS = ("stack", "queue", "heap-sort", "min-heap")
 TARGETS = ("x86_64", "arm64")
 SYMBOL = re.compile(r"^_?mmay_g_f_[0-9a-f]{32}$")
 LABEL = re.compile(r"^\s*[0-9a-fA-F]+\s+<([^>]+)>:\s*$")
+ENTRY_CALL = re.compile(
+    r"mmay_g_s = (mmay_g_f_[0-9a-f]{32})"
+    r"\(&mmay_g_x, &mmay_g_p, &mmay_g_result,"
+)
+FUNCTION_DEFINITION = re.compile(
+    r"^static (?:MMAY_G_[A-Z_]+ )?int "
+    r"(mmay_g_f_[0-9a-f]{32})\([^\n]*\) \{$",
+    re.MULTILINE,
+)
+GENERATED_CALL = re.compile(
+    r"^\s*mmay_g_s = (mmay_g_f_[0-9a-f]{32})\(", re.MULTILINE
+)
 
 
 def parse_nm(text: str) -> dict[str, int]:
@@ -65,7 +77,42 @@ def stack_addressed_operations(lines: list[str], target: str) -> int:
     return sum(pattern.search(line) is not None for line in lines)
 
 
-def analyze_target(directory: pathlib.Path, workload: str, target: str) -> dict[str, Any]:
+def generated_hot_symbols(source: str) -> tuple[str, str]:
+    entries = ENTRY_CALL.findall(source)
+    if len(entries) != 1:
+        raise ValueError("generated C does not contain one executable entry call")
+    entry = entries[0]
+    definition = next(
+        (match for match in FUNCTION_DEFINITION.finditer(source)
+         if match.group(1) == entry),
+        None,
+    )
+    if definition is None:
+        raise ValueError(f"generated entry definition is missing: {entry}")
+    end = source.find("\n}\n", definition.end())
+    if end < 0:
+        raise ValueError(f"generated entry definition is unterminated: {entry}")
+    calls = GENERATED_CALL.findall(source[definition.start():end + 3])
+    if not calls:
+        raise ValueError(f"generated entry does not call a benchmark core: {entry}")
+    return entry, calls[0]
+
+
+def select_hot_symbol(symbols: dict[str, int], source: str) -> tuple[str, str, bool]:
+    entry, core = generated_hot_symbols(source)
+    if core in symbols:
+        return core, entry, True
+    if entry in symbols:
+        return entry, entry, False
+    raise ValueError("neither benchmark core nor its inlined entry is retained")
+
+
+def analyze_target(
+    directory: pathlib.Path,
+    workload: str,
+    target: str,
+    generated_source: str,
+) -> dict[str, Any]:
     paths = {
         "object": directory / f"{workload}.{target}.o",
         "symbols": directory / f"{workload}.{target}.nm",
@@ -80,12 +127,17 @@ def analyze_target(directory: pathlib.Path, workload: str, target: str) -> dict[
     functions = parse_disassembly(
         paths["disassembly"].read_text(encoding="utf-8")
     )
-    hot_symbol, code_bytes = max(symbols.items(), key=lambda item: item[1])
+    hot_symbol, entry_symbol, core_retained = select_hot_symbol(
+        symbols, generated_source
+    )
+    code_bytes = symbols[hot_symbol]
     if hot_symbol not in functions:
         raise ValueError(f"hot symbol {hot_symbol} is absent from disassembly")
     lines = functions[hot_symbol]
     return {
         "hot_symbol": hot_symbol,
+        "entry_symbol": entry_symbol,
+        "benchmark_core_retained": core_retained,
         "code_bytes": code_bytes,
         "instruction_lines": len(lines),
         "stack_addressed_operations": stack_addressed_operations(lines, target),
@@ -105,13 +157,16 @@ def build_report(directory: pathlib.Path, phase: str, compiler_revision: str) ->
         source = directory / f"{workload}.c"
         if not source.is_file():
             raise ValueError(f"missing retained generated C: {source}")
+        generated_source = source.read_text(encoding="utf-8")
         workloads[workload] = {
             "generated_c": {
                 "path": source.relative_to(directory).as_posix(),
                 "sha256": sha256_file(source),
             },
             "targets": {
-                target: analyze_target(directory, workload, target)
+                target: analyze_target(
+                    directory, workload, target, generated_source
+                )
                 for target in TARGETS
             },
         }
