@@ -8,7 +8,7 @@ permissions:
 
 env:
   BEFORE_REF: 5963290287a6d5e41cf144065ba424d5902d569f
-  AFTER_REF: ff5a542859080bae4831c693032b6675c329dab6
+  AFTER_REF: a12feca549710e89b8f895c2fd1b6eec65c7e923
   EVIDENCE_REF: evidence/cp41-linux-x86_64
 
 jobs:
@@ -16,9 +16,12 @@ jobs:
     name: Dedicated D056 timing, codegen, and counters
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    container:
+      image: docker.gitea.com/runner-images:ubuntu-latest@sha256:fd911d7417bfbf0f454530e447da95b58001e1df41bbc5e1a8dd35d432575aae
+      options: --cap-add=PERFMON
     steps:
       - name: Check out benchmark corpus
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: ${{ env.EVIDENCE_REF }}
           path: algorithm-benchmarks
@@ -55,20 +58,24 @@ jobs:
 
       - name: Install pinned measurement toolchains
         run: |
-          apt-get update
-          DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
-            build-essential clang-18 cmake gcc-aarch64-linux-gnu \
-            libc6-dev-arm64-cross linux-tools-common linux-tools-generic \
-            llvm-18 python3 util-linux
+          export DEBIAN_FRONTEND=noninteractive
+          timeout 5m apt-get -o Acquire::Retries=3 \
+            -o Acquire::http::Timeout=20 -o Acquire::https::Timeout=20 update
+          timeout 10m apt-get -o Acquire::Retries=3 \
+            -o Acquire::http::Timeout=20 -o Acquire::https::Timeout=20 \
+            install --yes --no-install-recommends \
+              build-essential clang-18 cmake gcc-aarch64-linux-gnu \
+              libc6-dev-arm64-cross libcap2-bin linux-tools-common \
+              linux-tools-generic llvm-18 python3 util-linux
 
       - name: Install Go 1.26 toolchain
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
         with:
           go-version: "1.26.6"
           cache: false
 
       - name: Install Rust 1.96 toolchain
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@4360b52568e2003a75bf9bc1d59f33a8e3fc893c
         with:
           toolchain: "1.96.0"
           components: rustfmt, clippy
@@ -78,10 +85,21 @@ jobs:
           uname -a
           lscpu
           cat /proc/sys/kernel/perf_event_paranoid
+          capsh --print
           cat /proc/loadavg
           nproc
           clang-18 --version
           llvm-objdump-18 --version
+
+      - name: Require hardware-counter access before measurement
+        run: |
+          perf_bin=$(find /usr/lib/linux-tools -name perf -print -quit)
+          perf_bin=$(readlink -f "$perf_bin")
+          test -x "$perf_bin"
+          cpu=$(python3 -c 'import os; print(min(os.sched_getaffinity(0)))')
+          "$perf_bin" stat --no-big-num -x, \
+            -e cycles,instructions,branches,branch-misses,cache-references,cache-misses \
+            -- taskset -c "$cpu" python3 -c 'sum(range(1000000))'
 
       - name: Build exact release compilers
         run: |
@@ -194,7 +212,7 @@ jobs:
           done
 
       - name: Preserve supplemental evidence before counter gate
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@ff15f0306b3f739f7b6fd43fb5d26cd321bd4de5 # v3
         with:
           name: cp41-supplemental-${{ gitea.sha }}
           path: |
@@ -222,7 +240,7 @@ jobs:
             --output benchmarks/results/cp41-after-counters-linux-x86_64.json
 
       - name: Preserve complete CP41 evidence
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@ff15f0306b3f739f7b6fd43fb5d26cd321bd4de5 # v3
         with:
           name: cp41-complete-${{ gitea.sha }}
           path: |
