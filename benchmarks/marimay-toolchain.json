@@ -1,0 +1,17 @@
+{
+  "schema": "marimay.algorithm-toolchain/1",
+  "version_schema": "marimay.version/2",
+  "compiler": "0.1.0-alpha.1",
+  "runtime": "0.1.0-alpha.1",
+  "language": "0.1-design",
+  "standard_library": "0.1.0-alpha.1",
+  "required_commands": [
+    "build",
+    "check",
+    "doctor",
+    "fmt",
+    "run",
+    "test",
+    "version"
+  ]
+}

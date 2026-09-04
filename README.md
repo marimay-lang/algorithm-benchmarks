@@ -44,6 +44,11 @@ algorithm-benchmarks/
 
 ## Полная проверка
 
+Corpus зафиксирован на Marimay `0.1.0-alpha.1` с языковым контрактом
+`0.1-design`. Точные версии compiler/runtime/standard library и обязательные
+команды находятся в `benchmarks/marimay-toolchain.json`; verification и все
+benchmark harness отклоняют несовместимый `mmay` до сборки и измерений.
+
 По умолчанию скрипт ищет Marimay в соседнем репозитории
 `../marimay/build/debug/mmay`:
 
@@ -143,7 +148,7 @@ validation commands: [`benchmarks/README.md`](benchmarks/README.md).
 | BFS | пятивершинный неориентированный граф | `[0, 1, 1, 2, 2]` |
 | Dijkstra | пятивершинный ориентированный граф | `[0, 3, 1, 4, 7]` |
 
-## Текущее состояние Marimay 0.1-dev
+## Текущее состояние Marimay 0.1.0-alpha.1
 
 Это наблюдения о текущем Stage 0, а не предложения менять спецификацию языка.
 

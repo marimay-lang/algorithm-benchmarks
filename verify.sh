@@ -11,6 +11,9 @@ if [[ ! -x "$mmay_binary" ]]; then
   exit 2
 fi
 
+python3 "$repository_root/benchmarks/validate_marimay_toolchain.py" \
+  "$mmay_binary"
+
 verify_tmp=$(mktemp -d)
 cleanup() {
   if [[ -n "${verify_tmp:-}" && -d "$verify_tmp" ]]; then
@@ -90,6 +93,7 @@ python3 -m py_compile \
   "$repository_root/benchmarks/feature_probes.py" \
   "$repository_root/benchmarks/local_languages.py" \
   "$repository_root/benchmarks/local_participants.py" \
+  "$repository_root/benchmarks/marimay_toolchain.py" \
   "$repository_root/benchmarks/perf_environment.py" \
   "$repository_root/benchmarks/perf_protocol.py" \
   "$repository_root/benchmarks/probe_manifest.py" \
@@ -99,6 +103,7 @@ python3 -m py_compile \
   "$repository_root/benchmarks/test_feature_manifest.py" \
   "$repository_root/benchmarks/test_feature_probes.py" \
   "$repository_root/benchmarks/test_local_participants.py" \
+  "$repository_root/benchmarks/test_marimay_toolchain.py" \
   "$repository_root/benchmarks/test_perf_environment.py" \
   "$repository_root/benchmarks/test_perf_protocol.py" \
   "$repository_root/benchmarks/test_probe_manifest.py" \
@@ -106,6 +111,7 @@ python3 -m py_compile \
   "$repository_root/benchmarks/test_tier1_baselines.py" \
   "$repository_root/benchmarks/tier1_baselines.py" \
   "$repository_root/benchmarks/validate_equivalence.py" \
+  "$repository_root/benchmarks/validate_marimay_toolchain.py" \
   "$repository_root/benchmarks/validate_results.py" \
   "$repository_root/benchmarks/validate_tier1_baselines.py"
 

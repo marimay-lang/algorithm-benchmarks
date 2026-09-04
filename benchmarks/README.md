@@ -13,6 +13,9 @@ Machine-readable workload contract находится в
 операции, representation, selected checks и reusable entrypoint markers.
 [`validate_equivalence.py`](validate_equivalence.py) проверяет contract и
 исходники до любой сборки; `run.py` не владеет вторым списком констант.
+Совместимый Marimay toolchain отдельно закреплён в
+[`marimay-toolchain.json`](marimay-toolchain.json): все harness проверяют
+machine-readable `mmay version --json` до создания benchmark artifacts.
 
 Checkpoint-21 measurement contract находится в
 [`performance_protocol.json`](performance_protocol.json). Он фиксирует

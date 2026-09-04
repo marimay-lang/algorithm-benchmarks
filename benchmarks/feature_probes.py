@@ -17,6 +17,7 @@ from feature_manifest import (
     manifest_sha256,
     source_tree_sha256,
 )
+from marimay_toolchain import validate_executable
 from perf_environment import capture_metadata, finish_metadata, git_revision, run_checked
 from perf_protocol import (
     PROBE_RESULT_SCHEMA,
@@ -157,6 +158,7 @@ def main() -> None:
     build_directory.mkdir(parents=True, exist_ok=True)
     default_mmay = repository.parent / "marimay" / "build" / "release" / "mmay"
     mmay_binary = pathlib.Path(os.environ.get("MMAY", str(default_mmay))).resolve()
+    validate_executable(repository, mmay_binary)
     max_heap_bytes = protocol["resource"]["max_heap_bytes"]
     commands = (
         existing_features(features, build_directory)
