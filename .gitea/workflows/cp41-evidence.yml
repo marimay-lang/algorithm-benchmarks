@@ -18,7 +18,6 @@ jobs:
     timeout-minutes: 90
     container:
       image: docker.gitea.com/runner-images:ubuntu-latest@sha256:fd911d7417bfbf0f454530e447da95b58001e1df41bbc5e1a8dd35d432575aae
-      options: --cap-add=PERFMON
     steps:
       - name: Check out benchmark corpus
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -75,10 +74,10 @@ jobs:
           cache: false
 
       - name: Install Rust 1.96 toolchain
-        uses: dtolnay/rust-toolchain@4360b52568e2003a75bf9bc1d59f33a8e3fc893c
-        with:
-          toolchain: "1.96.0"
-          components: rustfmt, clippy
+        run: |
+          rustup toolchain install 1.96.0 --profile minimal \
+            --component rustfmt --component clippy
+          rustup default 1.96.0
 
       - name: Record dedicated runner identity
         run: |
@@ -97,9 +96,13 @@ jobs:
           perf_bin=$(readlink -f "$perf_bin")
           test -x "$perf_bin"
           cpu=$(python3 -c 'import os; print(min(os.sched_getaffinity(0)))')
-          "$perf_bin" stat --no-big-num -x, \
-            -e cycles,instructions,branches,branch-misses,cache-references,cache-misses \
-            -- taskset -c "$cpu" python3 -c 'sum(range(1000000))'
+          if ! "$perf_bin" stat --no-big-num -x, \
+              -e cycles,instructions,branches,branch-misses,cache-references,cache-misses \
+              -- taskset -c "$cpu" python3 -c 'sum(range(1000000))'; then
+            echo "The selected CP41 runner cannot access hardware counters." >&2
+            echo "Use a dedicated host runner with CAP_PERFMON and perf_event_open enabled." >&2
+            exit 1
+          fi
 
       - name: Build exact release compilers
         run: |
