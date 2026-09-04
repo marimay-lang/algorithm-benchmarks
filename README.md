@@ -88,6 +88,16 @@ make benchmark
 смешивается с native-результатами. Совпадение checksum обязательно для каждого
 языка и каждого замера.
 
+Gitea CP41 evidence выполняется только на repository-scoped runner с меткой
+`cp41-perf`. Его контейнерный образ строится на runner-host командой
+`tools/build-gitea-cp41-image`; полный SHA-256 Dockerfile входит в tag, а
+`tools/build-gitea-cp41-image --check` блокирует рассинхронизацию workflow.
+Counter harness выполняет отдельный положительный preflight и сохраняет
+логические счётчики вместе с точным физическим event map. На текущей KVM-модели
+пара `cache-references`/`cache-misses` нормализуется из аппаратных
+`L1-dcache-loads`/`L1-dcache-load-misses`; before и after обязаны использовать
+один профиль, поэтому данные разных уровней cache никогда не сравниваются.
+
 Перед сборкой harness проверяет
 [`equivalence.json`](benchmarks/equivalence.json) и берёт из него список
 workload, описания и ожидаемые checksum. Источник Marimay compiler, revision

@@ -1,0 +1,44 @@
+#!/bin/sh
+
+set -eu
+
+tool_directory=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+repository=$(CDPATH= cd -- "$tool_directory/.." && pwd)
+dockerfile="$repository/.gitea/images/cp41-linux-x86_64.Dockerfile"
+workflow="$repository/.gitea/workflows/cp41-evidence.yml"
+
+if command -v sha256sum >/dev/null 2>&1; then
+    dockerfile_sha=$(sha256sum "$dockerfile" | awk '{print $1}')
+else
+    dockerfile_sha=$(shasum -a 256 "$dockerfile" | awk '{print $1}')
+fi
+image="marimay-ci-cp41:$dockerfile_sha"
+
+case "${1:-}" in
+    --print)
+        printf '%s\n' "$image"
+        exit 0
+        ;;
+    --check)
+        references=$(grep -Fxc "      image: $image" "$workflow" || true)
+        if [ "$references" -ne 1 ]; then
+            echo "expected one CP41 workflow reference to $image; found $references" >&2
+            exit 1
+        fi
+        printf 'CP41 image reference is current: %s\n' "$image"
+        exit 0
+        ;;
+    "")
+        ;;
+    *)
+        echo "usage: build-gitea-cp41-image [--print|--check]" >&2
+        exit 64
+        ;;
+esac
+
+BUILDKIT_PROGRESS=plain docker build \
+    --pull=false \
+    --file "$dockerfile" \
+    --tag "$image" \
+    "$repository/.gitea/images"
+docker image inspect --format '{{.Id}}' "$image"

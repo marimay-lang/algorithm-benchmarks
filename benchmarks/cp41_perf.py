@@ -12,13 +12,14 @@ import pathlib
 import platform
 import statistics
 import subprocess
+import sys
 from typing import Any
 
 from perf_environment import cpu_name, git_revision
 from perf_protocol import ProtocolError, schedule, validate_run_shape, load_protocol
 
 
-SCHEMA = "marimay.cp41-hardware-counters/1"
+SCHEMA = "marimay.cp41-hardware-counters/2"
 WORKLOADS = ("stack", "queue", "heap-sort", "min-heap")
 EVENTS = (
     "cycles",
@@ -28,6 +29,18 @@ EVENTS = (
     "cache-references",
     "cache-misses",
 )
+DEFAULT_EVENT_PROFILE = "perf-generic-v1"
+EVENT_PROFILES = {
+    DEFAULT_EVENT_PROFILE: {event: event for event in EVENTS},
+    "linux-l1d-loads-v1": {
+        "cycles": "cycles",
+        "instructions": "instructions",
+        "branches": "branches",
+        "branch-misses": "branch-misses",
+        "cache-references": "L1-dcache-loads",
+        "cache-misses": "L1-dcache-load-misses",
+    },
+}
 CHECKSUMS = {
     "stack": 498055372,
     "queue": 498106199,
@@ -36,14 +49,31 @@ CHECKSUMS = {
 }
 
 
-def parse_perf_csv(text: str) -> dict[str, int]:
+def event_profile(name: str) -> dict[str, str]:
+    try:
+        profile = EVENT_PROFILES[name]
+    except KeyError as error:
+        raise ProtocolError(f"unsupported hardware-counter profile: {name}") from error
+    if set(profile) != set(EVENTS) or len(set(profile.values())) != len(EVENTS):
+        raise ProtocolError(f"invalid hardware-counter profile: {name}")
+    return profile
+
+
+def parse_perf_csv(
+    text: str, profile_name: str = DEFAULT_EVENT_PROFILE
+) -> dict[str, int]:
+    profile = event_profile(profile_name)
+    logical_by_physical = {
+        physical: logical for logical, physical in profile.items()
+    }
     counters: dict[str, int] = {}
     for row in csv.reader(io.StringIO(text)):
         if len(row) < 3:
             continue
-        event = row[2].strip().split(":", 1)[0]
-        if event not in EVENTS:
+        physical_event = row[2].strip().split(":", 1)[0]
+        if physical_event not in logical_by_physical:
             continue
+        event = logical_by_physical[physical_event]
         value = row[0].strip()
         try:
             parsed = float(value)
@@ -87,14 +117,16 @@ def run_observation(
     binary: pathlib.Path,
     workload: str,
     cpu: int,
+    event_profile_name: str,
 ) -> tuple[dict[str, int], list[str]]:
+    profile = event_profile(event_profile_name)
     command = [
         str(perf),
         "stat",
         "--no-big-num",
         "-x,",
         "-e",
-        ",".join(EVENTS),
+        ",".join(profile[event] for event in EVENTS),
         "--",
         "taskset",
         "-c",
@@ -120,7 +152,49 @@ def run_observation(
             f"checksum observation mismatch for {workload}: "
             f"stdout={completed.stdout!r}, expected={expected!r}"
         )
-    return parse_perf_csv(completed.stderr), command
+    return parse_perf_csv(completed.stderr, event_profile_name), command
+
+
+def preflight(
+    perf: pathlib.Path, event_profile_name: str
+) -> tuple[dict[str, int], list[str]]:
+    allowed = sorted(os.sched_getaffinity(0))
+    if not allowed:
+        raise ProtocolError("runner exposes no eligible CPU for taskset")
+    profile = event_profile(event_profile_name)
+    command = [
+        str(perf),
+        "stat",
+        "--no-big-num",
+        "-x,",
+        "-e",
+        ",".join(profile[event] for event in EVENTS),
+        "--",
+        "taskset",
+        "-c",
+        str(allowed[0]),
+        sys.executable,
+        "-c",
+        "a=bytearray(64 * 1024 * 1024); print(sum(a[::64]))",
+    ]
+    completed = subprocess.run(
+        command,
+        check=False,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        timeout=120,
+    )
+    if completed.returncode != 0:
+        raise ProtocolError(
+            f"hardware-counter preflight failed with exit {completed.returncode}: "
+            f"{completed.stderr.strip()}"
+        )
+    if completed.stdout != "0\n":
+        raise ProtocolError(
+            f"hardware-counter preflight workload drifted: {completed.stdout!r}"
+        )
+    return parse_perf_csv(completed.stderr, event_profile_name), command
 
 
 def collect(
@@ -131,6 +205,7 @@ def collect(
     compiler_revision: str,
     warmups: int,
     samples: int,
+    event_profile_name: str = DEFAULT_EVENT_PROFILE,
 ) -> dict[str, Any]:
     _, protocol = load_protocol(repository)
     validate_run_shape(protocol, warmups, samples)
@@ -153,7 +228,7 @@ def collect(
     for event in schedule(WORKLOADS, ("marimay",), warmups, samples):
         workload = str(event["workload"])
         counters, command_template = run_observation(
-            perf, binaries[workload], workload, cpu
+            perf, binaries[workload], workload, cpu, event_profile_name
         )
         observation = {
             "phase": event["phase"],
@@ -192,7 +267,9 @@ def collect(
                 [str(perf), "--version"], check=True, text=True,
                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=30
             ).stdout.strip(),
-            "events": list(EVENTS),
+            "logical_events": list(EVENTS),
+            "event_profile": event_profile_name,
+            "event_map": event_profile(event_profile_name),
             "command_shape": command_template,
         },
         "raw": raw,
@@ -210,19 +287,49 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description="Collect balanced CP41 Linux hardware-counter observations."
     )
-    parser.add_argument("--binary-dir", type=pathlib.Path, required=True)
+    parser.add_argument("--binary-dir", type=pathlib.Path)
     parser.add_argument("--perf", type=pathlib.Path, required=True)
-    parser.add_argument("--phase", choices=("before", "after"), required=True)
-    parser.add_argument("--compiler-revision", required=True)
+    parser.add_argument("--phase", choices=("before", "after"))
+    parser.add_argument("--compiler-revision")
     parser.add_argument("--warmups", type=int, default=3)
     parser.add_argument("--samples", type=int, default=11)
-    parser.add_argument("--output", type=pathlib.Path, required=True)
+    parser.add_argument(
+        "--event-profile",
+        choices=tuple(EVENT_PROFILES),
+        default=DEFAULT_EVENT_PROFILE,
+    )
+    parser.add_argument("--preflight", action="store_true")
+    parser.add_argument("--output", type=pathlib.Path)
     args = parser.parse_args()
     repository = pathlib.Path(__file__).resolve().parents[1]
     try:
+        if args.preflight:
+            counters, _ = preflight(args.perf.resolve(), args.event_profile)
+            print(
+                "hardware-counter preflight ok: "
+                + ", ".join(f"{event}={counters[event]}" for event in EVENTS)
+            )
+            return 0
+        missing = [
+            option
+            for option, value in (
+                ("--binary-dir", args.binary_dir),
+                ("--phase", args.phase),
+                ("--compiler-revision", args.compiler_revision),
+                ("--output", args.output),
+            )
+            if value is None
+        ]
+        if missing:
+            parser.error("collection requires " + ", ".join(missing))
+        assert args.binary_dir is not None
+        assert args.phase is not None
+        assert args.compiler_revision is not None
+        assert args.output is not None
         report = collect(
             repository, args.binary_dir.resolve(), args.perf.resolve(),
-            args.phase, args.compiler_revision, args.warmups, args.samples
+            args.phase, args.compiler_revision, args.warmups, args.samples,
+            args.event_profile,
         )
     except (OSError, subprocess.SubprocessError, ProtocolError) as error:
         parser.error(str(error))

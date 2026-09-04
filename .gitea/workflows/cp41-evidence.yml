@@ -19,7 +19,7 @@ jobs:
     runs-on: cp41-perf
     timeout-minutes: 90
     container:
-      image: docker.gitea.com/runner-images:ubuntu-latest@sha256:fd911d7417bfbf0f454530e447da95b58001e1df41bbc5e1a8dd35d432575aae
+      image: marimay-ci-cp41:3c2f654fe981936e5d940b5eda4453ff1b0a6fb3b2cff1cff83904d1463d94eb
     steps:
       - name: Check out benchmark corpus
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -57,17 +57,16 @@ jobs:
           rm -- "$key_dir/id_ed25519" "$key_dir/known_hosts"
           rmdir "$key_dir"
 
-      - name: Install pinned measurement toolchains
+      - name: Require pinned measurement toolchains
         run: |
-          export DEBIAN_FRONTEND=noninteractive
-          timeout 5m apt-get -o Acquire::Retries=3 \
-            -o Acquire::http::Timeout=20 -o Acquire::https::Timeout=20 update
-          timeout 10m apt-get -o Acquire::Retries=3 \
-            -o Acquire::http::Timeout=20 -o Acquire::https::Timeout=20 \
-            install --yes --no-install-recommends \
-              build-essential clang-18 cmake gcc-aarch64-linux-gnu \
-              libc6-dev-arm64-cross libcap2-bin linux-tools-common \
-              linux-tools-generic llvm-18 python3 util-linux
+          ./algorithm-benchmarks/tools/build-gitea-cp41-image --check
+          for command in \
+              aarch64-linux-gnu-gcc capsh clang-18 cmake gcc make \
+              llvm-objdump-18 python3 taskset; do
+            command -v "$command"
+          done
+          perf_bin=$(find /usr/lib/linux-tools -name perf -type f -print -quit)
+          test -x "$perf_bin"
 
       - name: Install Go 1.26 toolchain
         uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
@@ -93,18 +92,13 @@ jobs:
           llvm-objdump-18 --version
 
       - name: Require hardware-counter access before measurement
+        working-directory: algorithm-benchmarks
         run: |
           perf_bin=$(find /usr/lib/linux-tools -name perf -print -quit)
           perf_bin=$(readlink -f "$perf_bin")
           test -x "$perf_bin"
-          cpu=$(python3 -c 'import os; print(min(os.sched_getaffinity(0)))')
-          if ! "$perf_bin" stat --no-big-num -x, \
-              -e cycles,instructions,branches,branch-misses,cache-references,cache-misses \
-              -- taskset -c "$cpu" python3 -c 'sum(range(1000000))'; then
-            echo "The selected CP41 runner cannot access hardware counters." >&2
-            echo "Use a dedicated host runner with CAP_PERFMON and perf_event_open enabled." >&2
-            exit 1
-          fi
+          ./benchmarks/cp41_perf.py --preflight --perf "$perf_bin" \
+            --event-profile linux-l1d-loads-v1
 
       - name: Build exact release compilers
         run: |
@@ -234,20 +228,38 @@ jobs:
           ./benchmarks/cp41_perf.py \
             --binary-dir benchmarks/cp41-artifacts/before/bin \
             --perf "$perf_bin" --phase before \
+            --event-profile linux-l1d-loads-v1 \
             --compiler-revision "$BEFORE_REF" \
             --warmups 3 --samples 11 \
             --output benchmarks/results/cp41-before-counters-linux-x86_64.json
           ./benchmarks/cp41_perf.py \
             --binary-dir benchmarks/cp41-artifacts/after/bin \
             --perf "$perf_bin" --phase after \
+            --event-profile linux-l1d-loads-v1 \
             --compiler-revision "$AFTER_REF" \
             --warmups 3 --samples 11 \
             --output benchmarks/results/cp41-after-counters-linux-x86_64.json
 
-      - name: Preserve complete CP41 evidence
+      - name: Validate complete CP41 acceptance contract
+        working-directory: algorithm-benchmarks
+        run: |
+          ./benchmarks/cp41_compare.py \
+            --before-probes benchmarks/results/cp41-before-probes-linux-x86_64.json \
+            --after-probes benchmarks/results/cp41-after-probes-linux-x86_64.json \
+            --before-algorithms benchmarks/results/cp41-before-algorithms-linux-x86_64.json \
+            --after-algorithms benchmarks/results/cp41-after-algorithms-linux-x86_64.json \
+            --before-counters benchmarks/results/cp41-before-counters-linux-x86_64.json \
+            --after-counters benchmarks/results/cp41-after-counters-linux-x86_64.json \
+            --before-codegen benchmarks/results/cp41-before-codegen-linux-x86_64.json \
+            --after-codegen benchmarks/results/cp41-after-codegen-linux-x86_64.json \
+            --before-revision "$BEFORE_REF" --after-revision "$AFTER_REF" \
+            --output benchmarks/results/cp41-comparison-linux-x86_64.json
+
+      - name: Preserve CP41 candidate evidence
+        if: always()
         uses: actions/upload-artifact@ff15f0306b3f739f7b6fd43fb5d26cd321bd4de5 # v3
         with:
-          name: cp41-complete-${{ gitea.sha }}
+          name: cp41-candidate-${{ gitea.sha }}
           path: |
             algorithm-benchmarks/benchmarks/results/cp41-*-linux-x86_64.*
             algorithm-benchmarks/benchmarks/cp41-artifacts/**
