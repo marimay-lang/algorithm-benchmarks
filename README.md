@@ -92,6 +92,8 @@ Gitea CP41 evidence выполняется только на repository-scoped r
 `cp41-perf`. Его контейнерный образ строится на runner-host командой
 `tools/build-gitea-cp41-image`; полный SHA-256 Dockerfile входит в tag, а
 `tools/build-gitea-cp41-image --check` блокирует рассинхронизацию workflow.
+Образ заранее содержит проверенные по SHA-256 Go 1.26.6 и rustup 1.28.2 с
+Rust 1.96.0, Clippy и rustfmt; evidence-run не устанавливает toolchain из сети.
 Counter harness выполняет отдельный положительный preflight и сохраняет
 логические счётчики вместе с точным физическим event map. На текущей KVM-модели
 пара `cache-references`/`cache-misses` нормализуется из аппаратных

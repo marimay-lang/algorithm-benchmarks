@@ -19,7 +19,7 @@ jobs:
     runs-on: cp41-perf
     timeout-minutes: 90
     container:
-      image: marimay-ci-cp41:3c2f654fe981936e5d940b5eda4453ff1b0a6fb3b2cff1cff83904d1463d94eb
+      image: marimay-ci-cp41:77eba751fd9e9ce98b4d759a4161a4b151ca4794ddb555586a1c62b797b85f41
     steps:
       - name: Check out benchmark corpus
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -61,24 +61,15 @@ jobs:
         run: |
           ./algorithm-benchmarks/tools/build-gitea-cp41-image --check
           for command in \
-              aarch64-linux-gnu-gcc capsh clang-18 cmake gcc make \
-              llvm-objdump-18 python3 taskset; do
+              aarch64-linux-gnu-gcc capsh cargo clang-18 cmake gcc go make \
+              llvm-objdump-18 python3 rustc rustfmt taskset; do
             command -v "$command"
           done
           perf_bin=$(find /usr/lib/linux-tools -name perf -type f -print -quit)
           test -x "$perf_bin"
-
-      - name: Install Go 1.26 toolchain
-        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
-        with:
-          go-version: "1.26.6"
-          cache: false
-
-      - name: Install Rust 1.96 toolchain
-        run: |
-          rustup toolchain install 1.96.0 --profile minimal \
-            --component rustfmt --component clippy
-          rustup default 1.96.0
+          test "$(go version)" = "go version go1.26.6 linux/amd64"
+          rustc --version | grep -F 'rustc 1.96.0 '
+          cargo clippy --version
 
       - name: Record dedicated runner identity
         run: |
@@ -88,6 +79,8 @@ jobs:
           capsh --print
           cat /proc/loadavg
           nproc
+          go version
+          rustc --version --verbose
           clang-18 --version
           llvm-objdump-18 --version
 
