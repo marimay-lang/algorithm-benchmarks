@@ -1,0 +1,11 @@
+import { Error as IoError, println } from "std/io";
+
+import { benchmarkUniqueSet } from "study/algorithms/benchmarks/core";
+
+fn main(): Result<void, IoError> {
+  if benchmarkUniqueSet() != 20001 {
+    panic("unique-set checksum mismatch");
+  }
+  println("unique-set 20001")?;
+  return Ok();
+}

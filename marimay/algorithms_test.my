@@ -1,3 +1,6 @@
+import { runes } from "std/text";
+
+import * as counting from "study/algorithms/counting";
 import * as graphs from "study/algorithms/graphs";
 import * as sorting from "study/algorithms/sorting";
 import * as structures from "study/algorithms/structures";
@@ -116,5 +119,31 @@ fn invalidGraphInputsAreRejected(): void {
   };
   if !bfsStartRejected || !bfsNeighborRejected || !dijkstraStartRejected || !dijkstraEndpointRejected || !dijkstraWeightRejected {
     panic("invalid graph input was accepted");
+  }
+}
+
+@test
+fn countingAlgorithms(): void {
+  const values = arrayOf(2, 1, 2, -4, 1, 2);
+  const counts = counting.intFrequencies(values);
+  const twos = match counts.get(2) {
+    Some(value) => value,
+    None => 0,
+  };
+  const missing = match counts.get(99) {
+    Some(_) => false,
+    None => true,
+  };
+  const characters = match runes("λλ🚀", 3) {
+    Ok(result) => result,
+    Err(_) => panic("valid rune sample rejected"),
+  };
+  const runeCounts = counting.runeFrequencies(characters);
+  const lambdaCount = match runeCounts.get(characters[0]) {
+    Some(value) => value,
+    None => 0,
+  };
+  if counts.length() != 3 || twos != 3 || !missing || counting.uniqueIntCount(values) != 3 || runeCounts.length() != 2 || lambdaCount != 2 {
+    panic("counting algorithms failed");
   }
 }

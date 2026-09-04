@@ -1,3 +1,4 @@
+use marimay_algorithms::counting;
 use marimay_algorithms::graphs;
 use marimay_algorithms::sorting;
 use marimay_algorithms::structures::MinHeap;
@@ -9,8 +10,10 @@ fn main() {
     heap.push(3);
     heap.push(1);
     let distances = graphs::bfs(&[vec![1], vec![0, 2], vec![1]], 0);
+    let counts = counting::int_frequencies(&[2, 1, 2, 3, 2]);
     assert_eq!(values, [1, 2, 3, 4, 5]);
     assert_eq!(heap.pop(), Some(1));
     assert_eq!(distances, Some(vec![0, 1, 2]));
+    assert_eq!(counts.get(&2), Some(&3));
     println!("Rust algorithms: ok");
 }

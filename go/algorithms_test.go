@@ -4,6 +4,7 @@ import (
 	"reflect"
 	"testing"
 
+	"example.com/marimay-algorithms/counting"
 	"example.com/marimay-algorithms/graphs"
 	"example.com/marimay-algorithms/sorting"
 	"example.com/marimay-algorithms/structures"
@@ -87,5 +88,20 @@ func TestInvalidGraphInputs(t *testing.T) {
 	}
 	if _, ok := graphs.Dijkstra([][]graphs.Edge{{{To: 1, Weight: -1}}, {}}, 0); ok {
 		t.Fatal("Dijkstra accepted a negative weight")
+	}
+}
+
+func TestCounting(t *testing.T) {
+	values := []int{2, 1, 2, -4, 1, 2}
+	counts := counting.IntFrequencies(values)
+	if len(counts) != 3 || counts[2] != 3 || counts[99] != 0 {
+		t.Fatalf("integer frequencies: got %v", counts)
+	}
+	if got := counting.UniqueIntCount(values); got != 3 {
+		t.Fatalf("unique integer count: got %d, want 3", got)
+	}
+	runeCounts := counting.RuneFrequencies([]rune("λλ🚀"))
+	if len(runeCounts) != 2 || runeCounts['λ'] != 2 || runeCounts['🚀'] != 1 {
+		t.Fatalf("rune frequencies: got %v", runeCounts)
 	}
 }

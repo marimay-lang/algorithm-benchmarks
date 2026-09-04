@@ -1,8 +1,11 @@
-.PHONY: benchmark benchmark-probes benchmark-features benchmark-validate
+.PHONY: benchmark benchmark-expanded benchmark-probes benchmark-features benchmark-validate
 .PHONY: benchmark-validate-public-alpha benchmark-validate-platform verify
 
 benchmark:
 	./benchmarks/run.py
+
+benchmark-expanded:
+	./benchmarks/run.py --expanded
 
 benchmark-probes:
 	./benchmarks/probes.py

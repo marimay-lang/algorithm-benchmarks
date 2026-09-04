@@ -1,0 +1,11 @@
+import { Error as IoError, println } from "std/io";
+
+import { benchmarkFrequencyMap } from "study/algorithms/benchmarks/core";
+
+fn main(): Result<void, IoError> {
+  if benchmarkFrequencyMap() != 5073 {
+    panic("frequency-map checksum mismatch");
+  }
+  println("frequency-map 5073")?;
+  return Ok();
+}

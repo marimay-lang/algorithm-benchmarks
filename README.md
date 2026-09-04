@@ -13,17 +13,19 @@ algorithm-benchmarks/
     sorting/{insertion,heap}.my
     structures/{stack,queue,heap,dsu}.my
     graphs/{bfs,dijkstra}.my
-    benchmarks/{core,insertion,heap_sort,stack,queue,min_heap,dsu,bfs,dijkstra}/
+    counting/counting.my
+    benchmarks/{core,...,frequency_map,unique_set,rune_frequency}/
     probes/{core,scalar_get,scalar_set,proven_bounds,unproven_bounds,growth,reserved_growth,density,nested_traversal,checked_loop}/
     features/{core,dynamic_text}/
     algorithms_test.my
   go/
+    counting/
     sorting/
     structures/
     graphs/
     algorithms_test.go
   rust/
-    src/{sorting,structures,graphs}/
+    src/{counting,sorting,structures,graphs}/
     tests/algorithms_test.rs
   typescript/src/{sorting,structures,graphs,benchmark}.ts
   v/{sorting,structures,graphs,cmd/benchmark}/
@@ -37,7 +39,8 @@ algorithm-benchmarks/
 - insertion sort и heap sort;
 - stack, FIFO queue, binary min-heap и disjoint-set union;
 - BFS с расстояниями от начальной вершины;
-- Dijkstra для неотрицательных весов.
+- Dijkstra для неотрицательных весов;
+- integer frequency map, set-based distinct count и Unicode rune frequency map.
 
 Во всех трёх версиях Dijkstra намеренно использует одинаковый учебный вариант
 `O(V²)`, чтобы сравнение не зависело от библиотечной priority queue.
@@ -71,7 +74,7 @@ make verify
 Скрипт выполняет:
 
 - Marimay: canonical format check и `mmay check` для библиотек и benchmark-кода,
-  VM run, четыре explicit tests через `--engine both`, Debug/Release native
+  VM run, пять explicit tests через `--engine both`, Debug/Release native
   build, отдельный native `dynamic-text` checksum и побайтовое сравнение stdout;
 - Go: `gofmt`, `go vet`, `go test ./...`, `go run .`;
 - Rust: `cargo fmt --check`, strict Clippy, все tests и запуск основного binary.
@@ -97,6 +100,17 @@ make benchmark
 [`equivalence.json`](benchmarks/equivalence.json) и берёт из него список
 workload, описания и ожидаемые checksum. Источник Marimay compiler, revision
 corpus и SHA-256 manifest записываются в Markdown и raw JSON отчёты.
+
+Три алгоритма на новых `Map`, `Set` и `rune` запускаются вместе с восемью
+историческими workload отдельной локальной матрицей:
+
+```sh
+MMAY=/absolute/path/to/release/mmay make benchmark-expanded
+```
+
+Команда читает [`expanded_workloads.json`](benchmarks/expanded_workloads.json),
+сравнивает Marimay, Go и Rust и пишет `expanded-algorithms-local.{md,json}`.
+Расширенный отчёт не меняет опубликованные checkpoint-21 baseline и их SHA.
 
 Для локального расширенного сравнения доступны TypeScript под Bun, V и MoonBit:
 
@@ -147,13 +161,16 @@ validation commands: [`benchmarks/README.md`](benchmarks/README.md).
 | DSU | union `(0,1)`, `(1,2)`, `(3,4)` | `0~2`, но не `0~3`; 3 компоненты |
 | BFS | пятивершинный неориентированный граф | `[0, 1, 1, 2, 2]` |
 | Dijkstra | пятивершинный ориентированный граф | `[0, 3, 1, 4, 7]` |
+| frequency map | `2, 1, 2, -4, 1, 2` | частота `2` равна `3` |
+| unique set | `2, 1, 2, -4, 1, 2` | `3` различных значения |
+| rune frequency | `λλ🚀` | `2` различных rune; частота `λ` равна `2` |
 
 ## Текущее состояние Marimay 0.1.0-alpha.1
 
 Это наблюдения о текущем Stage 0, а не предложения менять спецификацию языка.
 
 1. После checkpoints 14–18 Marimay root, correctness tests и timed entrypoints
-   вызывают одни reusable sorting/structures/graphs packages. Cross-package
+   вызывают одни reusable sorting/structures/graphs/counting packages. Cross-package
    `[]T`, imported generic results, receiver-directed `push`/`pop`/`length`,
    physical array `pop` и canonical `[][]T` проверяются VM и native engines.
 2. Stack и min-heap больше не хранят shadow logical size: они используют

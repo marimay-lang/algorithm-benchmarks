@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"example.com/marimay-algorithms/counting"
 	"example.com/marimay-algorithms/graphs"
 	"example.com/marimay-algorithms/sorting"
 	"example.com/marimay-algorithms/structures"
@@ -17,6 +18,16 @@ func generatedValues(size, seed int) []int {
 	for index := range values {
 		state = (state*25173 + 13849) % 65536
 		values[index] = state%20001 - 10000
+	}
+	return values
+}
+
+func generatedBoundedValues(size, seed, bound int) []int {
+	values := make([]int, size)
+	state := seed
+	for index := range values {
+		state = (state*25173 + 13849) % 65536
+		values[index] = state % bound
 	}
 	return values
 }
@@ -159,21 +170,53 @@ func benchmarkDijkstra() int {
 	return checksum
 }
 
+func benchmarkFrequencyMap() int {
+	values := generatedBoundedValues(1_000_000, 17, 4096)
+	counts := counting.IntFrequencies(values)
+	checksum := len(counts)
+	for _, key := range []int{0, 1, 17, 4095} {
+		checksum = addChecksum(checksum, counts[key])
+	}
+	return checksum
+}
+
+func benchmarkUniqueSet() int {
+	values := generatedValues(1_000_000, 19)
+	return counting.UniqueIntCount(values)
+}
+
+func benchmarkRuneFrequency() int {
+	pattern := []rune("Marimay λ 東京 🚀🙂")
+	values := make([]rune, 0, len(pattern)*30_000)
+	for repeat := 0; repeat < 30_000; repeat++ {
+		values = append(values, pattern...)
+	}
+	counts := counting.RuneFrequencies(values)
+	checksum := len(counts)
+	for _, index := range []int{0, 1, 7, 8, 13, 14} {
+		checksum = addChecksum(checksum, counts[pattern[index]])
+	}
+	return checksum
+}
+
 func main() {
 	if len(os.Args) != 2 {
-		fmt.Fprintln(os.Stderr, "usage: benchmark <insertion|heap-sort|stack|queue|min-heap|dsu|bfs|dijkstra>")
+		fmt.Fprintln(os.Stderr, "usage: benchmark <insertion|heap-sort|stack|queue|min-heap|dsu|bfs|dijkstra|frequency-map|unique-set|rune-frequency>")
 		os.Exit(2)
 	}
 	name := os.Args[1]
 	benchmarks := map[string]func() int{
-		"insertion": benchmarkInsertion,
-		"heap-sort": benchmarkHeapSort,
-		"stack":     benchmarkStack,
-		"queue":     benchmarkQueue,
-		"min-heap":  benchmarkMinHeap,
-		"dsu":       benchmarkDSU,
-		"bfs":       benchmarkBFS,
-		"dijkstra":  benchmarkDijkstra,
+		"insertion":      benchmarkInsertion,
+		"heap-sort":      benchmarkHeapSort,
+		"stack":          benchmarkStack,
+		"queue":          benchmarkQueue,
+		"min-heap":       benchmarkMinHeap,
+		"dsu":            benchmarkDSU,
+		"bfs":            benchmarkBFS,
+		"dijkstra":       benchmarkDijkstra,
+		"frequency-map":  benchmarkFrequencyMap,
+		"unique-set":     benchmarkUniqueSet,
+		"rune-frequency": benchmarkRuneFrequency,
 	}
 	benchmark, ok := benchmarks[name]
 	if !ok {

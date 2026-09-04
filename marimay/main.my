@@ -1,5 +1,6 @@
 import { Error as IoError, println } from "std/io";
 
+import * as counting from "study/algorithms/counting";
 import * as graphs from "study/algorithms/graphs";
 import * as sorting from "study/algorithms/sorting";
 import * as structures from "study/algorithms/structures";
@@ -85,8 +86,18 @@ fn graphsSmoke(): bool {
   return distances[3] == 2 && shortest[1] == 3 && shortest[3] == 4;
 }
 
+fn countingSmoke(): bool {
+  const values = arrayOf(2, 1, 2, 3, 1, 2);
+  const counts = counting.intFrequencies(values);
+  const twos = match counts.get(2) {
+    Some(value) => value,
+    None => 0,
+  };
+  return twos == 3 && counts.length() == 3 && counting.uniqueIntCount(values) == 3;
+}
+
 fn main(): Result<void, IoError> {
-  if !sortingSmoke() || !structuresSmoke() || !graphsSmoke() {
+  if !sortingSmoke() || !structuresSmoke() || !graphsSmoke() || !countingSmoke() {
     panic("Marimay algorithms smoke test failed");
   }
   println("Marimay algorithms: ok")?;

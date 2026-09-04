@@ -1,0 +1,118 @@
+{
+  "schema": "marimay.expanded-algorithm-workloads/1",
+  "scope": "local-only",
+  "languages": [
+    "marimay",
+    "go",
+    "rust"
+  ],
+  "source_paths": {
+    "marimay": [
+      "marimay/benchmarks/core/benchmarks.my",
+      "marimay/counting/counting.my"
+    ],
+    "go": [
+      "go/cmd/benchmark/main.go",
+      "go/counting/counting.go"
+    ],
+    "rust": [
+      "rust/src/bin/benchmark.rs",
+      "rust/src/counting.rs"
+    ]
+  },
+  "workloads": [
+    {
+      "id": "frequency-map",
+      "description": "1,000,000 integers; 4,096-key histogram",
+      "expected_checksum": 5073,
+      "input": "generate 1,000,000 LCG values from seed 17 and map each state to state % 4096",
+      "operations": "count every value through a reusable frequency-table API",
+      "representation": "native hash map keyed by signed integers with signed integer counts",
+      "checks": "checksum the distinct-key count and frequencies for keys 0, 1, 17, and 4095",
+      "implementations": {
+        "marimay": {
+          "required_fragments": [
+            "import * as counting from \"study/algorithms/counting\";",
+            "generatedBoundedValues(1_000_000, 17, 4096)",
+            "counting.intFrequencies(values)"
+          ]
+        },
+        "go": {
+          "required_fragments": [
+            "example.com/marimay-algorithms/counting",
+            "generatedBoundedValues(1_000_000, 17, 4096)",
+            "counting.IntFrequencies(values)"
+          ]
+        },
+        "rust": {
+          "required_fragments": [
+            "use marimay_algorithms::counting;",
+            "generated_bounded_values(1_000_000, 17, 4_096)",
+            "counting::int_frequencies(&values)"
+          ]
+        }
+      }
+    },
+    {
+      "id": "unique-set",
+      "description": "1,000,000 integers; distinct-value count",
+      "expected_checksum": 20001,
+      "input": "generate 1,000,000 LCG values from seed 19 and map each state to state % 20001 - 10000",
+      "operations": "insert every value through a reusable set-based unique-count API",
+      "representation": "native hash set of signed integers",
+      "checks": "return the final distinct-value count",
+      "implementations": {
+        "marimay": {
+          "required_fragments": [
+            "generatedValues(1_000_000, 19)",
+            "counting.uniqueIntCount(values)"
+          ]
+        },
+        "go": {
+          "required_fragments": [
+            "generatedValues(1_000_000, 19)",
+            "counting.UniqueIntCount(values)"
+          ]
+        },
+        "rust": {
+          "required_fragments": [
+            "generated_values(1_000_000, 19)",
+            "counting::unique_int_count(&values)"
+          ]
+        }
+      }
+    },
+    {
+      "id": "rune-frequency",
+      "description": "450,000 Unicode scalars; 12-key histogram",
+      "expected_checksum": 270012,
+      "input": "repeat the 15-scalar text Marimay λ 東京 🚀🙂 exactly 30,000 times",
+      "operations": "decode the pattern to Unicode scalars, build one scalar array, and count it through a reusable frequency API",
+      "representation": "Unicode scalar array and native hash map keyed by rune/char",
+      "checks": "checksum the distinct-rune count and six selected frequencies",
+      "implementations": {
+        "marimay": {
+          "required_fragments": [
+            "runes(\"Marimay λ 東京 🚀🙂\", 15)",
+            "for repeat in 0..30_000",
+            "counting.runeFrequencies(values)"
+          ]
+        },
+        "go": {
+          "required_fragments": [
+            "[]rune(\"Marimay λ 東京 🚀🙂\")",
+            "repeat < 30_000",
+            "counting.RuneFrequencies(values)"
+          ]
+        },
+        "rust": {
+          "required_fragments": [
+            "\"Marimay λ 東京 🚀🙂\".chars().collect()",
+            "for _ in 0..30_000",
+            "counting::rune_frequencies(&values)"
+          ]
+        }
+      }
+    }
+  ]
+}

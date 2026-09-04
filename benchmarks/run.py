@@ -13,6 +13,11 @@ import time
 from typing import Sequence
 
 from equivalence import load_and_validate, manifest_sha256
+from expanded_workloads import (
+    ExpandedWorkloadError,
+    load_and_validate as load_and_validate_expanded,
+    manifest_sha256 as expanded_manifest_sha256,
+)
 from local_languages import (
     CORE_LANGUAGES,
     build_local_binaries,
@@ -66,9 +71,14 @@ def parse_args(protocol: dict[str, object]) -> argparse.Namespace:
     )
     parser.add_argument("--skip-build", action="store_true")
     parser.add_argument(
+        "--expanded",
+        action="store_true",
+        help="append local-only Map, Set, and Unicode counting workloads",
+    )
+    parser.add_argument(
         "--output",
         type=pathlib.Path,
-        default=pathlib.Path("benchmarks/results/latest.md"),
+        default=None,
     )
     args = parser.parse_args()
     try:
@@ -146,23 +156,13 @@ def build_binaries(
         marimay_root = repository / "marimay"
         run_checked([str(mmay_binary), "fmt", str(marimay_root), "--check"], cwd=repository)
         run_checked([str(mmay_binary), "check", str(marimay_root)], cwd=repository)
-        directory_names = {
-            "insertion": "insertion",
-            "heap-sort": "heap_sort",
-            "stack": "stack",
-            "queue": "queue",
-            "min-heap": "min_heap",
-            "dsu": "dsu",
-            "bfs": "bfs",
-            "dijkstra": "dijkstra",
-        }
         for name in benchmark_names:
             output = build_dir / f"marimay-{name}"
             run_checked(
                 [
                     str(mmay_binary),
                     "build",
-                    str(marimay_root / "benchmarks" / directory_names[name]),
+                    str(marimay_root / "benchmarks" / name.replace("-", "_")),
                     "--release",
                     "--max-heap-bytes",
                     str(max_heap_bytes),
@@ -269,7 +269,11 @@ def markdown_report(
         "Fastest",
     ]
     lines = [
-        "# Latest algorithm benchmark",
+        (
+            "# Expanded local algorithm benchmark"
+            if metadata.get("expanded_workloads_manifest")
+            else "# Latest algorithm benchmark"
+        ),
         "",
         f"Generated: `{metadata['generated_at']}`",
         "",
@@ -295,13 +299,32 @@ def markdown_report(
         + "---:|",
     ]
     if metadata.get("comparison_scope") == "local-only":
-        local_manifest = metadata["local_participants_manifest"]
-        lines[14:14] = [
-            f"Local participant manifest: `{local_manifest['path']}` "
-            f"(`{local_manifest['sha256']}`). This extended matrix is local-only "
-            "and is excluded from Tier 1 baselines.",
-            "",
-        ]
+        scope_lines = []
+        local_manifest = metadata.get("local_participants_manifest")
+        if local_manifest:
+            scope_lines.extend(
+                [
+                    f"Local participant manifest: `{local_manifest['path']}` "
+                    f"(`{local_manifest['sha256']}`).",
+                    "",
+                ]
+            )
+        expanded_manifest = metadata.get("expanded_workloads_manifest")
+        if expanded_manifest:
+            scope_lines.extend(
+                [
+                    f"Expanded workload manifest: `{expanded_manifest['path']}` "
+                    f"(`{expanded_manifest['sha256']}`).",
+                    "",
+                ]
+            )
+        scope_lines.extend(
+            [
+                "This extended matrix is local-only and is excluded from Tier 1 baselines.",
+                "",
+            ]
+        )
+        lines[14:14] = scope_lines
     for workload in workloads:
         name = str(workload["id"])
         timings = summarized[name]
@@ -337,7 +360,7 @@ def markdown_report(
             "## Interpretation limits",
             "",
             "- Checksums prove matching selected results, not identical abstraction boundaries.",
-            "- Every participant calls reusable sorting, structures, and graph code.",
+            "- Every participant calls reusable package-owned algorithm code.",
             "- Stack, queue, heap, DSU, BFS, and O(V²) Dijkstra use matching operations and layouts;",
             "  absence representation follows each host language without changing timed valid inputs.",
             "- Checksums cover selected results and do not prove equal compiler optimization maturity.",
@@ -364,13 +387,29 @@ def main() -> None:
     protocol_file, protocol = load_protocol(repository)
     args = parse_args(protocol)
     manifest_path, manifest = load_and_validate(repository)
+    expanded_manifest_path = None
+    expanded_manifest = None
+    if args.expanded:
+        if is_local_comparison(args.languages):
+            raise SystemExit(
+                "--expanded currently supports the canonical marimay,go,rust matrix only"
+            )
+        expanded_manifest_path, expanded_manifest = load_and_validate_expanded(
+            repository, manifest
+        )
     local_manifest_path = None
     local_manifest = None
     if is_local_comparison(args.languages):
         local_manifest_path, local_manifest = load_and_validate_local(repository)
-    workloads = manifest["workloads"]
+    workloads = list(manifest["workloads"])
+    if expanded_manifest is not None:
+        workloads.extend(expanded_manifest["workloads"])
     benchmark_names = [str(workload["id"]) for workload in workloads]
-    output = args.output
+    output = args.output or pathlib.Path(
+        "benchmarks/results/expanded-algorithms-local.md"
+        if args.expanded
+        else "benchmarks/results/latest.md"
+    )
     if not output.is_absolute():
         output = repository / output
     build_dir = repository / "benchmarks" / ".build"
@@ -426,6 +465,13 @@ def main() -> None:
         "schema": manifest["schema"],
         "sha256": manifest_sha256(manifest_path),
     }
+    if expanded_manifest_path is not None and expanded_manifest is not None:
+        metadata["comparison_scope"] = "local-only"
+        metadata["expanded_workloads_manifest"] = {
+            "path": str(expanded_manifest_path.relative_to(repository)),
+            "schema": expanded_manifest["schema"],
+            "sha256": expanded_manifest_sha256(expanded_manifest_path),
+        }
     metadata["toolchains"].update(
         local_toolchain_versions(repository, args.languages, tool_version)
     )
@@ -450,7 +496,11 @@ def main() -> None:
     metadata["measurement_scope"] = (
         "local"
         if is_local_comparison(args.languages)
-        else "tier1" if args.languages == LANGUAGES else "focused"
+        else "focused"
+        if args.expanded
+        else "tier1"
+        if args.languages == LANGUAGES
+        else "focused"
     )
     summarized = summarize_matrix(raw)
     expected = {
@@ -513,5 +563,5 @@ def main() -> None:
 if __name__ == "__main__":
     try:
         main()
-    except ProtocolError as error:
+    except (ProtocolError, ExpandedWorkloadError) as error:
         raise SystemExit(f"performance protocol error: {error}") from error

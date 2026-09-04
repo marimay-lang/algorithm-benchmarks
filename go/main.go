@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"example.com/marimay-algorithms/counting"
 	"example.com/marimay-algorithms/graphs"
 	"example.com/marimay-algorithms/sorting"
 	"example.com/marimay-algorithms/structures"
@@ -16,7 +17,8 @@ func main() {
 	heap.Push(1)
 	distances, ok := graphs.BFS([][]int{{1}, {0, 2}, {1}}, 0)
 	minimum, heapOK := heap.Pop()
-	if values[0] != 1 || values[4] != 5 || !ok || distances[2] != 2 || !heapOK || minimum != 1 {
+	counts := counting.IntFrequencies([]int{2, 1, 2, 3, 2})
+	if values[0] != 1 || values[4] != 5 || !ok || distances[2] != 2 || !heapOK || minimum != 1 || counts[2] != 3 {
 		panic("Go algorithms smoke test failed")
 	}
 	fmt.Println("Go algorithms: ok")

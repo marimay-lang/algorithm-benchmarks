@@ -1,3 +1,6 @@
+import { runes } from "std/text";
+
+import * as counting from "study/algorithms/counting";
 import * as graphs from "study/algorithms/graphs";
 import * as sorting from "study/algorithms/sorting";
 import * as structures from "study/algorithms/structures";
@@ -19,6 +22,30 @@ fn generatedValues(size: int, seed: int): []int {
     const _ = values.push(state % 20001 - 10000);
   }
   return values;
+}
+
+fn generatedBoundedValues(size: int, seed: int, bound: int): []int {
+  let values: []int = [];
+  let state = seed;
+  for index in 0..size {
+    state = (state * 25173 + 13849) % 65536;
+    const _ = values.push(state % bound);
+  }
+  return values;
+}
+
+fn requiredIntFrequency(counts: Map<int, int>, key: int): int {
+  return match counts.get(key) {
+    Some(count) => count,
+    None => panic("missing integer frequency"),
+  };
+}
+
+fn requiredRuneFrequency(counts: Map<rune, int>, key: rune): int {
+  return match counts.get(key) {
+    Some(count) => count,
+    None => panic("missing rune frequency"),
+  };
 }
 
 public fn benchmarkInsertion(): int {
@@ -158,5 +185,43 @@ public fn benchmarkDijkstra(): int {
     checksum = addChecksum(checksum, distances[size - 1]);
     checksum = addChecksum(checksum, distances[size / 2]);
   }
+  return checksum;
+}
+
+public fn benchmarkFrequencyMap(): int {
+  const values = generatedBoundedValues(1_000_000, 17, 4096);
+  const counts = counting.intFrequencies(values);
+  let checksum = counts.length();
+  checksum = addChecksum(checksum, requiredIntFrequency(counts, 0));
+  checksum = addChecksum(checksum, requiredIntFrequency(counts, 1));
+  checksum = addChecksum(checksum, requiredIntFrequency(counts, 17));
+  checksum = addChecksum(checksum, requiredIntFrequency(counts, 4095));
+  return checksum;
+}
+
+public fn benchmarkUniqueSet(): int {
+  const values = generatedValues(1_000_000, 19);
+  return counting.uniqueIntCount(values);
+}
+
+public fn benchmarkRuneFrequency(): int {
+  const pattern = match runes("Marimay λ 東京 🚀🙂", 15) {
+    Ok(values) => values,
+    Err(_) => panic("valid rune pattern rejected"),
+  };
+  let values: []rune = [];
+  for repeat in 0..30_000 {
+    for value in pattern {
+      const _ = values.push(value);
+    }
+  }
+  const counts = counting.runeFrequencies(values);
+  let checksum = counts.length();
+  checksum = addChecksum(checksum, requiredRuneFrequency(counts, pattern[0]));
+  checksum = addChecksum(checksum, requiredRuneFrequency(counts, pattern[1]));
+  checksum = addChecksum(checksum, requiredRuneFrequency(counts, pattern[7]));
+  checksum = addChecksum(checksum, requiredRuneFrequency(counts, pattern[8]));
+  checksum = addChecksum(checksum, requiredRuneFrequency(counts, pattern[13]));
+  checksum = addChecksum(checksum, requiredRuneFrequency(counts, pattern[14]));
   return checksum;
 }

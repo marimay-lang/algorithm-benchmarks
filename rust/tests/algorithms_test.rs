@@ -1,3 +1,4 @@
+use marimay_algorithms::counting;
 use marimay_algorithms::graphs::{self, Edge};
 use marimay_algorithms::sorting;
 use marimay_algorithms::structures::{Dsu, MinHeap, Queue, Stack};
@@ -71,4 +72,19 @@ fn invalid_graph_inputs() {
         graphs::dijkstra(&[vec![Edge { to: 1, weight: -1 }], vec![]], 0,),
         None,
     );
+}
+
+#[test]
+fn counting_algorithms() {
+    let values = [2, 1, 2, -4, 1, 2];
+    let counts = counting::int_frequencies(&values);
+    assert_eq!(counts.len(), 3);
+    assert_eq!(counts.get(&2), Some(&3));
+    assert_eq!(counts.get(&99), None);
+    assert_eq!(counting::unique_int_count(&values), 3);
+    let characters: Vec<char> = "λλ🚀".chars().collect();
+    let rune_counts = counting::rune_frequencies(&characters);
+    assert_eq!(rune_counts.len(), 2);
+    assert_eq!(rune_counts.get(&'λ'), Some(&2));
+    assert_eq!(rune_counts.get(&'🚀'), Some(&1));
 }

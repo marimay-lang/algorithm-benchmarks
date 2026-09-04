@@ -1,0 +1,11 @@
+import { Error as IoError, println } from "std/io";
+
+import { benchmarkRuneFrequency } from "study/algorithms/benchmarks/core";
+
+fn main(): Result<void, IoError> {
+  if benchmarkRuneFrequency() != 270012 {
+    panic("rune-frequency checksum mismatch");
+  }
+  println("rune-frequency 270012")?;
+  return Ok();
+}

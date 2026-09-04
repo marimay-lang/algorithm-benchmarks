@@ -1,7 +1,10 @@
 # Benchmark methodology
 
-`run.py` сравнивает восемь одинаковых детерминированных workload в Marimay, Go и
-Rust. `probes.py` отдельно измеряет девять focused Marimay workload, которые
+`run.py` по умолчанию сравнивает восемь одинаковых детерминированных workload в
+Marimay, Go и Rust. С `--expanded` он добавляет три local-only workload для
+`Map`, `Set` и Unicode `rune`, описанные в
+[`expanded_workloads.json`](expanded_workloads.json). `probes.py` отдельно
+измеряет девять focused Marimay workload, которые
 разделяют стоимость scalar get/set, доказуемых и динамических bounds,
 growth/reserve, плотного scalar storage, nested traversal и checked integer
 loops. Для Marimay оба harness вызывают `mmay build --release` с фиксированным
@@ -16,6 +19,19 @@ Machine-readable workload contract находится в
 Совместимый Marimay toolchain отдельно закреплён в
 [`marimay-toolchain.json`](marimay-toolchain.json): все harness проверяют
 machine-readable `mmay version --json` до создания benchmark artifacts.
+
+Расширенная локальная матрица запускается так:
+
+```sh
+MMAY=/absolute/path/to/release/mmay \
+  ./benchmarks/run.py --expanded --samples 11 --warmups 3 \
+  --output benchmarks/results/expanded-algorithms-local.md
+```
+
+Она включает все одиннадцать алгоритмов на Marimay, Go и Rust, использует тот
+же measurement protocol и checksum gate, но помечается `local-only`. Поэтому
+новые нагрузки не переписывают исторический eight-workload manifest и не могут
+случайно стать частью checkpoint-21 budget.
 
 Checkpoint-21 measurement contract находится в
 [`performance_protocol.json`](performance_protocol.json). Он фиксирует
@@ -135,6 +151,8 @@ workload IDs и checksum с canonical [`equivalence.json`](equivalence.json), н
 - release/optimized native executable каждого языка;
 - одинаковый LCG: `state = (state * 25173 + 13849) % 65536`;
 - одинаковые размеры, повторы и reusable algorithms;
+- для expanded workload одинаковые hash-map/hash-set representations и
+  одинаковая последовательность Unicode scalar values;
 - wall-clock от запуска процесса до завершения;
 - median из не менее 11 запусков после не менее 3 warmup;
 - MAD, IQR, min/max, noise fraction, каждый raw sample и фактический порядок.

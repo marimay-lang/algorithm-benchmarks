@@ -1,3 +1,4 @@
+use marimay_algorithms::counting;
 use marimay_algorithms::graphs::{self, Edge};
 use marimay_algorithms::sorting;
 use marimay_algorithms::structures::{Dsu, MinHeap, Queue, Stack};
@@ -10,6 +11,16 @@ fn generated_values(size: usize, seed: i64) -> Vec<i64> {
     for _ in 0..size {
         state = (state * 25_173 + 13_849) % 65_536;
         values.push(state % 20_001 - 10_000);
+    }
+    values
+}
+
+fn generated_bounded_values(size: usize, seed: i64, bound: i64) -> Vec<i64> {
+    let mut values = Vec::with_capacity(size);
+    let mut state = seed;
+    for _ in 0..size {
+        state = (state * 25_173 + 13_849) % 65_536;
+        values.push(state % bound);
     }
     values
 }
@@ -149,9 +160,38 @@ fn benchmark_dijkstra() -> i64 {
     checksum
 }
 
+fn benchmark_frequency_map() -> i64 {
+    let values = generated_bounded_values(1_000_000, 17, 4_096);
+    let counts = counting::int_frequencies(&values);
+    let mut checksum = counts.len() as i64;
+    for key in [0, 1, 17, 4_095] {
+        checksum = add_checksum(checksum, counts[&key]);
+    }
+    checksum
+}
+
+fn benchmark_unique_set() -> i64 {
+    let values = generated_values(1_000_000, 19);
+    counting::unique_int_count(&values) as i64
+}
+
+fn benchmark_rune_frequency() -> i64 {
+    let pattern: Vec<char> = "Marimay λ 東京 🚀🙂".chars().collect();
+    let mut values = Vec::with_capacity(pattern.len() * 30_000);
+    for _ in 0..30_000 {
+        values.extend_from_slice(&pattern);
+    }
+    let counts = counting::rune_frequencies(&values);
+    let mut checksum = counts.len() as i64;
+    for index in [0, 1, 7, 8, 13, 14] {
+        checksum = add_checksum(checksum, counts[&pattern[index]]);
+    }
+    checksum
+}
+
 fn main() {
     let name = std::env::args().nth(1).unwrap_or_else(|| {
-        eprintln!("usage: benchmark <insertion|heap-sort|stack|queue|min-heap|dsu|bfs|dijkstra>");
+        eprintln!("usage: benchmark <insertion|heap-sort|stack|queue|min-heap|dsu|bfs|dijkstra|frequency-map|unique-set|rune-frequency>");
         std::process::exit(2);
     });
     let checksum = match name.as_str() {
@@ -163,6 +203,9 @@ fn main() {
         "dsu" => benchmark_dsu(),
         "bfs" => benchmark_bfs(),
         "dijkstra" => benchmark_dijkstra(),
+        "frequency-map" => benchmark_frequency_map(),
+        "unique-set" => benchmark_unique_set(),
+        "rune-frequency" => benchmark_rune_frequency(),
         _ => {
             eprintln!("unknown benchmark: {name}");
             std::process::exit(2);

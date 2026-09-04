@@ -53,7 +53,8 @@ expect_stdout marimay-test-both \
 $'test study/algorithms.dataStructures ... ok\n'\
 $'test study/algorithms.graphAlgorithms ... ok\n'\
 $'test study/algorithms.invalidGraphInputsAreRejected ... ok\n'\
-$'test result: ok. 4 passed; 0 failed\n' \
+$'test study/algorithms.countingAlgorithms ... ok\n'\
+$'test result: ok. 5 passed; 0 failed\n' \
   "$mmay_binary" test "$repository_root/marimay" --engine both
 "$mmay_binary" build "$repository_root/marimay" --output "$verify_tmp/marimay-algorithms-debug"
 expect_stdout marimay-native-debug $'Marimay algorithms: ok\n' \
@@ -89,6 +90,7 @@ echo "== Benchmark harness =="
 python3 -m py_compile \
   "$repository_root/benchmarks/derive_budget.py" \
   "$repository_root/benchmarks/equivalence.py" \
+  "$repository_root/benchmarks/expanded_workloads.py" \
   "$repository_root/benchmarks/feature_manifest.py" \
   "$repository_root/benchmarks/feature_probes.py" \
   "$repository_root/benchmarks/local_languages.py" \
@@ -100,6 +102,7 @@ python3 -m py_compile \
   "$repository_root/benchmarks/probes.py" \
   "$repository_root/benchmarks/run.py" \
   "$repository_root/benchmarks/test_equivalence.py" \
+  "$repository_root/benchmarks/test_expanded_workloads.py" \
   "$repository_root/benchmarks/test_feature_manifest.py" \
   "$repository_root/benchmarks/test_feature_probes.py" \
   "$repository_root/benchmarks/test_local_participants.py" \
