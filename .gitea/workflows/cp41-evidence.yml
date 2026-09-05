@@ -8,7 +8,7 @@ permissions:
 
 env:
   BEFORE_REF: 5963290287a6d5e41cf144065ba424d5902d569f
-  AFTER_REF: 0c903aaf430d3efca9eb44408f0d4e4f2801a67b
+  AFTER_REF: 01aec63307be70136b5375fd32a0091de11fb0f1
   EVIDENCE_REF: evidence/cp41-linux-x86_64
 
 jobs:
