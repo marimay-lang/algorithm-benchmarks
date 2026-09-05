@@ -65,7 +65,14 @@ jobs:
               llvm-objdump-18 python3 rustc rustfmt taskset; do
             command -v "$command"
           done
-          perf_bin=$(find /usr/lib/linux-tools -name perf -type f -print -quit)
+          # Ubuntu packages perf through a symlink; match the same executable
+          # discovery used by the hardware-counter preflight below.
+          perf_bin=$(find /usr/lib/linux-tools -name perf -print -quit)
+          if [ -z "$perf_bin" ]; then
+            echo "Packaged perf executable was not found" >&2
+            exit 1
+          fi
+          perf_bin=$(readlink -f "$perf_bin")
           test -x "$perf_bin"
           test "$(go version)" = "go version go1.26.6 linux/amd64"
           rustc --version | grep -F 'rustc 1.96.0 '
