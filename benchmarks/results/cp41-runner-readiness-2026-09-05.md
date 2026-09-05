@@ -37,6 +37,14 @@ online and initially idle, but that scheduling label did not establish CPU/VM
 isolation. Ordinary compiler CI was concurrently active. This report does not
 infer the exact infrastructure topology from load averages alone.
 
+The follow-up regression fixture executes `tools/resolve-packaged-perf`, now
+shared by all three workflow lookup sites. It covers regular executables,
+relative symlinks, Unicode/spaces, missing directories/files, broken links,
+non-executable files, and directories named `perf`. Discovery never executes
+the found binary. All 80 harness tests passed locally on macOS arm64, together
+with shell syntax and pinned-image checks; Linux execution of this new helper
+remains part of the next run, not an inference from run 178.
+
 ## Required next action
 
 Confirm whether the performance runner shares its VM/physical resources with

@@ -1,0 +1,30 @@
+#!/bin/sh
+
+# Ubuntu's versioned linux-tools directories may contain symlinks to perf.
+# Keep one lookup for toolchain validation, preflight, and counter collection.
+set -eu
+
+if [ "$#" -gt 1 ]; then
+    echo "usage: resolve-packaged-perf [linux-tools-directory]" >&2
+    exit 64
+fi
+perf_directory=${1:-/usr/lib/linux-tools}
+if [ ! -d "$perf_directory" ]; then
+    echo "Packaged perf directory is missing: $perf_directory" >&2
+    exit 1
+fi
+perf_path=$(find "$perf_directory" -name perf -print -quit)
+if [ -z "$perf_path" ]; then
+    echo "Packaged perf executable was not found in $perf_directory" >&2
+    exit 1
+fi
+if ! resolved_perf=$(readlink -f "$perf_path"); then
+    echo "Cannot resolve packaged perf path: $perf_path" >&2
+    exit 1
+fi
+perf_path=$resolved_perf
+if [ ! -f "$perf_path" ] || [ ! -x "$perf_path" ]; then
+    echo "Packaged perf path is not an executable file: $perf_path" >&2
+    exit 1
+fi
+printf '%s\n' "$perf_path"

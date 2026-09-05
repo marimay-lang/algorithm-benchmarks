@@ -105,6 +105,7 @@ python3 -m py_compile \
   "$repository_root/benchmarks/test_feature_manifest.py" \
   "$repository_root/benchmarks/test_feature_probes.py" \
   "$repository_root/benchmarks/test_local_participants.py" \
+  "$repository_root/benchmarks/test_packaged_perf.py" \
   "$repository_root/benchmarks/test_perf_environment.py" \
   "$repository_root/benchmarks/test_perf_protocol.py" \
   "$repository_root/benchmarks/test_probe_manifest.py" \

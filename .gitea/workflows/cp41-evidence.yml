@@ -65,15 +65,7 @@ jobs:
               llvm-objdump-18 python3 rustc rustfmt taskset; do
             command -v "$command"
           done
-          # Ubuntu packages perf through a symlink; match the same executable
-          # discovery used by the hardware-counter preflight below.
-          perf_bin=$(find /usr/lib/linux-tools -name perf -print -quit)
-          if [ -z "$perf_bin" ]; then
-            echo "Packaged perf executable was not found" >&2
-            exit 1
-          fi
-          perf_bin=$(readlink -f "$perf_bin")
-          test -x "$perf_bin"
+          ./algorithm-benchmarks/tools/resolve-packaged-perf
           test "$(go version)" = "go version go1.26.6 linux/amd64"
           rustc --version | grep -F 'rustc 1.96.0 '
           cargo clippy --version
@@ -94,9 +86,7 @@ jobs:
       - name: Require hardware-counter access before measurement
         working-directory: algorithm-benchmarks
         run: |
-          perf_bin=$(find /usr/lib/linux-tools -name perf -print -quit)
-          perf_bin=$(readlink -f "$perf_bin")
-          test -x "$perf_bin"
+          perf_bin=$(./tools/resolve-packaged-perf)
           ./benchmarks/cp41_perf.py --preflight --perf "$perf_bin" \
             --event-profile linux-l1d-loads-v1
 
@@ -222,9 +212,7 @@ jobs:
       - name: Require stable before and after hardware counters
         working-directory: algorithm-benchmarks
         run: |
-          perf_bin=$(find /usr/lib/linux-tools -name perf -print -quit)
-          perf_bin=$(readlink -f "$perf_bin")
-          test -x "$perf_bin"
+          perf_bin=$(./tools/resolve-packaged-perf)
           ./benchmarks/cp41_perf.py \
             --binary-dir benchmarks/cp41-artifacts/before/bin \
             --perf "$perf_bin" --phase before \
