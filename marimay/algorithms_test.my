@@ -11,7 +11,11 @@ fn sortingAlgorithms(): void {
   sorting.insertionSort(insertionValues);
   let heapValues = arrayOf(9, 4, 7, 1, -2, 6, 5);
   sorting.heapSort(heapValues);
-  if insertionValues[0] != -1 || insertionValues[1] != 0 || insertionValues[4] != 5 || heapValues[0] != -2 || heapValues[6] != 9 {
+  if insertionValues[0] != -1
+    || insertionValues[1] != 0
+    || insertionValues[4] != 5
+    || heapValues[0] != -2
+    || heapValues[6] != 9 {
     panic("sorting algorithms failed");
   }
 }
@@ -62,10 +66,15 @@ fn dataStructures(): void {
       Some(_) => false,
       None => true,
     };
-  if stackValue != 30 || stack.length() != 2 || queueValue != 10 || queue.length() != 2 || minimum != 1 || !dsu.connected(
-    0,
-    2,
-  ) || dsu.connected(0, 3) || dsu.components() != 2 || !emptyResultsAreNone {
+  if stackValue != 30
+    || stack.length() != 2
+    || queueValue != 10
+    || queue.length() != 2
+    || minimum != 1
+    || !dsu.connected(0, 2)
+    || dsu.connected(0, 3)
+    || dsu.components() != 2
+    || !emptyResultsAreNone {
     panic("data structures failed");
   }
 }
@@ -117,7 +126,11 @@ fn invalidGraphInputsAreRejected(): void {
     Some(_) => false,
     None => true,
   };
-  if !bfsStartRejected || !bfsNeighborRejected || !dijkstraStartRejected || !dijkstraEndpointRejected || !dijkstraWeightRejected {
+  if !bfsStartRejected
+    || !bfsNeighborRejected
+    || !dijkstraStartRejected
+    || !dijkstraEndpointRejected
+    || !dijkstraWeightRejected {
     panic("invalid graph input was accepted");
   }
 }
@@ -143,7 +156,12 @@ fn countingAlgorithms(): void {
     Some(value) => value,
     None => 0,
   };
-  if counts.length() != 3 || twos != 3 || !missing || counting.uniqueIntCount(values) != 3 || runeCounts.length() != 2 || lambdaCount != 2 {
+  if counts.length() != 3
+    || twos != 3
+    || !missing
+    || counting.uniqueIntCount(values) != 3
+    || runeCounts.length() != 2
+    || lambdaCount != 2 {
     panic("counting algorithms failed");
   }
 }

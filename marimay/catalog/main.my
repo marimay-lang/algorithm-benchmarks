@@ -1,0 +1,93 @@
+import * as convert from "std/convert";
+import { println, Error as IoError } from "std/io";
+
+import * as catalog from "study/algorithms/catalog/core";
+
+fn positive(value: string): int {
+  const number = match convert.parseInt(value) {
+    Ok(value) => value,
+    Err(_) => panic("invalid integer"),
+  };
+  if number < 1 || number > 1_000_000 {
+    panic("argument outside 1..1000000");
+  }
+  return number;
+}
+
+fn main(arguments: []string): Result<void, IoError> {
+  if arguments.length() != 3 {
+    panic("usage: catalog WORKLOAD SIZE ROUNDS");
+  }
+  const name = arguments[0];
+  const n = positive(arguments[1]);
+  const rounds = positive(arguments[2]);
+  let result = -1;
+  if name == "title-search-10k" {
+    result = catalog.titleSearch(n, rounds);
+  }
+  if name == "title-search-100k" {
+    result = catalog.titleSearch(n, rounds);
+  }
+  if name == "normalize-title" {
+    result = catalog.normalizeTitle(n, rounds);
+  }
+  if name == "word-frequency" {
+    result = catalog.wordFrequency(n, rounds);
+  }
+  if name == "report-builder" {
+    result = catalog.report(n, rounds, true);
+  }
+  if name == "report-concat" {
+    result = catalog.report(n, rounds, false);
+  }
+  if name == "map-int" {
+    result = catalog.mapInt(n, rounds);
+  }
+  if name == "map-string" {
+    result = catalog.mapString(n, rounds);
+  }
+  if name == "map-string-book" {
+    result = catalog.mapBook(n, rounds);
+  }
+  if name == "set-string-churn" {
+    result = catalog.setChurn(n, rounds);
+  }
+  if name == "catalog-match" {
+    result = catalog.catalogWalk(n, rounds, 0);
+  }
+  if name == "catalog-dotcall" {
+    result = catalog.catalogWalk(n, rounds, 1);
+  }
+  if name == "catalog-interface" {
+    result = catalog.catalogWalk(n, rounds, 2);
+  }
+  if name == "record-reference-copy" {
+    result = catalog.recordCopies(n, rounds, false);
+  }
+  if name == "record-create" {
+    result = catalog.recordCopies(n, rounds, true);
+  }
+  if name == "array-grow" {
+    result = catalog.arrayGrowth(n, rounds, false);
+  }
+  if name == "array-reserved" {
+    result = catalog.arrayGrowth(n, rounds, true);
+  }
+  if name == "bfs-int" {
+    result = catalog.bfs(n, rounds, false);
+  }
+  if name == "bfs-record" {
+    result = catalog.bfs(n, rounds, true);
+  }
+  if name == "catalog-pipeline" {
+    result = catalog.catalogPipeline(n, rounds);
+  }
+  if name == "parse-result" {
+    result = catalog.parseResults(n, rounds);
+  }
+  if result < 0 {
+    panic("unknown workload");
+  }
+  println($"{name} {result}")?;
+  return Ok();
+}

@@ -1,0 +1,61 @@
+type Node {
+  id: int,
+  neighbors: []int,
+}
+
+public fn bfs(size: int, rounds: int, records: bool): int {
+  const graph: [][]int = arrayOf<[]int>();
+  const nodes: []Node = arrayOf<Node>();
+  for index in 0..size {
+    const edges: []int = arrayOf<int>();
+    for edge in 1..17 {
+      requireGrowth(push(edges, (index + edge * edge) % size));
+    }
+    requireGrowth(push(graph, edges));
+    if records {
+      requireGrowth(push(nodes, Node { id: index, neighbors: edges }));
+    }
+  }
+  let checksum = 0;
+  for repeat in 0..rounds {
+    const distances: []int = arrayOf<int>();
+    for index in 0..size {
+      requireGrowth(push(distances, -1));
+    }
+    distances[0] = 0;
+    const queue: []int = arrayOf<int>();
+    const objects: []Node = arrayOf<Node>();
+    if records {
+      requireGrowth(push(objects, nodes[0]));
+    } else {
+      requireGrowth(push(queue, 0));
+    }
+    let head = 0;
+    while head < size {
+      let index = 0;
+      let edges = graph[0];
+      if records {
+        index = objects[head].id;
+        edges = objects[head].neighbors;
+      } else {
+        index = queue[head];
+        edges = graph[index];
+      }
+      for neighbor in edges {
+        if distances[neighbor] == -1 {
+          distances[neighbor] = distances[index] + 1;
+          if records {
+            requireGrowth(push(objects, nodes[neighbor]));
+          } else {
+            requireGrowth(push(queue, neighbor));
+          }
+        }
+      }
+      head += 1;
+    }
+    for index in 0..size {
+      checksum = add(checksum, (index + 1) * (distances[index] + 1));
+    }
+  }
+  return checksum;
+}

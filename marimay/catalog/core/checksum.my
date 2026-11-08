@@ -1,0 +1,10 @@
+import * as bytes from "std/bytes";
+
+fn bytesForChecksum(value: string): int {
+  const encoded = bytes.encodeUtf8(value);
+  let checksum = 0;
+  for index in 0..bytes.length(encoded) {
+    checksum = add(checksum, (index % 251 + 1) * (bytes.get(encoded, index) as int));
+  }
+  return checksum;
+}

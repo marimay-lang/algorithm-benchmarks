@@ -1,0 +1,496 @@
+{
+  "schema": "marimay.catalog-workloads/1",
+  "scope": "local-only",
+  "profiles": [
+    "smoke",
+    "standard"
+  ],
+  "participants": [
+    "marimay-native",
+    "go",
+    "rust",
+    "marimay-vm",
+    "bun"
+  ],
+  "measurement": "Process wall time includes input construction, workload, checksum, startup and teardown. Native compilation excluded; VM includes source loading/checking/lowering. Bun runs TypeScript source with process startup, transpilation and JIT included; each observation starts a fresh process.",
+  "limitations": [
+    "No general Unicode lower/casefold API: normalize-title measures a shared corpus folding helper only.",
+    "No I/O, concurrency, JSON or HTTP claims.",
+    "Allocation workloads prescribe escaping objects; allocation counts, GC pauses and peak RSS are not measured.",
+    "Map/set implementations retain host ordering, hashing, growth and GC policies. Cross-language equality is observable results, not identical runtime layouts.",
+    "Go uses *Book and Rust Rc<Book> to preserve Marimay reference identity; Rust Rc costs do not generalize to all Rust representations.",
+    "BFS has fixed degree 16 and contiguous IDs; it is not an O(V²)-edge dense graph and record edges are IDs, not object pointers.",
+    "Bun uses JavaScript numbers for bounded exact integers, UTF-16 strings with UTF-8 byte checksums, Map/Set and reference objects; storage and copying are runtime-controlled.",
+    "Bun report-builder uses an array of chunks plus join; concatenation may use ropes. Split and scalar strings are independently retainable values, without a forced physical copy in JavaScript.",
+    "TypeScript interfaces are erased; catalog-interface measures a materialized structural-interface array and an ordinary method call, not a guaranteed vtable dispatch.",
+    "JavaScript has no reserve-only Array API: array-reserved uses new Array(n) plus indexed writes; array-grow uses push. These are equivalent values, not identical allocation/append traces."
+  ],
+  "workloads": [
+    {
+      "id": "title-search-10k",
+      "category": "text",
+      "description": "Linear exact UTF-8 title search; 75% hits and 25% misses.",
+      "parameters": {
+        "smoke": {
+          "size": 32,
+          "rounds": 3
+        },
+        "standard": {
+          "size": 10000,
+          "rounds": 128
+        }
+      },
+      "entrypoints": {
+        "marimay": "titleSearch",
+        "go": "TitleSearch",
+        "rust": "title_search",
+        "typescript": "titleSearch"
+      },
+      "mode": null
+    },
+    {
+      "id": "title-search-100k",
+      "category": "text",
+      "description": "Same queries over 100,000 unique runtime-built titles.",
+      "parameters": {
+        "smoke": {
+          "size": 128,
+          "rounds": 3
+        },
+        "standard": {
+          "size": 100000,
+          "rounds": 128
+        }
+      },
+      "entrypoints": {
+        "marimay": "titleSearch",
+        "go": "TitleSearch",
+        "rust": "title_search",
+        "typescript": "titleSearch"
+      },
+      "mode": null
+    },
+    {
+      "id": "normalize-title",
+      "category": "text",
+      "description": "ASCII trim, owned scalar pieces, explicit ASCII/Russian folding table, builder, equality.",
+      "parameters": {
+        "smoke": {
+          "size": 32,
+          "rounds": 3
+        },
+        "standard": {
+          "size": 10000,
+          "rounds": 1
+        }
+      },
+      "entrypoints": {
+        "marimay": "normalizeTitle",
+        "go": "NormalizeTitle",
+        "rust": "normalize_title",
+        "typescript": "normalizeTitle"
+      },
+      "mode": null
+    },
+    {
+      "id": "word-frequency",
+      "category": "text",
+      "description": "Four-token Russian/ASCII lines; owned token split and map counts; all keys checked.",
+      "parameters": {
+        "smoke": {
+          "size": 32,
+          "rounds": 3
+        },
+        "standard": {
+          "size": 10000,
+          "rounds": 10
+        }
+      },
+      "entrypoints": {
+        "marimay": "wordFrequency",
+        "go": "WordFrequency",
+        "rust": "word_frequency",
+        "typescript": "wordFrequency"
+      },
+      "mode": null,
+      "go_ratio_target": 2.0
+    },
+    {
+      "id": "report-builder",
+      "category": "text",
+      "description": "Build 10k formatted rows using a growing string builder; checksum every UTF-8 byte.",
+      "parameters": {
+        "smoke": {
+          "size": 32,
+          "rounds": 3
+        },
+        "standard": {
+          "size": 10000,
+          "rounds": 1
+        }
+      },
+      "entrypoints": {
+        "marimay": "report",
+        "go": "Report",
+        "rust": "report",
+        "typescript": "report"
+      },
+      "mode": true
+    },
+    {
+      "id": "report-concat",
+      "category": "text",
+      "description": "Same rows with a fresh immutable concatenation each step (quadratic copy volume).",
+      "parameters": {
+        "smoke": {
+          "size": 32,
+          "rounds": 3
+        },
+        "standard": {
+          "size": 10000,
+          "rounds": 1
+        }
+      },
+      "entrypoints": {
+        "marimay": "report",
+        "go": "Report",
+        "rust": "report",
+        "typescript": "report"
+      },
+      "mode": false
+    },
+    {
+      "id": "map-int",
+      "category": "collections",
+      "description": "4096 integer keys, get then put; deterministic permutation and full weighted histogram.",
+      "parameters": {
+        "smoke": {
+          "size": 32,
+          "rounds": 3
+        },
+        "standard": {
+          "size": 4096,
+          "rounds": 32
+        }
+      },
+      "entrypoints": {
+        "marimay": "mapInt",
+        "go": "MapInt",
+        "rust": "map_int",
+        "typescript": "mapInt"
+      },
+      "mode": null,
+      "go_ratio_target": 1.5
+    },
+    {
+      "id": "map-string",
+      "category": "collections",
+      "description": "Same map trace with dynamic Russian/ASCII title keys; fresh equal keys for final lookups.",
+      "parameters": {
+        "smoke": {
+          "size": 32,
+          "rounds": 3
+        },
+        "standard": {
+          "size": 4096,
+          "rounds": 32
+        }
+      },
+      "entrypoints": {
+        "marimay": "mapString",
+        "go": "MapString",
+        "rust": "map_string",
+        "typescript": "mapString"
+      },
+      "mode": null,
+      "go_ratio_target": 2.0
+    },
+    {
+      "id": "map-string-book",
+      "category": "collections",
+      "description": "Dynamic string keys to Book references; construct once, lookup and read title/state/serial.",
+      "parameters": {
+        "smoke": {
+          "size": 32,
+          "rounds": 3
+        },
+        "standard": {
+          "size": 10000,
+          "rounds": 4
+        }
+      },
+      "entrypoints": {
+        "marimay": "mapBook",
+        "go": "MapBook",
+        "rust": "map_book",
+        "typescript": "mapBook"
+      },
+      "mode": null
+    },
+    {
+      "id": "set-string-churn",
+      "category": "collections",
+      "description": "Sliding live window; remove old string, check absence, insert fresh key; verify final membership.",
+      "parameters": {
+        "smoke": {
+          "size": 32,
+          "rounds": 3
+        },
+        "standard": {
+          "size": 4096,
+          "rounds": 8
+        }
+      },
+      "entrypoints": {
+        "marimay": "setChurn",
+        "go": "SetChurn",
+        "rust": "set_churn",
+        "typescript": "setChurn"
+      },
+      "mode": null
+    },
+    {
+      "id": "catalog-match",
+      "category": "objects",
+      "description": "BookState enum + exhaustive match; Go tagged struct + switch, Rust enum + match.",
+      "parameters": {
+        "smoke": {
+          "size": 32,
+          "rounds": 3
+        },
+        "standard": {
+          "size": 10000,
+          "rounds": 32
+        }
+      },
+      "entrypoints": {
+        "marimay": "catalogWalk",
+        "go": "CatalogWalk",
+        "rust": "catalog_walk",
+        "typescript": "catalogWalk"
+      },
+      "mode": 0,
+      "go_ratio_target": 1.5
+    },
+    {
+      "id": "catalog-dotcall",
+      "category": "objects",
+      "description": "Concrete Book label call; no per-call result string allocation.",
+      "parameters": {
+        "smoke": {
+          "size": 32,
+          "rounds": 3
+        },
+        "standard": {
+          "size": 10000,
+          "rounds": 32
+        }
+      },
+      "entrypoints": {
+        "marimay": "catalogWalk",
+        "go": "CatalogWalk",
+        "rust": "catalog_walk",
+        "typescript": "catalogWalk"
+      },
+      "mode": 1
+    },
+    {
+      "id": "catalog-interface",
+      "category": "objects",
+      "description": "Materialized interface array; method-table call and UTF-8 label length.",
+      "parameters": {
+        "smoke": {
+          "size": 32,
+          "rounds": 3
+        },
+        "standard": {
+          "size": 10000,
+          "rounds": 32
+        }
+      },
+      "entrypoints": {
+        "marimay": "catalogWalk",
+        "go": "CatalogWalk",
+        "rust": "catalog_walk",
+        "typescript": "catalogWalk"
+      },
+      "mode": 2
+    },
+    {
+      "id": "record-reference-copy",
+      "category": "objects",
+      "description": "Retain aliases in a growing array; compare every identity and read fields.",
+      "parameters": {
+        "smoke": {
+          "size": 32,
+          "rounds": 3
+        },
+        "standard": {
+          "size": 1024,
+          "rounds": 128
+        }
+      },
+      "entrypoints": {
+        "marimay": "recordCopies",
+        "go": "RecordCopies",
+        "rust": "record_copies",
+        "typescript": "recordCopies"
+      },
+      "mode": false
+    },
+    {
+      "id": "record-create",
+      "category": "objects",
+      "description": "Retain fresh Book objects per batch; same fields, distinct identity; titles/states shared.",
+      "parameters": {
+        "smoke": {
+          "size": 32,
+          "rounds": 3
+        },
+        "standard": {
+          "size": 1024,
+          "rounds": 128
+        }
+      },
+      "entrypoints": {
+        "marimay": "recordCopies",
+        "go": "RecordCopies",
+        "rust": "record_copies",
+        "typescript": "recordCopies"
+      },
+      "mode": true
+    },
+    {
+      "id": "array-grow",
+      "category": "collections",
+      "description": "Append integers from empty capacity, then checksum all values.",
+      "parameters": {
+        "smoke": {
+          "size": 32,
+          "rounds": 3
+        },
+        "standard": {
+          "size": 100000,
+          "rounds": 4
+        }
+      },
+      "entrypoints": {
+        "marimay": "arrayGrowth",
+        "go": "ArrayGrowth",
+        "rust": "array_growth",
+        "typescript": "arrayGrowth"
+      },
+      "mode": false
+    },
+    {
+      "id": "array-reserved",
+      "category": "collections",
+      "description": "Same append trace with one initial reserve.",
+      "parameters": {
+        "smoke": {
+          "size": 32,
+          "rounds": 3
+        },
+        "standard": {
+          "size": 100000,
+          "rounds": 4
+        }
+      },
+      "entrypoints": {
+        "marimay": "arrayGrowth",
+        "go": "ArrayGrowth",
+        "rust": "array_growth",
+        "typescript": "arrayGrowth"
+      },
+      "mode": true
+    },
+    {
+      "id": "bfs-int",
+      "category": "graphs",
+      "description": "Contiguous integer IDs, growing integer queue, distance array, degree 16.",
+      "parameters": {
+        "smoke": {
+          "size": 32,
+          "rounds": 3
+        },
+        "standard": {
+          "size": 4096,
+          "rounds": 16
+        }
+      },
+      "entrypoints": {
+        "marimay": "bfs",
+        "go": "BFS",
+        "rust": "bfs",
+        "typescript": "bfs"
+      },
+      "mode": false
+    },
+    {
+      "id": "bfs-record",
+      "category": "graphs",
+      "description": "Same edges/distances; Node records and reference queue; edges remain integer IDs.",
+      "parameters": {
+        "smoke": {
+          "size": 32,
+          "rounds": 3
+        },
+        "standard": {
+          "size": 4096,
+          "rounds": 16
+        }
+      },
+      "entrypoints": {
+        "marimay": "bfs",
+        "go": "BFS",
+        "rust": "bfs",
+        "typescript": "bfs"
+      },
+      "mode": true
+    },
+    {
+      "id": "catalog-pipeline",
+      "category": "catalog",
+      "description": "Combined title search, title frequency map, and BookState match; 25% missing queries.",
+      "parameters": {
+        "smoke": {
+          "size": 32,
+          "rounds": 3
+        },
+        "standard": {
+          "size": 10000,
+          "rounds": 16
+        }
+      },
+      "entrypoints": {
+        "marimay": "catalogPipeline",
+        "go": "CatalogPipeline",
+        "rust": "catalog_pipeline",
+        "typescript": "catalogPipeline"
+      },
+      "mode": null
+    },
+    {
+      "id": "parse-result",
+      "category": "errors",
+      "description": "Format/parse decimal tokens, 25% invalid suffixes; propagate Result/error then match.",
+      "parameters": {
+        "smoke": {
+          "size": 32,
+          "rounds": 3
+        },
+        "standard": {
+          "size": 10000,
+          "rounds": 8
+        }
+      },
+      "entrypoints": {
+        "marimay": "parseResults",
+        "go": "ParseResults",
+        "rust": "parse_results",
+        "typescript": "parseResults"
+      },
+      "mode": null
+    }
+  ]
+}

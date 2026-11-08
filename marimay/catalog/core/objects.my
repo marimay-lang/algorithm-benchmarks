@@ -1,0 +1,122 @@
+import * as convert from "std/convert";
+
+public fn catalogWalk(size: int, rounds: int, mode: int): int {
+  const values = books(size);
+  const labels: []Labelled = arrayOf<Labelled>();
+  if mode == 2 {
+    for book in values {
+      requireGrowth(push(labels, book));
+    }
+  }
+  let checksum = 0;
+  for repeat in 0..rounds {
+    for index in 0..size {
+      if mode == 0 {
+        checksum = add(checksum, stateScore(values[index].state) + sizeOf(values[index].title));
+      }
+      if mode == 1 {
+        checksum = add(checksum, sizeOf(values[index].label()));
+      }
+      if mode == 2 {
+        checksum = add(checksum, sizeOf(interfaceLabel(labels[index])));
+      }
+    }
+  }
+  return checksum;
+}
+
+public fn recordCopies(size: int, rounds: int, fresh: bool): int {
+  const original = books(size);
+  let checksum = 0;
+  for repeat in 0..rounds {
+    const retained: []Book = arrayOf<Book>();
+    for book in original {
+      let value = book;
+      if fresh {
+        value = Book { title: book.title, state: book.state, serial: book.serial };
+      }
+      requireGrowth(push(retained, value));
+    }
+    // Records escape into a retained array, identity affects the checksum.
+    for index in 0..size {
+      let identityScore = 0;
+      if identity.same(original[index], retained[index]) {
+        identityScore = 1;
+      }
+      checksum = add(
+        checksum,
+        retained[index].serial + sizeOf(retained[index].title) + identityScore,
+      );
+    }
+  }
+  return checksum;
+}
+
+public fn catalogPipeline(size: int, rounds: int): int {
+  const values = books(size);
+  const names = titles();
+  let checksum = 0;
+  for repeat in 0..rounds {
+    const counts: Map<string, int> = mapOf<string, int>();
+    for book in values {
+      const count = match counts.get(book.title) {
+        Some(value) => value,
+        None => 0,
+      };
+      match counts.put(book.title, count + 1) {
+        Ok(_) => {},
+        Err(_) => panic("map"),
+      };
+      checksum = add(checksum, stateScore(book.state));
+    }
+    for query in 0..64 {
+      let target = "книги нет";
+      if query % 4 != 3 {
+        target = names[query % names.length()];
+      }
+      let found = 0;
+      for book in values {
+        if book.title == target {
+          found = book.serial + 1;
+          break;
+        }
+      }
+      checksum = add(checksum, found);
+      const count = match counts.get(target) {
+        Some(value) => value,
+        None => 0,
+      };
+      checksum = add(checksum, count);
+    }
+  }
+  return checksum;
+}
+
+fn parsedScore(value: string): Result<int, convert.ParseError> {
+  const number = convert.parseInt(value)?;
+  return Ok(number + 1);
+}
+
+public fn parseResults(size: int, rounds: int): int {
+  let checksum = 0;
+  for repeat in 0..rounds {
+    for index in 0..size {
+      let token = $"{index % 1009}";
+      if index % 4 == 3 {
+        token = $"{token}x";
+      }
+      checksum = add(
+        checksum,
+        match parsedScore(token) {
+          Ok(value) => value,
+          Err(_) => 7,
+        },
+      );
+    }
+  }
+  return checksum;
+}
+
+fn interfaceLabel(value: Labelled): string {
+  return value.label();
+}

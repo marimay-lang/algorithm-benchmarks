@@ -1,6 +1,7 @@
 import { bfs, dijkstra, type Edge } from "./graphs";
 import { heapSort, insertionSort } from "./sorting";
 import { Dsu, MinHeap, Queue, Stack } from "./structures";
+import { frequencies, uniqueIntCount } from "./counting";
 
 const CHECKSUM_MOD = 1_000_000_007;
 
@@ -142,6 +143,31 @@ function benchmarkDijkstra(): number {
   return checksum;
 }
 
+function benchmarkFrequencyMap(): number {
+  const values: number[] = [];
+  let state = 17;
+  for (let i = 0; i < 1_000_000; i++) {
+    state = (state * 25_173 + 13_849) % 65_536;
+    values.push(state % 4096);
+  }
+  const counts = frequencies(values);
+  let checksum = counts.size;
+  for (const key of [0, 1, 17, 4095]) checksum = addChecksum(checksum, counts.get(key) ?? 0);
+  return checksum;
+}
+function benchmarkUniqueSet(): number { return uniqueIntCount(generatedValues(1_000_000, 19)); }
+function benchmarkRuneFrequency(): number {
+  const pattern = Array.from("Marimay λ 東京 🚀🙂", (scalar) => scalar.codePointAt(0)!);
+  const values: number[] = [];
+  for (let repeat = 0; repeat < 30_000; repeat++) {
+    for (const scalar of pattern) values.push(scalar);
+  }
+  const counts = frequencies(values);
+  let checksum = counts.size;
+  for (const index of [0, 1, 7, 8, 13, 14]) checksum = addChecksum(checksum, counts.get(pattern[index]) ?? 0);
+  return checksum;
+}
+
 const name = Bun.argv[2];
 const benchmarks: Record<string, () => number> = {
   insertion: benchmarkInsertion,
@@ -152,11 +178,14 @@ const benchmarks: Record<string, () => number> = {
   dsu: benchmarkDsu,
   bfs: benchmarkBfs,
   dijkstra: benchmarkDijkstra,
+  "frequency-map": benchmarkFrequencyMap,
+  "unique-set": benchmarkUniqueSet,
+  "rune-frequency": benchmarkRuneFrequency,
 };
 const benchmark = benchmarks[name];
 if (benchmark === undefined) {
   console.error(
-    "usage: benchmark <insertion|heap-sort|stack|queue|min-heap|dsu|bfs|dijkstra>",
+    "usage: benchmark <insertion|heap-sort|stack|queue|min-heap|dsu|bfs|dijkstra|frequency-map|unique-set|rune-frequency>",
   );
   process.exit(2);
 }

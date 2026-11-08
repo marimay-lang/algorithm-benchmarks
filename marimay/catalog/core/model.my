@@ -1,0 +1,93 @@
+import * as text from "std/text";
+
+public enum BookState {
+  Available,
+  Loaned(int),
+  Missing,
+}
+
+public type Book {
+  public title: string,
+  public state: BookState,
+  public mutable serial: int,
+}
+
+public interface Labelled {
+  label(): string;
+}
+
+public fn label(book: Book): string {
+  return book.title;
+}
+
+fn stateFor(index: int): BookState {
+  if index % 3 == 0 {
+    return BookState.Available;
+  }
+  if index % 3 == 1 {
+    return BookState.Loaned(index % 97);
+  }
+  return BookState.Missing;
+}
+
+fn stateScore(state: BookState): int {
+  return match state {
+    BookState.Available => 1,
+    BookState.Loaned(days) => days + 2,
+    BookState.Missing => 101,
+  };
+}
+
+fn titles(): []string {
+  return [
+    "Война и мир",
+    "Мастер и Маргарита",
+    "Ёжик в тумане",
+    "Книга моря",
+    "Белый парус",
+    "Путь домой",
+    "Сад камней",
+    "Зимняя ночь",
+    "The Go Book",
+    "Rust in Action",
+    "Marimay λ",
+    "東京 🚀",
+    "Книга памяти",
+    "Дальний берег",
+    "Тихий Дон",
+    "Алые паруса",
+  ];
+}
+
+fn titleFor(index: int, names: []string): string {
+  return $"{names[index % names.length()]} #{index}";
+}
+
+fn books(size: int): []Book {
+  const names = titles();
+  const result: []Book = arrayOf<Book>();
+  for index in 0..size {
+    requireGrowth(
+      push(
+        result,
+        Book { title: names[index % names.length()], state: stateFor(index), serial: index },
+      ),
+    );
+  }
+  return result;
+}
+
+fn requireGrowth(value: Result<void, ArrayGrowthError>): void {
+  match value {
+    Ok(_) => {},
+    Err(_) => panic("array growth failed"),
+  };
+}
+
+fn add(checksum: int, value: int): int {
+  return (checksum + value) % 1_000_000_007;
+}
+
+fn sizeOf(value: string): int {
+  return text.byteLength(value);
+}

@@ -24,34 +24,18 @@ jobs:
           path: algorithm-benchmarks
           persist-credentials: true
 
-      - name: Check out exact before and after compilers
-        env:
-          MMAY_CHECKOUT_KEY: ${{ secrets.RUDA_CHECKOUT_KEY }}
+      - name: Check out exact public before and after compilers
         run: |
-          if [ -z "$MMAY_CHECKOUT_KEY" ]; then
-            echo "Marimay compiler checkout key is not configured" >&2
-            exit 1
-          fi
-          key_dir="${RUNNER_TEMP:-/tmp}/marimay-cp41-checkout"
-          install -d -m 700 "$key_dir"
-          printf '%s\n' "$MMAY_CHECKOUT_KEY" >"$key_dir/id_ed25519"
-          chmod 600 "$key_dir/id_ed25519"
-          printf '%s\n' \
-            '[gitea.example.invalid]:2222 ssh-ed25519 ARCHIVED_HOST_KEY_REMOVED' \
-            >"$key_dir/known_hosts"
-          export GIT_SSH_COMMAND="ssh -i $key_dir/id_ed25519 -o IdentitiesOnly=yes -o UserKnownHostsFile=$key_dir/known_hosts"
           for phase in before after; do
             ref_name=BEFORE_REF
             if [ "$phase" = after ]; then ref_name=AFTER_REF; fi
             eval "ref=\${$ref_name}"
             git clone --no-checkout --filter=blob:none \
-              ssh://git@gitea.example.invalid:2222/Marimay/marimay.git "marimay-$phase"
+              https://github.com/marimay-lang/marimay.git "marimay-$phase"
             git -C "marimay-$phase" fetch --depth 1 origin "$ref"
             git -C "marimay-$phase" checkout --detach FETCH_HEAD
             test "$(git -C "marimay-$phase" rev-parse HEAD)" = "$ref"
           done
-          rm -- "$key_dir/id_ed25519" "$key_dir/known_hosts"
-          rmdir "$key_dir"
 
       - name: Install pinned measurement toolchains
         run: |

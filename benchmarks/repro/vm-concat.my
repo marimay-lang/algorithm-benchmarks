@@ -1,0 +1,13 @@
+import { Error as IoError, println } from "std/io";
+import { byteLength } from "std/text";
+
+// Expected stdout: 178890\n. The final string is much smaller than 64 MiB.
+fn main(): Result<void, IoError> {
+  let result = "";
+  for index in 0..10_000 {
+    const line = $"{index}|Книга|{index % 3}\n";
+    result = $"{result}{line}";
+  }
+  println($"{byteLength(result)}")?;
+  return Ok();
+}

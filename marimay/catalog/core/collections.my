@@ -1,0 +1,125 @@
+public fn mapInt(size: int, rounds: int): int {
+  const counts: Map<int, int> = mapOf<int, int>();
+  for index in 0..size * rounds {
+    const key = (index * 25173 + 13849) % size;
+    const count = match counts.get(key) {
+      Some(value) => value,
+      None => 0,
+    };
+    match counts.put(key, count + 1) {
+      Ok(_) => {},
+      Err(_) => panic("map"),
+    };
+  }
+  let checksum = counts.length();
+  for key in 0..size {
+    const count = match counts.get(key) {
+      Some(value) => value,
+      None => 0,
+    };
+    checksum = add(checksum, (key + 1) * count);
+  }
+  return checksum;
+}
+
+public fn mapString(size: int, rounds: int): int {
+  const names = titles();
+  const keys: []string = arrayOf<string>();
+  for index in 0..size {
+    requireGrowth(push(keys, titleFor(index, names)));
+  }
+  const counts: Map<string, int> = mapOf<string, int>();
+  for index in 0..size * rounds {
+    const key = keys[(index * 25173 + 13849) % size];
+    const count = match counts.get(key) {
+      Some(value) => value,
+      None => 0,
+    };
+    match counts.put(key, count + 1) {
+      Ok(_) => {},
+      Err(_) => panic("map"),
+    };
+  }
+  let checksum = counts.length();
+  for index in 0..size {
+    // Fresh equal key tests content lookup, not only reference identity.
+    const count = match counts.get(titleFor(index, names)) {
+      Some(value) => value,
+      None => 0,
+    };
+    checksum = add(checksum, (index + 1) * count);
+  }
+  return checksum;
+}
+
+public fn mapBook(size: int, rounds: int): int {
+  const names = titles();
+  const values: Map<string, Book> = mapOf<string, Book>();
+  for index in 0..size {
+    const name = titleFor(index, names);
+    match values.put(name, Book { title: name, state: stateFor(index), serial: index }) {
+      Ok(_) => {},
+      Err(_) => panic("map"),
+    };
+  }
+  let checksum = 0;
+  for repeat in 0..rounds {
+    for index in 0..size {
+      const book = match values.get(titleFor(index, names)) {
+        Some(value) => value,
+        None => panic("missing book"),
+      };
+      checksum = add(checksum, sizeOf(book.title) + stateScore(book.state) + book.serial);
+    }
+  }
+  return checksum;
+}
+
+public fn setChurn(size: int, rounds: int): int {
+  const names = titles();
+  const values: Set<string> = setOf<string>();
+  for index in 0..size {
+    match values.add(titleFor(index, names)) {
+      Ok(_) => {},
+      Err(_) => panic("set"),
+    };
+  }
+  let checksum = 0;
+  for step in 0..size * rounds {
+    if !values.remove(titleFor(step, names)) {
+      panic("missing removal");
+    }
+    if values.contains(titleFor(step, names)) {
+      panic("removed key survived");
+    }
+    match values.add(titleFor(step + size, names)) {
+      Ok(_) => {},
+      Err(_) => panic("set"),
+    };
+    checksum = add(checksum, values.length());
+  }
+  for index in size * rounds..size * (rounds + 1) {
+    if !values.contains(titleFor(index, names)) {
+      panic("missing final key");
+    }
+    checksum = add(checksum, sizeOf(titleFor(index, names)));
+  }
+  return checksum;
+}
+
+public fn arrayGrowth(size: int, rounds: int, reserved: bool): int {
+  let checksum = 0;
+  for repeat in 0..rounds {
+    const values: []int = arrayOf<int>();
+    if reserved {
+      requireGrowth(reserve(values, size));
+    }
+    for index in 0..size {
+      requireGrowth(push(values, (index * 17) % 1009));
+    }
+    for value in values {
+      checksum = add(checksum, value);
+    }
+  }
+  return checksum;
+}

@@ -1,0 +1,146 @@
+import * as text from "std/text";
+
+public fn titleSearch(size: int, rounds: int): int {
+  const names = titles();
+  const values: []string = arrayOf<string>();
+  for index in 0..size {
+    requireGrowth(push(values, titleFor(index, names)));
+  }
+  let checksum = 0;
+  for query in 0..rounds {
+    let target = "книги нет";
+    if query % 4 != 3 {
+      target = titleFor((query * 7919) % size, names);
+    }
+    let found = 0;
+    for index in 0..size {
+      if values[index] == target {
+        found = index + 1;
+        break;
+      }
+    }
+    checksum = add(checksum, found);
+  }
+  return checksum;
+}
+
+fn parts(value: string): []string {
+  return match text.graphemes(value, 65536) {
+    Ok(items) => items,
+    Err(_) => panic("scalar split failed"),
+  };
+}
+
+public fn normalizeTitle(size: int, rounds: int): int {
+  // Deliberately shared corpus-fold algorithm, not a Unicode lower() claim.
+  const upper = parts("ABCDEFGHIJKLMNOPQRSTUVWXYZАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ");
+  const lower = parts("abcdefghijklmnopqrstuvwxyzабвгдеёжзийклмнопрстуфхцчшщъыьэюя");
+  const folding: Map<string, string> = mapOf<string, string>();
+  for index in 0..upper.length() {
+    match folding.put(upper[index], lower[index]) {
+      Ok(_) => {},
+      Err(_) => panic("map growth failed"),
+    };
+  }
+  const inputs = [
+    " \tВОЙНА И МИР\r\n",
+    "  ЁЖИК В ТУМАНЕ ",
+    " THE GO BOOK\t",
+    " МАСТЕР И МАРГАРИТА ",
+  ];
+  const expected = ["война и мир", "ёжик в тумане", "the go book", "мастер и маргарита"];
+  let checksum = 0;
+  for repeat in 0..rounds {
+    for index in 0..size {
+      const builder = match text.newBuilder(4096) {
+        Ok(value) => value,
+        Err(_) => panic("builder"),
+      };
+      for scalar in parts(text.trimAscii(inputs[index % 4])) {
+        const folded = match folding.get(scalar) {
+          Some(value) => value,
+          None => scalar,
+        };
+        match text.append(builder, folded) {
+          Ok(_) => {},
+          Err(_) => panic("append"),
+        };
+      }
+      const result = text.finish(builder);
+      if result != expected[index % 4] {
+        panic("normalization mismatch");
+      }
+      checksum = add(checksum, sizeOf(result));
+    }
+  }
+  return checksum;
+}
+
+public fn wordFrequency(size: int, rounds: int): int {
+  const lines = [
+    "книга море книга дом",
+    "море свет дом книга",
+    "rust go marimay go",
+    "ёжик туман ёжик книга",
+  ];
+  let checksum = 0;
+  for repeat in 0..rounds {
+    const counts: Map<string, int> = mapOf<string, int>();
+    for index in 0..size {
+      const words = match text.split(lines[index % 4], " ", 16) {
+        Ok(value) => value,
+        Err(_) => panic("split"),
+      };
+      for word in words {
+        const count = match counts.get(word) {
+          Some(value) => value,
+          None => 0,
+        };
+        match counts.put(word, count + 1) {
+          Ok(_) => {},
+          Err(_) => panic("map"),
+        };
+      }
+    }
+    // Deterministic order, every key and count contribute.
+    for word in ["книга", "море", "дом", "свет", "rust", "go", "marimay", "ёжик", "туман"] {
+      const count = match counts.get(word) {
+        Some(value) => value,
+        None => 0,
+      };
+      checksum = add(checksum, count * sizeOf(word));
+    }
+    checksum = add(checksum, counts.length());
+  }
+  return checksum;
+}
+
+public fn report(size: int, rounds: int, builderMode: bool): int {
+  const names = titles();
+  let checksum = 0;
+  for repeat in 0..rounds {
+    const builder = match text.newBuilder(1_048_576) {
+      Ok(value) => value,
+      Err(_) => panic("builder"),
+    };
+    let result = "";
+    for index in 0..size {
+      const line = $"{index}|{names[index % names.length()]}|{index % 3}\n";
+      if builderMode {
+        match text.append(builder, line) {
+          Ok(_) => {},
+          Err(_) => panic("append"),
+        };
+      } else {
+        result = $"{result}{line}";
+      }
+    }
+    if builderMode {
+      result = text.finish(builder);
+    }
+    // Read all UTF-8 bytes; observing only length permits work elimination.
+    const encoded = bytesForChecksum(result);
+    checksum = add(checksum, encoded);
+  }
+  return checksum;
+}

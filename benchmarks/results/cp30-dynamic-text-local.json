@@ -1,0 +1,239 @@
+{
+  "schema": "marimay.feature-probes/1",
+  "protocol": {
+    "schema": "marimay.performance-protocol/1",
+    "path": "benchmarks/performance_protocol.json",
+    "sha256": "a94f5be850eb26fd821b3630b16254f145a8e30c1b8e7a63fd7230ed761dd4a8"
+  },
+  "metadata": {
+    "generated_at": "2026-08-23T23:50:37+07:00",
+    "platform": {
+      "id": "macos-arm64-apple-m2",
+      "system": "Darwin",
+      "release": "25.3.0",
+      "machine": "arm64",
+      "cpu": "Apple M2",
+      "logical_cpus": 8
+    },
+    "isolation": {
+      "mode": "dedicated-runner-contract",
+      "load_average_at_start": [
+        2.45947265625,
+        2.42724609375,
+        2.732421875
+      ],
+      "power_source": "Now drawing from 'AC Power",
+      "affinity": "not-requested",
+      "sample_selection": "none",
+      "load_average_at_end": [
+        2.45947265625,
+        2.42724609375,
+        2.732421875
+      ]
+    },
+    "warmups": 3,
+    "samples": 11,
+    "timeout_seconds": 300,
+    "clock": "perf_counter_ns",
+    "order": "rotating-balanced-v1",
+    "command": "./benchmarks/feature_probes.py --feature dynamic-text --output benchmarks/results/cp30-dynamic-text-local.json",
+    "resource": {
+      "max_heap_bytes": 67108864
+    },
+    "artifacts": {
+      "mmay_compiler": {
+        "path": "/path/to/Marimay/marimay/build/release/mmay",
+        "sha256": "be32e8294592cb093bbd2a4b2b64af82cd7401fce58fd02d4766756cabf64991",
+        "revision": "56fb0870b976c7ec1e7b2f43bb8bf1985e2ad4f3",
+        "version": "Marimay compiler 0.1.0-alpha.1\nrelease-channel private-preview\nrelease-claim local-checker-backed-slice\npublication-ready false\nruntime 0.1.0-alpha.1\nlanguage 0.1-design\nbytecode unavailable (none)\nstandard-library 0.1.0-alpha.1 (bounded-preview; alpha-source)\nbootstrap-stage 0\nhost Darwin/arm64\ntargets native-host\navailable-commands build check fmt help run test version\nstaged-commands add audit bench doc exec explain fix fuzz generate init list outdated remove update vendor vet why"
+      },
+      "runtime": {
+        "path": "/path/to/Marimay/marimay/build/release/native-runtime/release/libmmay_native_runtime_release.a",
+        "sha256": "77b7e107c300efbdcfc4d11561a428c175e9409a13167ec15659dc470cc2bb27",
+        "manifest_path": "/path/to/Marimay/marimay/build/release/native-runtime/release/mmay-native-runtime.manifest",
+        "manifest_sha256": "0e24a67586cd59852f7b2f0e106096d27eb69e32a32b04bdc2f4ec9b31b14081",
+        "profile": "release",
+        "runtime": "0.1.0-alpha.1",
+        "host": "Darwin",
+        "processor": "arm64",
+        "compiler": "AppleClang-17.0.0.17000604"
+      },
+      "native_c": {
+        "compiler_path": "/usr/bin/cc",
+        "compiler_version": "Apple clang version 17.0.0 (clang-1700.6.4.2); configured AppleClang 17.0.0.17000604",
+        "linker_path": "/usr/bin/cc",
+        "linker_version": "Apple clang version 17.0.0 (clang-1700.6.4.2); configured AppleClang 17.0.0.17000604",
+        "output_profile": "release",
+        "flags": [
+          "-std=c17",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Werror",
+          "-fno-fast-math",
+          "-frounding-math",
+          "-ffp-contract=off",
+          "-fexcess-precision=standard",
+          "-lm"
+        ]
+      }
+    },
+    "toolchains": {
+      "python": "3.9.6",
+      "marimay": "Marimay compiler 0.1.0-alpha.1",
+      "go": "go version go1.26.4 darwin/arm64",
+      "rust": "rustc 1.96.0 (ac68faa20 2026-05-25)"
+    },
+    "corpus_revision": "0e998ccd27f7009f0efde490d95bbcdcb57be46b",
+    "comparison_scope": "local-only",
+    "feature_manifest": {
+      "path": "benchmarks/feature_probes.json",
+      "schema": "marimay.feature-probes-manifest/1",
+      "sha256": "2b54fb9e048f11320dd756343d4b2d31c1c2c115ecb535fa3465accfe47a895d",
+      "source_tree_sha256": "21eef5a224ab324f30336ba7faacc7fc6600904cb118542ed279ed8696a62cfc"
+    }
+  },
+  "workloads": {
+    "dynamic-text": {
+      "category": "text-format-parse",
+      "description": "interpolation, primitive integer and bool formatting, string concatenation, and parseInt",
+      "expected_checksum": 25313115,
+      "expected_stdout": "dynamic-text 25313115\n",
+      "commands": {
+        "marimay": [
+          "/path/to/Marimay/algorithm-benchmarks/benchmarks/.build/features/marimay-feature-dynamic-text"
+        ]
+      },
+      "raw_ms": {
+        "marimay": [
+          38.915083,
+          38.900833,
+          38.511375,
+          39.851458,
+          39.074292,
+          39.081125,
+          39.806417,
+          39.251708,
+          38.631375,
+          38.821708,
+          38.99075
+        ]
+      },
+      "summary": {
+        "marimay": {
+          "median_ms": 38.99075,
+          "mad_ms": 0.16904199999999747,
+          "q1_ms": 38.821708,
+          "q3_ms": 39.251708,
+          "iqr_ms": 0.4299999999999997,
+          "min_ms": 38.511375,
+          "max_ms": 39.851458,
+          "noise_fraction": 0.02
+        }
+      }
+    }
+  },
+  "order": [
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 427.3015
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 41.542958
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 38.452708
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 38.915083
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 38.900833
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 38.511375
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 39.851458
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 39.074292
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 39.081125
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 39.806417
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 39.251708
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 38.631375
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 38.821708
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "dynamic-text",
+      "participant": "marimay",
+      "elapsed_ms": 38.99075
+    }
+  ]
+}

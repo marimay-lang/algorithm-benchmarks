@@ -6,6 +6,7 @@ import argparse
 import json
 import os
 import pathlib
+import shlex
 import shutil
 import subprocess
 import sys
@@ -560,8 +561,21 @@ def main() -> None:
     print(f"Raw JSON report: {json_output}")
 
 
-if __name__ == "__main__":
+def entrypoint() -> None:
     try:
         main()
     except (ProtocolError, ExpandedWorkloadError) as error:
         raise SystemExit(f"performance protocol error: {error}") from error
+    except subprocess.CalledProcessError as error:
+        command = shlex.join(str(argument) for argument in error.cmd)
+        details = "\n".join(
+            output.rstrip("\n") for output in (error.stdout, error.stderr) if output
+        )
+        message = f"benchmark command failed (exit {error.returncode}): {command}"
+        if details:
+            message += f"\n{details}"
+        raise SystemExit(message) from error
+
+
+if __name__ == "__main__":
+    entrypoint()

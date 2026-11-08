@@ -1,0 +1,46 @@
+// Independent reference checks for singleton and uneven corpus cycles.
+@test
+fn boundaryChecksums(): void {
+  expect.equal(titleSearch(1, 3), 3);
+  expect.equal(titleSearch(1, 3), 3);
+  expect.equal(normalizeTitle(1, 3), 60);
+  expect.equal(wordFrequency(1, 3), 111);
+  expect.equal(report(1, 3, true), 142179);
+  expect.equal(report(1, 3, false), 142179);
+  expect.equal(mapInt(1, 3), 4);
+  expect.equal(mapString(1, 3), 4);
+  expect.equal(mapBook(1, 3), 72);
+  expect.equal(setChurn(1, 3), 25);
+  expect.equal(catalogWalk(1, 3, 0), 63);
+  expect.equal(catalogWalk(1, 3, 1), 60);
+  expect.equal(catalogWalk(1, 3, 2), 60);
+  expect.equal(recordCopies(1, 3, false), 63);
+  expect.equal(recordCopies(1, 3, true), 60);
+  expect.equal(arrayGrowth(1, 3, false), 0);
+  expect.equal(arrayGrowth(1, 3, true), 0);
+  expect.equal(bfs(1, 3, false), 3);
+  expect.equal(bfs(1, 3, true), 3);
+  expect.equal(catalogPipeline(1, 3), 27);
+  expect.equal(parseResults(1, 3), 3);
+  expect.equal(titleSearch(17, 3), 28);
+  expect.equal(titleSearch(17, 3), 28);
+  expect.equal(normalizeTitle(17, 3), 1128);
+  expect.equal(wordFrequency(17, 3), 1533);
+  expect.equal(report(17, 3, true), 19929264);
+  expect.equal(report(17, 3, false), 19929264);
+  expect.equal(mapInt(17, 3), 476);
+  expect.equal(mapString(17, 3), 476);
+  expect.equal(mapBook(17, 3), 3291);
+  expect.equal(setChurn(17, 3), 1263);
+  expect.equal(catalogWalk(17, 3, 0), 2709);
+  expect.equal(catalogWalk(17, 3, 1), 987);
+  expect.equal(catalogWalk(17, 3, 2), 987);
+  expect.equal(recordCopies(17, 3, false), 1446);
+  expect.equal(recordCopies(17, 3, true), 1395);
+  expect.equal(arrayGrowth(17, 3, false), 6936);
+  expect.equal(arrayGrowth(17, 3, true), 6936);
+  expect.equal(bfs(17, 3, false), 1143);
+  expect.equal(bfs(17, 3, true), 1143);
+  expect.equal(catalogPipeline(17, 3), 3030);
+  expect.equal(parseResults(17, 3), 423);
+}

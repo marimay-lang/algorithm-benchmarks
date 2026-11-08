@@ -1,0 +1,245 @@
+{
+  "schema": "ruda.array-probes/1",
+  "protocol": {
+    "schema": "ruda.performance-protocol/1",
+    "path": "benchmarks/performance_protocol.json",
+    "sha256": "0b43886b4e02ee72e8ea4be8eca6c3fb228336bcf525522723a4b40c3b862b19"
+  },
+  "metadata": {
+    "generated_at": "2026-08-22T17:32:16+07:00",
+    "platform": {
+      "id": "macos-arm64-apple-m2",
+      "system": "Darwin",
+      "release": "25.3.0",
+      "machine": "arm64",
+      "cpu": "Apple M2",
+      "logical_cpus": 8
+    },
+    "isolation": {
+      "mode": "dedicated-runner-contract",
+      "load_average_at_start": [
+        2.59912109375,
+        3.318359375,
+        3.36474609375
+      ],
+      "power_source": "Now drawing from 'AC Power",
+      "affinity": "not-requested",
+      "sample_selection": "none",
+      "load_average_at_end": [
+        2.59912109375,
+        3.318359375,
+        3.36474609375
+      ]
+    },
+    "warmups": 3,
+    "samples": 11,
+    "timeout_seconds": 300,
+    "clock": "perf_counter_ns",
+    "order": "rotating-balanced-v1",
+    "command": "./benchmarks/probes.py --probe checked-integer --samples 11 --warmups 3 --baseline benchmarks/results/cp21-probes-macos-arm64-apple-m2.json --output benchmarks/results/cp27-checked-integer-local.json",
+    "resource": {
+      "max_heap_bytes": 67108864
+    },
+    "artifacts": {
+      "ruda_compiler": {
+        "path": "/home/marimay/Projects/ai-projects/Ma/build/release/ruda",
+        "sha256": "c2abb1fa220921ce71c3537313e1090fadbe9efb79532f814047690508a03cbf",
+        "revision": "17b7a1f1dcffd17659d84244c5f9981cdba867ea",
+        "version": "Ruda compiler 0.0.0-dev\nruntime 0.0.0-dev\nlanguage 0.1-design\nbytecode unavailable\nstandard-library unavailable\nbootstrap-stage 0\nhost Darwin/arm64\ntargets native-host"
+      },
+      "runtime": {
+        "path": "/home/marimay/Projects/ai-projects/Ma/build/release/native-runtime/release/libruda_native_runtime_release.a",
+        "sha256": "d041ad8bff7c8581816bb7cb80928aed744358941fa2980db6462d9bd2b453ed",
+        "manifest_path": "/home/marimay/Projects/ai-projects/Ma/build/release/native-runtime/release/ruda-native-runtime.manifest",
+        "manifest_sha256": "326b650acb58b1d66f98291cf9177ef825ae461a45fc84b9be5ddc6016e661f4",
+        "profile": "release",
+        "runtime": "0.0.0-dev",
+        "host": "Darwin",
+        "processor": "arm64",
+        "compiler": "AppleClang-17.0.0.17000604"
+      },
+      "native_c": {
+        "compiler_path": "/usr/bin/cc",
+        "compiler_version": "Apple clang version 17.0.0 (clang-1700.6.4.2); configured AppleClang 17.0.0.17000604",
+        "linker_path": "/usr/bin/cc",
+        "linker_version": "Apple clang version 17.0.0 (clang-1700.6.4.2); configured AppleClang 17.0.0.17000604",
+        "output_profile": "release",
+        "flags": [
+          "-std=c17",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Werror",
+          "-fno-fast-math",
+          "-frounding-math",
+          "-ffp-contract=off",
+          "-fexcess-precision=standard",
+          "-lm"
+        ]
+      }
+    },
+    "toolchains": {
+      "python": "3.9.6",
+      "ruda": "Ruda compiler 0.0.0-dev",
+      "go": "go version go1.26.4 darwin/arm64",
+      "rust": "rustc 1.96.0 (ac68faa20 2026-05-25)"
+    },
+    "corpus_revision": "1e7dbf794b57eb43d27dec401b066ffa8771d978",
+    "probe_manifest": {
+      "path": "benchmarks/probes.json",
+      "schema": "ruda.array-probes-manifest/1",
+      "sha256": "25bcb922a294a316784e8cf382c239fc62e9b7cbe7d88618c3f61a326c4bd6ab",
+      "source_tree_sha256": "571d2aa80904e20b90c7b893c32c7e9e63a8b0c04484d72fa5bfe6c5e3a5d650"
+    },
+    "probe_selection": [
+      "checked-loop"
+    ],
+    "comparison_baseline": {
+      "path": "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/results/cp21-probes-macos-arm64-apple-m2.json",
+      "sha256": "0ab81bdc0ac202d6076e81a38f3708675c343eac97ef874ef0d199b03f25442c"
+    }
+  },
+  "workloads": {
+    "checked-loop": {
+      "category": "checked-arithmetic",
+      "description": "pure checked integer recurrence without array accesses",
+      "expected_checksum": 72846317,
+      "expected_stdout": "checked-loop 72846317\n",
+      "commands": {
+        "ruda": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/probes/ruda-probe-checked-loop"
+        ]
+      },
+      "raw_ms": {
+        "ruda": [
+          247.786917,
+          247.140708,
+          247.943833,
+          247.676959,
+          247.86875,
+          247.682875,
+          247.956833,
+          247.506333,
+          248.950042,
+          248.344958,
+          248.018334
+        ]
+      },
+      "summary": {
+        "ruda": {
+          "median_ms": 247.86875,
+          "mad_ms": 0.18587500000001,
+          "q1_ms": 247.676959,
+          "q3_ms": 248.018334,
+          "iqr_ms": 0.3413749999999993,
+          "min_ms": 247.140708,
+          "max_ms": 248.950042,
+          "noise_fraction": 0.02
+        }
+      }
+    }
+  },
+  "order": [
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 639.125833
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 249.884875
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 247.883875
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 247.786917
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 247.140708
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 247.943833
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 247.676959
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 247.86875
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 247.682875
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 247.956833
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 247.506333
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 248.950042
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 248.344958
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "checked-loop",
+      "participant": "ruda",
+      "elapsed_ms": 248.018334
+    }
+  ]
+}

@@ -1,56 +1,56 @@
 # Latest algorithm benchmark
 
-Generated: `2026-08-22T16:27:37+07:00`
+Generated: `2026-09-06T22:26:08+07:00`
 
-Host: `Darwin 25.3.0 arm64`; CPU: `Apple M2`.
+Host: `Darwin 25.6.0 arm64`; CPU: `Apple M2`.
 
-Marimay compiler executable: `/home/marimay/Projects/ai-projects/Ma/build/release/mmay`.
+Marimay compiler executable: `/path/to/Marimay/marimay/build/release/mmay`.
 
-Marimay source revision: `17b7a1f1dcffd17659d84244c5f9981cdba867ea`.
+Marimay source revision: `52e5852616d2deb0694c4bfeeb469ae2e31e4599`.
 
-Algorithm corpus revision: `1e7dbf794b57eb43d27dec401b066ffa8771d978`.
+Algorithm corpus revision: `3eda6055ff56be328c775c79d4a26ca412af66fb`.
 
-Equivalence manifest: `benchmarks/equivalence.json` (`bf2f251de2d91e22d6696a50aa83babe9d1497139a305c4e1770e09c1f2f7e9b`).
+Equivalence manifest: `benchmarks/equivalence.json` (`64ddc892dcac9a30a9e4b86aa669d1dff5a12aea65c3f353e180958f23a8c27a`).
 
 Samples: 11 measured after 3 warm-up runs. Reported times include process startup and one fixed checksum line; compilation is excluded.
 
 | Algorithm | Workload | Marimay median | Go median | Rust median | Marimay / Go | Marimay / Rust | Fastest |
 |---|---|---:|---:|---:|---:|---:|---:|
-| insertion | 50 × 2,500 generated integers | 2956.20 ms | 29.85 ms | 28.16 ms | 99.0× | 105.0× | Rust |
-| heap-sort | 5 × 100,000 generated integers | 722.53 ms | 39.50 ms | 21.94 ms | 18.3× | 32.9× | Rust |
-| stack | 1,000,000 push + pop | 353.22 ms | 15.51 ms | 9.17 ms | 22.8× | 38.5× | Rust |
-| queue | 1,000,000 enqueue + dequeue | 379.31 ms | 15.28 ms | 9.21 ms | 24.8× | 41.2× | Rust |
-| min-heap | 500,000 insert + remove-min | 1474.64 ms | 55.20 ms | 30.44 ms | 26.7× | 48.4× | Rust |
-| dsu | 100,000 nodes; 5,000,000 unions | 1593.74 ms | 24.91 ms | 22.11 ms | 64.0× | 72.1× | Rust |
-| bfs | 300 × 20,000 nodes, degree 4 | 2167.78 ms | 62.42 ms | 24.08 ms | 34.7× | 90.0× | Rust |
-| dijkstra | 80 × 800 nodes, O(V²) | 672.39 ms | 41.20 ms | 39.30 ms | 16.3× | 17.1× | Rust |
+| insertion | 50 × 2,500 generated integers | 50.91 ms | 29.17 ms | 28.72 ms | 1.7× | 1.8× | Rust |
+| heap-sort | 5 × 100,000 generated integers | 32.23 ms | 39.14 ms | 22.01 ms | 0.8× | 1.5× | Rust |
+| stack | 1,000,000 push + pop | 9.83 ms | 14.99 ms | 9.00 ms | 0.7× | 1.1× | Rust |
+| queue | 1,000,000 enqueue + dequeue | 10.26 ms | 14.99 ms | 9.06 ms | 0.7× | 1.1× | Rust |
+| min-heap | 500,000 insert + remove-min | 43.19 ms | 54.00 ms | 30.43 ms | 0.8× | 1.4× | Rust |
+| dsu | 100,000 nodes; 5,000,000 unions | 29.78 ms | 24.62 ms | 21.97 ms | 1.2× | 1.4× | Rust |
+| bfs | 300 × 20,000 nodes, degree 4 | 79.97 ms | 62.99 ms | 24.02 ms | 1.3× | 3.3× | Rust |
+| dijkstra | 80 × 800 nodes, O(V²) | 38.69 ms | 42.30 ms | 36.93 ms | 0.9× | 1.0× | Rust |
 
 ## Range (min–max)
 
 | Algorithm | Marimay | Go | Rust |
 |---|---:|---:|---:|
-| insertion | 2940.89–3094.36 ms | 28.96–30.56 ms | 27.91–29.51 ms |
-| heap-sort | 715.22–768.52 ms | 38.70–41.07 ms | 21.77–23.14 ms |
-| stack | 346.54–363.00 ms | 14.17–16.98 ms | 8.91–10.50 ms |
-| queue | 371.69–390.96 ms | 15.07–15.87 ms | 8.88–9.98 ms |
-| min-heap | 1460.25–1516.33 ms | 52.85–58.61 ms | 29.29–32.68 ms |
-| dsu | 1581.11–1627.90 ms | 24.23–26.31 ms | 21.63–33.37 ms |
-| bfs | 2154.74–2356.22 ms | 61.04–65.73 ms | 23.51–27.16 ms |
-| dijkstra | 669.66–699.60 ms | 40.67–42.62 ms | 38.80–40.29 ms |
+| insertion | 46.12–53.53 ms | 28.76–30.94 ms | 28.00–32.45 ms |
+| heap-sort | 31.78–33.89 ms | 38.16–40.00 ms | 21.59–23.16 ms |
+| stack | 9.51–13.82 ms | 14.56–17.00 ms | 8.79–11.52 ms |
+| queue | 9.60–15.13 ms | 13.93–18.30 ms | 8.62–10.89 ms |
+| min-heap | 41.84–44.66 ms | 52.81–60.96 ms | 29.57–32.61 ms |
+| dsu | 29.41–32.34 ms | 24.18–26.54 ms | 21.39–25.80 ms |
+| bfs | 77.95–83.85 ms | 60.59–65.29 ms | 23.15–28.48 ms |
+| dijkstra | 38.36–40.84 ms | 40.62–45.27 ms | 36.55–38.65 ms |
 
 ## Interpretation limits
 
 - Checksums prove matching selected results, not identical abstraction boundaries.
-- All three languages call reusable sorting, structures, and graph packages.
+- Every participant calls reusable package-owned algorithm code.
 - Stack, queue, heap, DSU, BFS, and O(V²) Dijkstra use matching operations and layouts;
-  Marimay and Rust model absence with Option while Go returns a value/bool pair.
+  absence representation follows each host language without changing timed valid inputs.
 - Checksums cover selected results and do not prove equal compiler optimization maturity.
 
 
 ## Toolchains
 
 - python: `3.9.6`
-- marimay: `Marimay compiler 0.0.0-dev`
+- marimay: `Marimay compiler 0.1.0-alpha.1`
 - go: `go version go1.26.4 darwin/arm64`
 - rust: `rustc 1.96.0 (ac68faa20 2026-05-25)`
 

@@ -26,3 +26,14 @@ benchmark-validate-public-alpha:
 
 verify:
 	./verify.sh
+
+.PHONY: benchmark-catalog benchmark-comprehensive benchmark-catalog-smoke
+
+benchmark-catalog:
+	./benchmarks/catalog_bench.py
+
+benchmark-comprehensive:
+	./benchmarks/catalog_bench.py --anchors --output benchmarks/results/comprehensive-local.md
+
+benchmark-catalog-smoke:
+	./benchmarks/catalog_bench.py --profile smoke --verify-only --output benchmarks/results/catalog-smoke-local.md

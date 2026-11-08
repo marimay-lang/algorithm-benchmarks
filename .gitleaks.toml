@@ -1,0 +1,14 @@
+title = "Marimay benchmark secret scanning"
+
+[extend]
+useDefault = true
+
+# Reviewed source-header SHA-256 inventory entries in six local benchmark
+# reports. Both the report location and the entire detector match must agree.
+[[allowlists]]
+description = "Reviewed generated-header SHA-256 manifest entries; not credentials"
+targetRules = ["generic-api-key"]
+condition = "AND"
+paths = ['''(?:^|/)benchmarks/results/(?:catalog-installed-scalar-arrays-2026-09-09|comprehensive-vm-scalar-arrays-2026-09-09|catalog-snapshot-smoke-2026-09-09|comprehensive-vm-reference-regions-2026-09-09|catalog-snapshot-origin-replaced-2026-09-09|comprehensive-local)\.json$''']
+regexTarget = "match"
+regexes = ['''^(?:token_kinds|token|array_access)\.h"\s*:\s*"[0-9a-f]{64}"$''']

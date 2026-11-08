@@ -1,0 +1,1185 @@
+{
+  "schema": "ruda.algorithm-benchmark/2",
+  "protocol": {
+    "schema": "ruda.performance-protocol/1",
+    "path": "benchmarks/performance_protocol.json",
+    "sha256": "0b43886b4e02ee72e8ea4be8eca6c3fb228336bcf525522723a4b40c3b862b19"
+  },
+  "metadata": {
+    "generated_at": "2026-08-22T17:56:40+07:00",
+    "platform": {
+      "id": "macos-arm64-apple-m2",
+      "system": "Darwin",
+      "release": "25.3.0",
+      "machine": "arm64",
+      "cpu": "Apple M2",
+      "logical_cpus": 8
+    },
+    "isolation": {
+      "mode": "dedicated-runner-contract",
+      "load_average_at_start": [
+        4.4521484375,
+        4.044921875,
+        3.56396484375
+      ],
+      "power_source": "Now drawing from 'Battery Power",
+      "affinity": "not-requested",
+      "sample_selection": "none",
+      "load_average_at_end": [
+        3.5263671875,
+        3.85107421875,
+        3.53466796875
+      ]
+    },
+    "warmups": 3,
+    "samples": 11,
+    "timeout_seconds": 300,
+    "clock": "perf_counter_ns",
+    "order": "rotating-balanced-v1",
+    "command": "./benchmarks/run.py --languages ruda --samples 11 --warmups 3 --output benchmarks/results/cp28-fastpath-local.md",
+    "resource": {
+      "max_heap_bytes": 67108864
+    },
+    "artifacts": {
+      "ruda_compiler": {
+        "path": "/home/marimay/Projects/ai-projects/Ma/build/release/ruda",
+        "sha256": "cd7f4dcd065454bd401620dca1c8b3b5a62d4f8bb28be1bd2dd3bf28aa2b3cf5",
+        "revision": "17b7a1f1dcffd17659d84244c5f9981cdba867ea",
+        "version": "Ruda compiler 0.0.0-dev\nruntime 0.0.0-dev\nlanguage 0.1-design\nbytecode unavailable\nstandard-library unavailable\nbootstrap-stage 0\nhost Darwin/arm64\ntargets native-host"
+      },
+      "runtime": {
+        "path": "/home/marimay/Projects/ai-projects/Ma/build/release/native-runtime/release/libruda_native_runtime_release.a",
+        "sha256": "992567fda0dc80678d15d3adb771e60463f91656363a4dc807466abd70ca315b",
+        "manifest_path": "/home/marimay/Projects/ai-projects/Ma/build/release/native-runtime/release/ruda-native-runtime.manifest",
+        "manifest_sha256": "326b650acb58b1d66f98291cf9177ef825ae461a45fc84b9be5ddc6016e661f4",
+        "profile": "release",
+        "runtime": "0.0.0-dev",
+        "host": "Darwin",
+        "processor": "arm64",
+        "compiler": "AppleClang-17.0.0.17000604"
+      },
+      "native_c": {
+        "compiler_path": "/usr/bin/cc",
+        "compiler_version": "Apple clang version 17.0.0 (clang-1700.6.4.2); configured AppleClang 17.0.0.17000604",
+        "linker_path": "/usr/bin/cc",
+        "linker_version": "Apple clang version 17.0.0 (clang-1700.6.4.2); configured AppleClang 17.0.0.17000604",
+        "output_profile": "release",
+        "flags": [
+          "-std=c17",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Werror",
+          "-fno-fast-math",
+          "-frounding-math",
+          "-ffp-contract=off",
+          "-fexcess-precision=standard",
+          "-lm"
+        ]
+      }
+    },
+    "toolchains": {
+      "python": "3.9.6",
+      "ruda": "Ruda compiler 0.0.0-dev",
+      "go": "go version go1.26.4 darwin/arm64",
+      "rust": "rustc 1.96.0 (ac68faa20 2026-05-25)"
+    },
+    "corpus_revision": "1e7dbf794b57eb43d27dec401b066ffa8771d978",
+    "equivalence_manifest": {
+      "path": "benchmarks/equivalence.json",
+      "schema": "ruda.algorithm-equivalence/1",
+      "sha256": "51702f2ad1bae31fb11b9df8550f58b2034e1e7044f3d6e7448e5001399d3535"
+    },
+    "languages": [
+      "ruda"
+    ],
+    "measurement_scope": "focused"
+  },
+  "workloads": {
+    "insertion": {
+      "description": "50 × 2,500 generated integers",
+      "expected_checksum": 999956059,
+      "expected_stdout": "insertion 999956059\n",
+      "commands": {
+        "ruda": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/ruda-insertion"
+        ]
+      },
+      "raw_ms": {
+        "ruda": [
+          338.355125,
+          339.892083,
+          335.957,
+          335.894125,
+          341.395,
+          335.785458,
+          335.815209,
+          341.330583,
+          352.64675,
+          337.831042,
+          344.6135
+        ]
+      },
+      "summary": {
+        "ruda": {
+          "median_ms": 338.355125,
+          "mad_ms": 2.539916000000005,
+          "q1_ms": 335.894125,
+          "q3_ms": 341.395,
+          "iqr_ms": 5.500875000000008,
+          "min_ms": 335.785458,
+          "max_ms": 352.64675,
+          "noise_fraction": 0.02251997217420607
+        }
+      }
+    },
+    "heap-sort": {
+      "description": "5 × 100,000 generated integers",
+      "expected_checksum": 999995320,
+      "expected_stdout": "heap-sort 999995320\n",
+      "commands": {
+        "ruda": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/ruda-heap-sort"
+        ]
+      },
+      "raw_ms": {
+        "ruda": [
+          179.618333,
+          180.534208,
+          176.579459,
+          176.826167,
+          176.257833,
+          176.480958,
+          176.373416,
+          181.347458,
+          184.58875,
+          177.1505,
+          177.715583
+        ]
+      },
+      "summary": {
+        "ruda": {
+          "median_ms": 177.1505,
+          "mad_ms": 0.7770840000000021,
+          "q1_ms": 176.480958,
+          "q3_ms": 180.534208,
+          "iqr_ms": 4.05325000000002,
+          "min_ms": 176.257833,
+          "max_ms": 184.58875,
+          "noise_fraction": 0.02288026282737006
+        }
+      }
+    },
+    "stack": {
+      "description": "1,000,000 push + pop",
+      "expected_checksum": 498055372,
+      "expected_stdout": "stack 498055372\n",
+      "commands": {
+        "ruda": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/ruda-stack"
+        ]
+      },
+      "raw_ms": {
+        "ruda": [
+          392.302708,
+          407.211292,
+          397.410917,
+          394.21925,
+          398.809917,
+          392.086917,
+          394.434041,
+          388.594541,
+          420.001958,
+          391.523167,
+          404.133625
+        ]
+      },
+      "summary": {
+        "ruda": {
+          "median_ms": 394.434041,
+          "mad_ms": 2.9768760000000043,
+          "q1_ms": 392.086917,
+          "q3_ms": 404.133625,
+          "iqr_ms": 12.046707999999967,
+          "min_ms": 388.594541,
+          "max_ms": 420.001958,
+          "noise_fraction": 0.030541755395802582
+        }
+      }
+    },
+    "queue": {
+      "description": "1,000,000 enqueue + dequeue",
+      "expected_checksum": 498106199,
+      "expected_stdout": "queue 498106199\n",
+      "commands": {
+        "ruda": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/ruda-queue"
+        ]
+      },
+      "raw_ms": {
+        "ruda": [
+          419.130333,
+          424.002667,
+          412.125625,
+          411.950834,
+          410.837166,
+          420.925709,
+          409.495792,
+          415.166458,
+          416.093792,
+          415.970958,
+          440.656042
+        ]
+      },
+      "summary": {
+        "ruda": {
+          "median_ms": 415.970958,
+          "mad_ms": 4.02012400000001,
+          "q1_ms": 411.950834,
+          "q3_ms": 420.925709,
+          "iqr_ms": 8.974874999999997,
+          "min_ms": 409.495792,
+          "max_ms": 440.656042,
+          "noise_fraction": 0.028993302941115493
+        }
+      }
+    },
+    "min-heap": {
+      "description": "500,000 insert + remove-min",
+      "expected_checksum": 405398755,
+      "expected_stdout": "min-heap 405398755\n",
+      "commands": {
+        "ruda": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/ruda-min-heap"
+        ]
+      },
+      "raw_ms": {
+        "ruda": [
+          1290.239875,
+          1312.72225,
+          1308.658333,
+          1308.478459,
+          1277.586667,
+          1286.074667,
+          1274.062166,
+          1311.270459,
+          1293.689084,
+          1280.501667,
+          1304.385041
+        ]
+      },
+      "summary": {
+        "ruda": {
+          "median_ms": 1293.689084,
+          "mad_ms": 14.789374999999836,
+          "q1_ms": 1280.501667,
+          "q3_ms": 1308.658333,
+          "iqr_ms": 28.156666000000087,
+          "min_ms": 1274.062166,
+          "max_ms": 1312.72225,
+          "noise_fraction": 0.03429581771132847
+        }
+      }
+    },
+    "dsu": {
+      "description": "100,000 nodes; 5,000,000 unions",
+      "expected_checksum": 21343152,
+      "expected_stdout": "dsu 21343152\n",
+      "commands": {
+        "ruda": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/ruda-dsu"
+        ]
+      },
+      "raw_ms": {
+        "ruda": [
+          1595.423375,
+          1770.802667,
+          1596.105,
+          1662.291667,
+          1587.022417,
+          1594.533417,
+          1592.573,
+          1621.862333,
+          1634.434084,
+          1611.751792,
+          1801.773
+        ]
+      },
+      "summary": {
+        "ruda": {
+          "median_ms": 1611.751792,
+          "mad_ms": 19.17879199999993,
+          "q1_ms": 1594.533417,
+          "q3_ms": 1662.291667,
+          "iqr_ms": 67.75824999999986,
+          "min_ms": 1587.022417,
+          "max_ms": 1801.773,
+          "noise_fraction": 0.04204012698252974
+        }
+      }
+    },
+    "bfs": {
+      "description": "300 × 20,000 nodes, degree 4",
+      "expected_checksum": 715800,
+      "expected_stdout": "bfs 715800\n",
+      "commands": {
+        "ruda": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/ruda-bfs"
+        ]
+      },
+      "raw_ms": {
+        "ruda": [
+          1463.9035,
+          1462.400458,
+          1469.570791,
+          1439.136542,
+          1429.514291,
+          1449.696334,
+          1437.323542,
+          1457.262625,
+          1568.78875,
+          1489.603625,
+          1463.718125
+        ]
+      },
+      "summary": {
+        "ruda": {
+          "median_ms": 1462.400458,
+          "mad_ms": 12.704124000000093,
+          "q1_ms": 1439.136542,
+          "q3_ms": 1469.570791,
+          "iqr_ms": 30.434249000000136,
+          "min_ms": 1429.514291,
+          "max_ms": 1568.78875,
+          "noise_fraction": 0.02606151536093151
+        }
+      }
+    },
+    "dijkstra": {
+      "description": "80 × 800 nodes, O(V²)",
+      "expected_checksum": 38672,
+      "expected_stdout": "dijkstra 38672\n",
+      "commands": {
+        "ruda": [
+          "/home/marimay/Projects/ai-projects/ruda-algotithms/benchmarks/.build/ruda-dijkstra"
+        ]
+      },
+      "raw_ms": {
+        "ruda": [
+          200.41375,
+          205.255292,
+          199.510542,
+          200.515708,
+          200.424375,
+          201.115875,
+          199.334417,
+          202.436458,
+          228.306,
+          205.55625,
+          205.621875
+        ]
+      },
+      "summary": {
+        "ruda": {
+          "median_ms": 201.115875,
+          "mad_ms": 1.6053330000000017,
+          "q1_ms": 200.41375,
+          "q3_ms": 205.55625,
+          "iqr_ms": 5.1425000000000125,
+          "min_ms": 199.334417,
+          "max_ms": 228.306,
+          "noise_fraction": 0.025569836294623748
+        }
+      }
+    }
+  },
+  "order": [
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "insertion",
+      "participant": "ruda",
+      "elapsed_ms": 943.564416
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "heap-sort",
+      "participant": "ruda",
+      "elapsed_ms": 567.441542
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "stack",
+      "participant": "ruda",
+      "elapsed_ms": 794.173
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "queue",
+      "participant": "ruda",
+      "elapsed_ms": 800.04925
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "min-heap",
+      "participant": "ruda",
+      "elapsed_ms": 1857.137042
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "dsu",
+      "participant": "ruda",
+      "elapsed_ms": 2089.825583
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "bfs",
+      "participant": "ruda",
+      "elapsed_ms": 1851.930875
+    },
+    {
+      "phase": "warmup",
+      "round": 0,
+      "workload": "dijkstra",
+      "participant": "ruda",
+      "elapsed_ms": 591.860792
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "insertion",
+      "participant": "ruda",
+      "elapsed_ms": 335.787875
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "dijkstra",
+      "participant": "ruda",
+      "elapsed_ms": 200.239
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "bfs",
+      "participant": "ruda",
+      "elapsed_ms": 1440.83875
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "dsu",
+      "participant": "ruda",
+      "elapsed_ms": 1596.494458
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "min-heap",
+      "participant": "ruda",
+      "elapsed_ms": 1285.093916
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "queue",
+      "participant": "ruda",
+      "elapsed_ms": 409.274917
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "stack",
+      "participant": "ruda",
+      "elapsed_ms": 394.690833
+    },
+    {
+      "phase": "warmup",
+      "round": 1,
+      "workload": "heap-sort",
+      "participant": "ruda",
+      "elapsed_ms": 177.907125
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "stack",
+      "participant": "ruda",
+      "elapsed_ms": 393.4415
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "queue",
+      "participant": "ruda",
+      "elapsed_ms": 411.091625
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "min-heap",
+      "participant": "ruda",
+      "elapsed_ms": 1294.425625
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "dsu",
+      "participant": "ruda",
+      "elapsed_ms": 1607.808167
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "bfs",
+      "participant": "ruda",
+      "elapsed_ms": 1445.389625
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "dijkstra",
+      "participant": "ruda",
+      "elapsed_ms": 210.413584
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "insertion",
+      "participant": "ruda",
+      "elapsed_ms": 335.290292
+    },
+    {
+      "phase": "warmup",
+      "round": 2,
+      "workload": "heap-sort",
+      "participant": "ruda",
+      "elapsed_ms": 178.561542
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "stack",
+      "participant": "ruda",
+      "elapsed_ms": 392.302708
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "heap-sort",
+      "participant": "ruda",
+      "elapsed_ms": 179.618333
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "insertion",
+      "participant": "ruda",
+      "elapsed_ms": 338.355125
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "dijkstra",
+      "participant": "ruda",
+      "elapsed_ms": 200.41375
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "bfs",
+      "participant": "ruda",
+      "elapsed_ms": 1463.9035
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "dsu",
+      "participant": "ruda",
+      "elapsed_ms": 1595.423375
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "min-heap",
+      "participant": "ruda",
+      "elapsed_ms": 1290.239875
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "queue",
+      "participant": "ruda",
+      "elapsed_ms": 419.130333
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "min-heap",
+      "participant": "ruda",
+      "elapsed_ms": 1312.72225
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "dsu",
+      "participant": "ruda",
+      "elapsed_ms": 1770.802667
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "bfs",
+      "participant": "ruda",
+      "elapsed_ms": 1462.400458
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "dijkstra",
+      "participant": "ruda",
+      "elapsed_ms": 205.255292
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "insertion",
+      "participant": "ruda",
+      "elapsed_ms": 339.892083
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "heap-sort",
+      "participant": "ruda",
+      "elapsed_ms": 180.534208
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "stack",
+      "participant": "ruda",
+      "elapsed_ms": 407.211292
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "queue",
+      "participant": "ruda",
+      "elapsed_ms": 424.002667
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "min-heap",
+      "participant": "ruda",
+      "elapsed_ms": 1308.658333
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "queue",
+      "participant": "ruda",
+      "elapsed_ms": 412.125625
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "stack",
+      "participant": "ruda",
+      "elapsed_ms": 397.410917
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "heap-sort",
+      "participant": "ruda",
+      "elapsed_ms": 176.579459
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "insertion",
+      "participant": "ruda",
+      "elapsed_ms": 335.957
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "dijkstra",
+      "participant": "ruda",
+      "elapsed_ms": 199.510542
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "bfs",
+      "participant": "ruda",
+      "elapsed_ms": 1469.570791
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "dsu",
+      "participant": "ruda",
+      "elapsed_ms": 1596.105
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "bfs",
+      "participant": "ruda",
+      "elapsed_ms": 1439.136542
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "dijkstra",
+      "participant": "ruda",
+      "elapsed_ms": 200.515708
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "insertion",
+      "participant": "ruda",
+      "elapsed_ms": 335.894125
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "heap-sort",
+      "participant": "ruda",
+      "elapsed_ms": 176.826167
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "stack",
+      "participant": "ruda",
+      "elapsed_ms": 394.21925
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "queue",
+      "participant": "ruda",
+      "elapsed_ms": 411.950834
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "min-heap",
+      "participant": "ruda",
+      "elapsed_ms": 1308.478459
+    },
+    {
+      "phase": "sample",
+      "round": 3,
+      "workload": "dsu",
+      "participant": "ruda",
+      "elapsed_ms": 1662.291667
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "bfs",
+      "participant": "ruda",
+      "elapsed_ms": 1429.514291
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "dsu",
+      "participant": "ruda",
+      "elapsed_ms": 1587.022417
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "min-heap",
+      "participant": "ruda",
+      "elapsed_ms": 1277.586667
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "queue",
+      "participant": "ruda",
+      "elapsed_ms": 410.837166
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "stack",
+      "participant": "ruda",
+      "elapsed_ms": 398.809917
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "heap-sort",
+      "participant": "ruda",
+      "elapsed_ms": 176.257833
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "insertion",
+      "participant": "ruda",
+      "elapsed_ms": 341.395
+    },
+    {
+      "phase": "sample",
+      "round": 4,
+      "workload": "dijkstra",
+      "participant": "ruda",
+      "elapsed_ms": 200.424375
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "insertion",
+      "participant": "ruda",
+      "elapsed_ms": 335.785458
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "heap-sort",
+      "participant": "ruda",
+      "elapsed_ms": 176.480958
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "stack",
+      "participant": "ruda",
+      "elapsed_ms": 392.086917
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "queue",
+      "participant": "ruda",
+      "elapsed_ms": 420.925709
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "min-heap",
+      "participant": "ruda",
+      "elapsed_ms": 1286.074667
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "dsu",
+      "participant": "ruda",
+      "elapsed_ms": 1594.533417
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "bfs",
+      "participant": "ruda",
+      "elapsed_ms": 1449.696334
+    },
+    {
+      "phase": "sample",
+      "round": 5,
+      "workload": "dijkstra",
+      "participant": "ruda",
+      "elapsed_ms": 201.115875
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "insertion",
+      "participant": "ruda",
+      "elapsed_ms": 335.815209
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "dijkstra",
+      "participant": "ruda",
+      "elapsed_ms": 199.334417
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "bfs",
+      "participant": "ruda",
+      "elapsed_ms": 1437.323542
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "dsu",
+      "participant": "ruda",
+      "elapsed_ms": 1592.573
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "min-heap",
+      "participant": "ruda",
+      "elapsed_ms": 1274.062166
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "queue",
+      "participant": "ruda",
+      "elapsed_ms": 409.495792
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "stack",
+      "participant": "ruda",
+      "elapsed_ms": 394.434041
+    },
+    {
+      "phase": "sample",
+      "round": 6,
+      "workload": "heap-sort",
+      "participant": "ruda",
+      "elapsed_ms": 176.373416
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "stack",
+      "participant": "ruda",
+      "elapsed_ms": 388.594541
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "queue",
+      "participant": "ruda",
+      "elapsed_ms": 415.166458
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "min-heap",
+      "participant": "ruda",
+      "elapsed_ms": 1311.270459
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "dsu",
+      "participant": "ruda",
+      "elapsed_ms": 1621.862333
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "bfs",
+      "participant": "ruda",
+      "elapsed_ms": 1457.262625
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "dijkstra",
+      "participant": "ruda",
+      "elapsed_ms": 202.436458
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "insertion",
+      "participant": "ruda",
+      "elapsed_ms": 341.330583
+    },
+    {
+      "phase": "sample",
+      "round": 7,
+      "workload": "heap-sort",
+      "participant": "ruda",
+      "elapsed_ms": 181.347458
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "stack",
+      "participant": "ruda",
+      "elapsed_ms": 420.001958
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "heap-sort",
+      "participant": "ruda",
+      "elapsed_ms": 184.58875
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "insertion",
+      "participant": "ruda",
+      "elapsed_ms": 352.64675
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "dijkstra",
+      "participant": "ruda",
+      "elapsed_ms": 228.306
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "bfs",
+      "participant": "ruda",
+      "elapsed_ms": 1568.78875
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "dsu",
+      "participant": "ruda",
+      "elapsed_ms": 1634.434084
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "min-heap",
+      "participant": "ruda",
+      "elapsed_ms": 1293.689084
+    },
+    {
+      "phase": "sample",
+      "round": 8,
+      "workload": "queue",
+      "participant": "ruda",
+      "elapsed_ms": 416.093792
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "min-heap",
+      "participant": "ruda",
+      "elapsed_ms": 1280.501667
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "dsu",
+      "participant": "ruda",
+      "elapsed_ms": 1611.751792
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "bfs",
+      "participant": "ruda",
+      "elapsed_ms": 1489.603625
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "dijkstra",
+      "participant": "ruda",
+      "elapsed_ms": 205.55625
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "insertion",
+      "participant": "ruda",
+      "elapsed_ms": 337.831042
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "heap-sort",
+      "participant": "ruda",
+      "elapsed_ms": 177.1505
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "stack",
+      "participant": "ruda",
+      "elapsed_ms": 391.523167
+    },
+    {
+      "phase": "sample",
+      "round": 9,
+      "workload": "queue",
+      "participant": "ruda",
+      "elapsed_ms": 415.970958
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "min-heap",
+      "participant": "ruda",
+      "elapsed_ms": 1304.385041
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "queue",
+      "participant": "ruda",
+      "elapsed_ms": 440.656042
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "stack",
+      "participant": "ruda",
+      "elapsed_ms": 404.133625
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "heap-sort",
+      "participant": "ruda",
+      "elapsed_ms": 177.715583
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "insertion",
+      "participant": "ruda",
+      "elapsed_ms": 344.6135
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "dijkstra",
+      "participant": "ruda",
+      "elapsed_ms": 205.621875
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "bfs",
+      "participant": "ruda",
+      "elapsed_ms": 1463.718125
+    },
+    {
+      "phase": "sample",
+      "round": 10,
+      "workload": "dsu",
+      "participant": "ruda",
+      "elapsed_ms": 1801.773
+    }
+  ]
+}

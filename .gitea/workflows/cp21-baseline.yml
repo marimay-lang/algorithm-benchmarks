@@ -28,26 +28,10 @@ jobs:
           path: algorithm-benchmarks
           persist-credentials: true
 
-      - name: Check out Marimay compiler
-        env:
-          MMAY_CHECKOUT_KEY: ${{ secrets.RUDA_CHECKOUT_KEY }}
-        run: |
-          if [ -z "$MMAY_CHECKOUT_KEY" ]; then
-            echo "Marimay compiler checkout key is not configured" >&2
-            exit 1
-          fi
-          baseline_key_dir="${RUNNER_TEMP:-/tmp}/marimay-checkout"
-          install -d -m 700 "$baseline_key_dir"
-          printf '%s\n' "$MMAY_CHECKOUT_KEY" >"$baseline_key_dir/id_ed25519"
-          chmod 600 "$baseline_key_dir/id_ed25519"
-          printf '%s\n' \
-            '[gitea.example.invalid]:2222 ssh-ed25519 ARCHIVED_HOST_KEY_REMOVED' \
-            >"$baseline_key_dir/known_hosts"
-          GIT_SSH_COMMAND="ssh -i $baseline_key_dir/id_ed25519 -o IdentitiesOnly=yes -o UserKnownHostsFile=$baseline_key_dir/known_hosts" \
-            git clone --branch main --depth 1 \
-              ssh://git@gitea.example.invalid:2222/Marimay/marimay.git marimay
-          rm -- "$baseline_key_dir/id_ed25519" "$baseline_key_dir/known_hosts"
-          rmdir "$baseline_key_dir"
+      - name: Check out public Marimay compiler
+        run: >-
+          git clone --branch main --depth 1
+          https://github.com/marimay-lang/marimay.git marimay
 
       - name: Install toolchains
         run: |

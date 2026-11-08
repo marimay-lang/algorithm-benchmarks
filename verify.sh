@@ -54,7 +54,8 @@ $'test study/algorithms.dataStructures ... ok\n'\
 $'test study/algorithms.graphAlgorithms ... ok\n'\
 $'test study/algorithms.invalidGraphInputsAreRejected ... ok\n'\
 $'test study/algorithms.countingAlgorithms ... ok\n'\
-$'test result: ok. 5 passed; 0 failed\n' \
+$'test study/algorithms/catalog/core.boundaryChecksums ... ok\n'\
+$'test result: ok. 6 passed; 0 failed\n' \
   "$mmay_binary" test "$repository_root/marimay" --engine both
 "$mmay_binary" build "$repository_root/marimay" --output "$verify_tmp/marimay-algorithms-debug"
 expect_stdout marimay-native-debug $'Marimay algorithms: ok\n' \
@@ -85,6 +86,10 @@ echo "== Rust =="
   expect_stdout rust-correctness $'Rust algorithms: ok\n' \
     cargo run --quiet --bin marimay-algorithms
 )
+
+echo "== Catalogue differential smoke =="
+MMAY="$mmay_binary" python3 "$repository_root/benchmarks/catalog_bench.py" \
+  --profile smoke --verify-only --output "$verify_tmp/catalog-smoke.md"
 
 echo "== Benchmark harness =="
 python3 -m py_compile \

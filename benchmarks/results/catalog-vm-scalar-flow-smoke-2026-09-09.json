@@ -1,0 +1,2176 @@
+{
+  "schema": "marimay.catalog-benchmark/1",
+  "status": "passed",
+  "metadata": {
+    "generated_at": "2026-09-09T14:42:10+07:00",
+    "platform": {
+      "id": "macos-arm64-apple-m2",
+      "system": "Darwin",
+      "release": "25.6.0",
+      "machine": "arm64",
+      "cpu": "Apple M2",
+      "logical_cpus": 8
+    },
+    "isolation": {
+      "mode": "local-unverified",
+      "load_average_at_start": [
+        2.7109375,
+        2.36328125,
+        2.48095703125
+      ],
+      "power_source": "Now drawing from 'AC Power",
+      "affinity": "not-requested",
+      "sample_selection": "none",
+      "load_average_at_end": [
+        2.73388671875,
+        2.37353515625,
+        2.48388671875
+      ]
+    },
+    "warmups": 0,
+    "samples": 3,
+    "timeout_seconds": 300,
+    "clock": "perf_counter_ns",
+    "order": "rotating-balanced-v1",
+    "command": "./benchmarks/catalog_bench.py --engine vm --profile smoke --verify-only --samples 3 --warmups 0 --output benchmarks/results/catalog-vm-scalar-flow-smoke-2026-09-09.md",
+    "resource": {
+      "max_heap_bytes": 67108864
+    },
+    "artifacts": {
+      "mmay_compiler": {
+        "path": "/path/to/Marimay/marimay/build/string-lifetime/mmay",
+        "sha256": "6c7b2a0947f699c7b57536355df3202e62eecdbecac5433c313deb99d827fba2",
+        "revision": "8ac216c345063afe1610c82d5b3a7aa05bfefd96",
+        "version": "Marimay compiler 0.1.0-alpha.1\nrelease-channel private-preview\nrelease-claim local-checker-backed-slice\npublication-ready false\nruntime 0.1.0-alpha.1\nlanguage 0.1-design\nbytecode unavailable (none)\nstandard-library 0.1.0-alpha.1 (bounded-preview; alpha-source)\nbootstrap-stage 0\nhost Darwin/arm64\ntargets native-host\navailable-commands build check doctor fmt help init run test version\nstaged-commands add audit bench doc exec explain fix fuzz generate list outdated remove update vendor vet why"
+      },
+      "runtime": {
+        "path": "/path/to/Marimay/marimay/build/string-lifetime/native-runtime/release/libmmay_native_runtime_release.a",
+        "sha256": "c664bca0f8aee7dbac89717a2940cd68a6fb1b51231b7a3d800c3bcfe9c220fd",
+        "manifest_path": "/path/to/Marimay/marimay/build/string-lifetime/native-runtime/release/mmay-native-runtime.manifest",
+        "manifest_sha256": "6d5c569188e8d4c458d1faaf3150084705b3353402cd866959547f121ece4db1",
+        "profile": "release",
+        "runtime": "0.1.0-alpha.1",
+        "host": "Darwin",
+        "processor": "arm64",
+        "compiler": "AppleClang-21.0.0.21000101"
+      },
+      "native_c": {
+        "compiler_path": "/usr/bin/cc",
+        "compiler_version": "Apple clang version 21.0.0 (clang-2100.1.1.101); configured AppleClang 21.0.0.21000101",
+        "linker_path": "/usr/bin/cc",
+        "linker_version": "Apple clang version 21.0.0 (clang-2100.1.1.101); configured AppleClang 21.0.0.21000101",
+        "output_profile": "release",
+        "flags": [
+          "-std=c17",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Werror",
+          "-fno-fast-math",
+          "-frounding-math",
+          "-ffp-contract=off",
+          "-fexcess-precision=standard",
+          "-lm"
+        ]
+      }
+    },
+    "toolchains": {
+      "python": "3.9.6",
+      "marimay": "Marimay compiler 0.1.0-alpha.1",
+      "go": "go version go1.26.4 darwin/arm64",
+      "rust": "rustc 1.96.0 (ac68faa20 2026-05-25)"
+    },
+    "comparison_scope": "local-only",
+    "profile": "smoke",
+    "verify_only": true,
+    "participants": [
+      "marimay-vm"
+    ],
+    "workload_manifest": {
+      "schema": "marimay.catalog-workloads/1",
+      "scope": "local-only",
+      "profiles": [
+        "smoke",
+        "standard"
+      ],
+      "participants": [
+        "marimay-native",
+        "go",
+        "rust",
+        "marimay-vm"
+      ],
+      "measurement": "Process wall time includes input construction, workload, checksum, startup and teardown. Native compilation excluded; VM includes source loading/checking/lowering.",
+      "limitations": [
+        "No general Unicode lower/casefold API: normalize-title measures a shared corpus folding helper only.",
+        "No I/O, concurrency, JSON or HTTP claims.",
+        "Allocation workloads prescribe escaping objects; allocation counts, GC pauses and peak RSS are not measured.",
+        "Map/set implementations retain host ordering, hashing, growth and GC policies. Cross-language equality is observable results, not identical runtime layouts.",
+        "Go uses *Book and Rust Rc<Book> to preserve Marimay reference identity; Rust Rc costs do not generalize to all Rust representations.",
+        "BFS has fixed degree 16 and contiguous IDs; it is not an O(V²)-edge dense graph and record edges are IDs, not object pointers."
+      ],
+      "workloads": [
+        {
+          "id": "title-search-10k",
+          "category": "text",
+          "description": "Linear exact UTF-8 title search; 75% hits and 25% misses.",
+          "parameters": {
+            "smoke": {
+              "size": 32,
+              "rounds": 3
+            },
+            "standard": {
+              "size": 10000,
+              "rounds": 128
+            }
+          },
+          "entrypoints": {
+            "marimay": "titleSearch",
+            "go": "TitleSearch",
+            "rust": "title_search"
+          },
+          "mode": null
+        },
+        {
+          "id": "title-search-100k",
+          "category": "text",
+          "description": "Same queries over 100,000 unique runtime-built titles.",
+          "parameters": {
+            "smoke": {
+              "size": 128,
+              "rounds": 3
+            },
+            "standard": {
+              "size": 100000,
+              "rounds": 128
+            }
+          },
+          "entrypoints": {
+            "marimay": "titleSearch",
+            "go": "TitleSearch",
+            "rust": "title_search"
+          },
+          "mode": null
+        },
+        {
+          "id": "normalize-title",
+          "category": "text",
+          "description": "ASCII trim, owned scalar pieces, explicit ASCII/Russian folding table, builder, equality.",
+          "parameters": {
+            "smoke": {
+              "size": 32,
+              "rounds": 3
+            },
+            "standard": {
+              "size": 10000,
+              "rounds": 1
+            }
+          },
+          "entrypoints": {
+            "marimay": "normalizeTitle",
+            "go": "NormalizeTitle",
+            "rust": "normalize_title"
+          },
+          "mode": null
+        },
+        {
+          "id": "word-frequency",
+          "category": "text",
+          "description": "Four-token Russian/ASCII lines; owned token split and map counts; all keys checked.",
+          "parameters": {
+            "smoke": {
+              "size": 32,
+              "rounds": 3
+            },
+            "standard": {
+              "size": 10000,
+              "rounds": 10
+            }
+          },
+          "entrypoints": {
+            "marimay": "wordFrequency",
+            "go": "WordFrequency",
+            "rust": "word_frequency"
+          },
+          "mode": null,
+          "go_ratio_target": 2.0
+        },
+        {
+          "id": "report-builder",
+          "category": "text",
+          "description": "Build 10k formatted rows using a growing string builder; checksum every UTF-8 byte.",
+          "parameters": {
+            "smoke": {
+              "size": 32,
+              "rounds": 3
+            },
+            "standard": {
+              "size": 10000,
+              "rounds": 1
+            }
+          },
+          "entrypoints": {
+            "marimay": "report",
+            "go": "Report",
+            "rust": "report"
+          },
+          "mode": true
+        },
+        {
+          "id": "report-concat",
+          "category": "text",
+          "description": "Same rows with a fresh immutable concatenation each step (quadratic copy volume).",
+          "parameters": {
+            "smoke": {
+              "size": 32,
+              "rounds": 3
+            },
+            "standard": {
+              "size": 10000,
+              "rounds": 1
+            }
+          },
+          "entrypoints": {
+            "marimay": "report",
+            "go": "Report",
+            "rust": "report"
+          },
+          "mode": false
+        },
+        {
+          "id": "map-int",
+          "category": "collections",
+          "description": "4096 integer keys, get then put; deterministic permutation and full weighted histogram.",
+          "parameters": {
+            "smoke": {
+              "size": 32,
+              "rounds": 3
+            },
+            "standard": {
+              "size": 4096,
+              "rounds": 32
+            }
+          },
+          "entrypoints": {
+            "marimay": "mapInt",
+            "go": "MapInt",
+            "rust": "map_int"
+          },
+          "mode": null,
+          "go_ratio_target": 1.5
+        },
+        {
+          "id": "map-string",
+          "category": "collections",
+          "description": "Same map trace with dynamic Russian/ASCII title keys; fresh equal keys for final lookups.",
+          "parameters": {
+            "smoke": {
+              "size": 32,
+              "rounds": 3
+            },
+            "standard": {
+              "size": 4096,
+              "rounds": 32
+            }
+          },
+          "entrypoints": {
+            "marimay": "mapString",
+            "go": "MapString",
+            "rust": "map_string"
+          },
+          "mode": null,
+          "go_ratio_target": 2.0
+        },
+        {
+          "id": "map-string-book",
+          "category": "collections",
+          "description": "Dynamic string keys to Book references; construct once, lookup and read title/state/serial.",
+          "parameters": {
+            "smoke": {
+              "size": 32,
+              "rounds": 3
+            },
+            "standard": {
+              "size": 10000,
+              "rounds": 4
+            }
+          },
+          "entrypoints": {
+            "marimay": "mapBook",
+            "go": "MapBook",
+            "rust": "map_book"
+          },
+          "mode": null
+        },
+        {
+          "id": "set-string-churn",
+          "category": "collections",
+          "description": "Sliding live window; remove old string, check absence, insert fresh key; verify final membership.",
+          "parameters": {
+            "smoke": {
+              "size": 32,
+              "rounds": 3
+            },
+            "standard": {
+              "size": 4096,
+              "rounds": 8
+            }
+          },
+          "entrypoints": {
+            "marimay": "setChurn",
+            "go": "SetChurn",
+            "rust": "set_churn"
+          },
+          "mode": null
+        },
+        {
+          "id": "catalog-match",
+          "category": "objects",
+          "description": "BookState enum + exhaustive match; Go tagged struct + switch, Rust enum + match.",
+          "parameters": {
+            "smoke": {
+              "size": 32,
+              "rounds": 3
+            },
+            "standard": {
+              "size": 10000,
+              "rounds": 32
+            }
+          },
+          "entrypoints": {
+            "marimay": "catalogWalk",
+            "go": "CatalogWalk",
+            "rust": "catalog_walk"
+          },
+          "mode": 0,
+          "go_ratio_target": 1.5
+        },
+        {
+          "id": "catalog-dotcall",
+          "category": "objects",
+          "description": "Concrete Book label call; no per-call result string allocation.",
+          "parameters": {
+            "smoke": {
+              "size": 32,
+              "rounds": 3
+            },
+            "standard": {
+              "size": 10000,
+              "rounds": 32
+            }
+          },
+          "entrypoints": {
+            "marimay": "catalogWalk",
+            "go": "CatalogWalk",
+            "rust": "catalog_walk"
+          },
+          "mode": 1
+        },
+        {
+          "id": "catalog-interface",
+          "category": "objects",
+          "description": "Materialized interface array; method-table call and UTF-8 label length.",
+          "parameters": {
+            "smoke": {
+              "size": 32,
+              "rounds": 3
+            },
+            "standard": {
+              "size": 10000,
+              "rounds": 32
+            }
+          },
+          "entrypoints": {
+            "marimay": "catalogWalk",
+            "go": "CatalogWalk",
+            "rust": "catalog_walk"
+          },
+          "mode": 2
+        },
+        {
+          "id": "record-reference-copy",
+          "category": "objects",
+          "description": "Retain aliases in a growing array; compare every identity and read fields.",
+          "parameters": {
+            "smoke": {
+              "size": 32,
+              "rounds": 3
+            },
+            "standard": {
+              "size": 1024,
+              "rounds": 128
+            }
+          },
+          "entrypoints": {
+            "marimay": "recordCopies",
+            "go": "RecordCopies",
+            "rust": "record_copies"
+          },
+          "mode": false
+        },
+        {
+          "id": "record-create",
+          "category": "objects",
+          "description": "Retain fresh Book objects per batch; same fields, distinct identity; titles/states shared.",
+          "parameters": {
+            "smoke": {
+              "size": 32,
+              "rounds": 3
+            },
+            "standard": {
+              "size": 1024,
+              "rounds": 128
+            }
+          },
+          "entrypoints": {
+            "marimay": "recordCopies",
+            "go": "RecordCopies",
+            "rust": "record_copies"
+          },
+          "mode": true
+        },
+        {
+          "id": "array-grow",
+          "category": "collections",
+          "description": "Append integers from empty capacity, then checksum all values.",
+          "parameters": {
+            "smoke": {
+              "size": 32,
+              "rounds": 3
+            },
+            "standard": {
+              "size": 100000,
+              "rounds": 4
+            }
+          },
+          "entrypoints": {
+            "marimay": "arrayGrowth",
+            "go": "ArrayGrowth",
+            "rust": "array_growth"
+          },
+          "mode": false
+        },
+        {
+          "id": "array-reserved",
+          "category": "collections",
+          "description": "Same append trace with one initial reserve.",
+          "parameters": {
+            "smoke": {
+              "size": 32,
+              "rounds": 3
+            },
+            "standard": {
+              "size": 100000,
+              "rounds": 4
+            }
+          },
+          "entrypoints": {
+            "marimay": "arrayGrowth",
+            "go": "ArrayGrowth",
+            "rust": "array_growth"
+          },
+          "mode": true
+        },
+        {
+          "id": "bfs-int",
+          "category": "graphs",
+          "description": "Contiguous integer IDs, growing integer queue, distance array, degree 16.",
+          "parameters": {
+            "smoke": {
+              "size": 32,
+              "rounds": 3
+            },
+            "standard": {
+              "size": 4096,
+              "rounds": 16
+            }
+          },
+          "entrypoints": {
+            "marimay": "bfs",
+            "go": "BFS",
+            "rust": "bfs"
+          },
+          "mode": false
+        },
+        {
+          "id": "bfs-record",
+          "category": "graphs",
+          "description": "Same edges/distances; Node records and reference queue; edges remain integer IDs.",
+          "parameters": {
+            "smoke": {
+              "size": 32,
+              "rounds": 3
+            },
+            "standard": {
+              "size": 4096,
+              "rounds": 16
+            }
+          },
+          "entrypoints": {
+            "marimay": "bfs",
+            "go": "BFS",
+            "rust": "bfs"
+          },
+          "mode": true
+        },
+        {
+          "id": "catalog-pipeline",
+          "category": "catalog",
+          "description": "Combined title search, title frequency map, and BookState match; 25% missing queries.",
+          "parameters": {
+            "smoke": {
+              "size": 32,
+              "rounds": 3
+            },
+            "standard": {
+              "size": 10000,
+              "rounds": 16
+            }
+          },
+          "entrypoints": {
+            "marimay": "catalogPipeline",
+            "go": "CatalogPipeline",
+            "rust": "catalog_pipeline"
+          },
+          "mode": null
+        },
+        {
+          "id": "parse-result",
+          "category": "errors",
+          "description": "Format/parse decimal tokens, 25% invalid suffixes; propagate Result/error then match.",
+          "parameters": {
+            "smoke": {
+              "size": 32,
+              "rounds": 3
+            },
+            "standard": {
+              "size": 10000,
+              "rounds": 8
+            }
+          },
+          "entrypoints": {
+            "marimay": "parseResults",
+            "go": "ParseResults",
+            "rust": "parse_results"
+          },
+          "mode": null
+        }
+      ]
+    },
+    "anchor_checksums": {},
+    "corpus_revision": "3eda6055ff56be328c775c79d4a26ca412af66fb",
+    "source_sha256": {
+      "benchmarks/catalog_bench.py": "7989fb5e7eca088529bf7669421870b48f614c23abc347a70415e96122d404f6",
+      "benchmarks/catalog_contract.py": "0311eadf972cb7e8ae64ebc441c3829b762558d8a54587053ddc4a0e0c2b8fd0",
+      "benchmarks/catalog_measure.py": "4d14a068121795efca6d9f4dd62232a97e2f23a5b8c8d5f8609f5b5ee2169fdc",
+      "benchmarks/catalog_oracle.py": "938be6450f701d39ced4fe7fede5cf52c19467b3960618389d650440a6068fe6",
+      "benchmarks/catalog_report.py": "8a98a5751005d38333659016f805f58aa4d3d6e361568fe85436e7f66cd9aa4b",
+      "benchmarks/catalog_session.py": "d5bee8e089927fa9d0e37b469f959689b772e1ffa4c67528e255e5693ee6a360",
+      "benchmarks/catalog_workloads.json": "a273b4752ca4282debabe1457047bbd086ba0d5765654330a07c9730797e1a0b",
+      "benchmarks/marimay-toolchain.json": "5f4e299dc22372d9ac6f3eb2d824ffc53e916cc136183fb585e637c32ed57ee4",
+      "benchmarks/marimay_toolchain.py": "524e7730d291068744182a7ce1d0901f8f1e4ea8486e5231e672908003d720c4",
+      "benchmarks/perf_environment.py": "17366997c959e8c7695b2122a3c11d95f1f60c0efaa6bd5761c2bc3ec4b71cdb",
+      "benchmarks/perf_protocol.py": "8033589224b9ae58394d13877f0752c13e71ec5f70afc06465a81d1682618e64",
+      "benchmarks/performance_protocol.json": "a94f5be850eb26fd821b3630b16254f145a8e30c1b8e7a63fd7230ed761dd4a8",
+      "go/catalog/catalog_test.go": "b4679b643d4c478c0727c3618697ba9965f427824d92baeae6df41af59bba41d",
+      "go/catalog/collections.go": "ee6c4ac9f5eab4009b8e580a24e1f589a9754052b28b535dd2b1d617d30dab0b",
+      "go/catalog/graphs.go": "3ab5594a58dd60caf21e8ba8577e084b2f7509e4329b7934002465b125008a7e",
+      "go/catalog/model.go": "10bec252a16654bbecfbe5a0803efd382c859a9848bf8722d28a85531d51b9ab",
+      "go/catalog/objects.go": "e0531a49606ccd1b9167a9610fe502a0b057c270e562468d1d4a64ff5df117ba",
+      "go/catalog/text.go": "5373ed8a62e748e4ed9ce9a59ba5ef1f835aa18a4a3302d84253ea24819e1247",
+      "go/cmd/catalog/main.go": "f89b40a58db273064f8802a908ad1079ae16b9b238af0a8ec8caf7548c75ff6d",
+      "go/go.mod": "519344fdcec7e981381cb2d6781b014eb1d8f0f9b92b3a988347142aef747475",
+      "marimay/catalog/core/catalog_test.my": "34f5f4095b019f6989daed51dc48686ab917ff43d7f0f1ba991e6621a8f3d865",
+      "marimay/catalog/core/checksum.my": "0843cb69f07177252259e4298a49330a347d44a88fa9c2291ca7c2e6759e89f7",
+      "marimay/catalog/core/collections.my": "49df9baabf06487021606bd33a98f4bf79bfefa394c1e7fb770fb3679069a78a",
+      "marimay/catalog/core/graphs.my": "95ecb3d8e6a48adfe14696b57d4fa860e62fa7aad0bb6e018bde5a155d16bbae",
+      "marimay/catalog/core/model.my": "fa682ce371f167b1054b51255580d774c01d231c4fcf56e5cb0a37449661a14b",
+      "marimay/catalog/core/objects.my": "0951ea8e5fcd57586ed66ff93f57cd64b1c663b02d0f8fc87ee209f6974c7c52",
+      "marimay/catalog/core/text.my": "424bf8d1e2cb00bf1acf6b32dd7e826350442eaeca861e77fd64cc074e50feb1",
+      "marimay/catalog/main.my": "f198cecd2490928af0ca585ef99390e66f34d4294ad2da71f858a21883e2a326",
+      "marimay/mmay.mod": "561867408c89e2b5855f27134f5e5b84b4cf655a02d195cd3c4a5a4917837345",
+      "rust/Cargo.lock": "1c3b1ca3d3783a6861a2c35745303d8845e306deed805bda68a3029d85a27891",
+      "rust/Cargo.toml": "f9a86632e519d2ec45dc96f727defedda35cceeea7bb30f260e5d200f7ee4a68",
+      "rust/src/bin/catalog.rs": "6cc82483af4b5d8464261ce5c1b00adb1e1d7cc15ea2390a6818add7eaee6328",
+      "rust/src/catalog/collections.rs": "a861e9d35ae3d8bb9ecb8774cc442711428ea4e85b267b7daa70854296494ff9",
+      "rust/src/catalog/graphs.rs": "4e6297879f27d4631f59b6b8ca0b6b52f355d5b4db05729807aa7e2bc4ca59bb",
+      "rust/src/catalog/mod.rs": "b7c75c3c1a8af6f997366afc966e2cc53ee4d2c670bc5d6bcca5c3f33139b93c",
+      "rust/src/catalog/objects.rs": "1754afb88b4475bb7700b61ac42bda887b69872c3e70d150fb18f860c89208fa",
+      "rust/src/catalog/text.rs": "c934a5b37e44132df3474eb4bd83aa572275bd69402ab55ef558df817ce2e29c",
+      "rust/src/lib.rs": "bcbc3e8fd7fc6ed1100eefdf18e28c4890e693eae5bba179db38f3deef58527f"
+    },
+    "limitations": [
+      "No general Unicode lower/casefold API: normalize-title measures a shared corpus folding helper only.",
+      "No I/O, concurrency, JSON or HTTP claims.",
+      "Allocation workloads prescribe escaping objects; allocation counts, GC pauses and peak RSS are not measured.",
+      "Map/set implementations retain host ordering, hashing, growth and GC policies. Cross-language equality is observable results, not identical runtime layouts.",
+      "Go uses *Book and Rust Rc<Book> to preserve Marimay reference identity; Rust Rc costs do not generalize to all Rust representations.",
+      "BFS has fixed degree 16 and contiguous IDs; it is not an O(V²)-edge dense graph and record edges are IDs, not object pointers."
+    ],
+    "protocol_sha256": "a94f5be850eb26fd821b3630b16254f145a8e30c1b8e7a63fd7230ed761dd4a8",
+    "engine_boundaries": {
+      "native": "release executable; compilation excluded",
+      "vm": "source run; checking/lowering included"
+    },
+    "build_commands": {
+      "go": "go build -trimpath ./cmd/catalog",
+      "rust": "cargo build --release --bin catalog",
+      "marimay-native": "mmay build marimay/catalog --release --max-heap-bytes 67108864"
+    },
+    "environment_overrides": {
+      "GOFLAGS": null,
+      "GOGC": null,
+      "GOMEMLIMIT": null,
+      "RUSTFLAGS": null,
+      "CARGO_ENCODED_RUSTFLAGS": null,
+      "CC": null,
+      "CFLAGS": null
+    },
+    "binaries": {
+      "/path/to/Marimay/marimay/build/string-lifetime/mmay": "6c7b2a0947f699c7b57536355df3202e62eecdbecac5433c313deb99d827fba2"
+    }
+  },
+  "workloads": {
+    "title-search-10k": {
+      "category": "text",
+      "description": "Linear exact UTF-8 title search; 75% hits and 25% misses.",
+      "parameters": {
+        "size": 32,
+        "rounds": 3
+      },
+      "expected_checksum": 48,
+      "outcomes": {
+        "marimay-vm": {
+          "status": "passed"
+        }
+      },
+      "expected_stdout": "title-search-10k 48\n",
+      "commands": {
+        "marimay-vm": [
+          "/path/to/Marimay/marimay/build/string-lifetime/mmay",
+          "run",
+          "/path/to/Marimay/algorithm-benchmarks/marimay/catalog",
+          "--engine",
+          "vm",
+          "--max-heap-bytes",
+          "67108864",
+          "--",
+          "title-search-10k",
+          "32",
+          "3"
+        ]
+      },
+      "raw_ms": {
+        "marimay-vm": [
+          72.599834,
+          74.785625,
+          74.381292
+        ]
+      },
+      "summary": {
+        "marimay-vm": {
+          "median_ms": 74.381292,
+          "mad_ms": 0.40433299999999406,
+          "q1_ms": 72.599834,
+          "q3_ms": 74.785625,
+          "iqr_ms": 2.1857909999999947,
+          "min_ms": 72.599834,
+          "max_ms": 74.785625,
+          "noise_fraction": 0.029386300522986273
+        }
+      }
+    },
+    "title-search-100k": {
+      "category": "text",
+      "description": "Same queries over 100,000 unique runtime-built titles.",
+      "parameters": {
+        "size": 128,
+        "rounds": 3
+      },
+      "expected_checksum": 208,
+      "outcomes": {
+        "marimay-vm": {
+          "status": "passed"
+        }
+      },
+      "expected_stdout": "title-search-100k 208\n",
+      "commands": {
+        "marimay-vm": [
+          "/path/to/Marimay/marimay/build/string-lifetime/mmay",
+          "run",
+          "/path/to/Marimay/algorithm-benchmarks/marimay/catalog",
+          "--engine",
+          "vm",
+          "--max-heap-bytes",
+          "67108864",
+          "--",
+          "title-search-100k",
+          "128",
+          "3"
+        ]
+      },
+      "raw_ms": {
+        "marimay-vm": [
+          74.081333,
+          74.73175,
+          74.752666
+        ]
+      },
+      "summary": {
+        "marimay-vm": {
+          "median_ms": 74.73175,
+          "mad_ms": 0.020915999999999713,
+          "q1_ms": 74.081333,
+          "q3_ms": 74.752666,
+          "iqr_ms": 0.6713330000000042,
+          "min_ms": 74.081333,
+          "max_ms": 74.752666,
+          "noise_fraction": 0.02
+        }
+      }
+    },
+    "normalize-title": {
+      "category": "text",
+      "description": "ASCII trim, owned scalar pieces, explicit ASCII/Russian folding table, builder, equality.",
+      "parameters": {
+        "size": 32,
+        "rounds": 3
+      },
+      "expected_checksum": 2136,
+      "outcomes": {
+        "marimay-vm": {
+          "status": "passed"
+        }
+      },
+      "expected_stdout": "normalize-title 2136\n",
+      "commands": {
+        "marimay-vm": [
+          "/path/to/Marimay/marimay/build/string-lifetime/mmay",
+          "run",
+          "/path/to/Marimay/algorithm-benchmarks/marimay/catalog",
+          "--engine",
+          "vm",
+          "--max-heap-bytes",
+          "67108864",
+          "--",
+          "normalize-title",
+          "32",
+          "3"
+        ]
+      },
+      "raw_ms": {
+        "marimay-vm": [
+          74.372125,
+          77.396208,
+          75.508875
+        ]
+      },
+      "summary": {
+        "marimay-vm": {
+          "median_ms": 75.508875,
+          "mad_ms": 1.1367500000000064,
+          "q1_ms": 74.372125,
+          "q3_ms": 77.396208,
+          "iqr_ms": 3.0240830000000045,
+          "min_ms": 74.372125,
+          "max_ms": 77.396208,
+          "noise_fraction": 0.04516356521005006
+        }
+      }
+    },
+    "word-frequency": {
+      "category": "text",
+      "description": "Four-token Russian/ASCII lines; owned token split and map counts; all keys checked.",
+      "parameters": {
+        "size": 32,
+        "rounds": 3
+      },
+      "expected_checksum": 2835,
+      "go_ratio_target": 2.0,
+      "outcomes": {
+        "marimay-vm": {
+          "status": "passed"
+        }
+      },
+      "expected_stdout": "word-frequency 2835\n",
+      "commands": {
+        "marimay-vm": [
+          "/path/to/Marimay/marimay/build/string-lifetime/mmay",
+          "run",
+          "/path/to/Marimay/algorithm-benchmarks/marimay/catalog",
+          "--engine",
+          "vm",
+          "--max-heap-bytes",
+          "67108864",
+          "--",
+          "word-frequency",
+          "32",
+          "3"
+        ]
+      },
+      "raw_ms": {
+        "marimay-vm": [
+          73.252125,
+          75.288875,
+          73.594417
+        ]
+      },
+      "summary": {
+        "marimay-vm": {
+          "median_ms": 73.594417,
+          "mad_ms": 0.3422920000000005,
+          "q1_ms": 73.252125,
+          "q3_ms": 75.288875,
+          "iqr_ms": 2.036749999999998,
+          "min_ms": 73.252125,
+          "max_ms": 75.288875,
+          "noise_fraction": 0.027675333035113214
+        }
+      }
+    },
+    "report-builder": {
+      "category": "text",
+      "description": "Build 10k formatted rows using a growing string builder; checksum every UTF-8 byte.",
+      "parameters": {
+        "size": 32,
+        "rounds": 3
+      },
+      "expected_checksum": 41458743,
+      "outcomes": {
+        "marimay-vm": {
+          "status": "passed"
+        }
+      },
+      "expected_stdout": "report-builder 41458743\n",
+      "commands": {
+        "marimay-vm": [
+          "/path/to/Marimay/marimay/build/string-lifetime/mmay",
+          "run",
+          "/path/to/Marimay/algorithm-benchmarks/marimay/catalog",
+          "--engine",
+          "vm",
+          "--max-heap-bytes",
+          "67108864",
+          "--",
+          "report-builder",
+          "32",
+          "3"
+        ]
+      },
+      "raw_ms": {
+        "marimay-vm": [
+          74.740125,
+          76.672541,
+          75.382834
+        ]
+      },
+      "summary": {
+        "marimay-vm": {
+          "median_ms": 75.382834,
+          "mad_ms": 0.6427089999999964,
+          "q1_ms": 74.740125,
+          "q3_ms": 76.672541,
+          "iqr_ms": 1.9324159999999893,
+          "min_ms": 74.740125,
+          "max_ms": 76.672541,
+          "noise_fraction": 0.025634695559469005
+        }
+      }
+    },
+    "report-concat": {
+      "category": "text",
+      "description": "Same rows with a fresh immutable concatenation each step (quadratic copy volume).",
+      "parameters": {
+        "size": 32,
+        "rounds": 3
+      },
+      "expected_checksum": 41458743,
+      "outcomes": {
+        "marimay-vm": {
+          "status": "passed"
+        }
+      },
+      "expected_stdout": "report-concat 41458743\n",
+      "commands": {
+        "marimay-vm": [
+          "/path/to/Marimay/marimay/build/string-lifetime/mmay",
+          "run",
+          "/path/to/Marimay/algorithm-benchmarks/marimay/catalog",
+          "--engine",
+          "vm",
+          "--max-heap-bytes",
+          "67108864",
+          "--",
+          "report-concat",
+          "32",
+          "3"
+        ]
+      },
+      "raw_ms": {
+        "marimay-vm": [
+          74.474667,
+          75.384916,
+          75.480625
+        ]
+      },
+      "summary": {
+        "marimay-vm": {
+          "median_ms": 75.384916,
+          "mad_ms": 0.09570899999999938,
+          "q1_ms": 74.474667,
+          "q3_ms": 75.480625,
+          "iqr_ms": 1.0059580000000068,
+          "min_ms": 74.474667,
+          "max_ms": 75.480625,
+          "noise_fraction": 0.02
+        }
+      }
+    },
+    "map-int": {
+      "category": "collections",
+      "description": "4096 integer keys, get then put; deterministic permutation and full weighted histogram.",
+      "parameters": {
+        "size": 32,
+        "rounds": 3
+      },
+      "expected_checksum": 1616,
+      "go_ratio_target": 1.5,
+      "outcomes": {
+        "marimay-vm": {
+          "status": "passed"
+        }
+      },
+      "expected_stdout": "map-int 1616\n",
+      "commands": {
+        "marimay-vm": [
+          "/path/to/Marimay/marimay/build/string-lifetime/mmay",
+          "run",
+          "/path/to/Marimay/algorithm-benchmarks/marimay/catalog",
+          "--engine",
+          "vm",
+          "--max-heap-bytes",
+          "67108864",
+          "--",
+          "map-int",
+          "32",
+          "3"
+        ]
+      },
+      "raw_ms": {
+        "marimay-vm": [
+          74.036917,
+          74.603958,
+          74.277209
+        ]
+      },
+      "summary": {
+        "marimay-vm": {
+          "median_ms": 74.277209,
+          "mad_ms": 0.24029199999999662,
+          "q1_ms": 74.036917,
+          "q3_ms": 74.603958,
+          "iqr_ms": 0.5670410000000032,
+          "min_ms": 74.036917,
+          "max_ms": 74.603958,
+          "noise_fraction": 0.02
+        }
+      }
+    },
+    "map-string": {
+      "category": "collections",
+      "description": "Same map trace with dynamic Russian/ASCII title keys; fresh equal keys for final lookups.",
+      "parameters": {
+        "size": 32,
+        "rounds": 3
+      },
+      "expected_checksum": 1616,
+      "go_ratio_target": 2.0,
+      "outcomes": {
+        "marimay-vm": {
+          "status": "passed"
+        }
+      },
+      "expected_stdout": "map-string 1616\n",
+      "commands": {
+        "marimay-vm": [
+          "/path/to/Marimay/marimay/build/string-lifetime/mmay",
+          "run",
+          "/path/to/Marimay/algorithm-benchmarks/marimay/catalog",
+          "--engine",
+          "vm",
+          "--max-heap-bytes",
+          "67108864",
+          "--",
+          "map-string",
+          "32",
+          "3"
+        ]
+      },
+      "raw_ms": {
+        "marimay-vm": [
+          75.840958,
+          74.315125,
+          73.516041
+        ]
+      },
+      "summary": {
+        "marimay-vm": {
+          "median_ms": 74.315125,
+          "mad_ms": 0.7990839999999935,
+          "q1_ms": 73.516041,
+          "q3_ms": 75.840958,
+          "iqr_ms": 2.3249169999999992,
+          "min_ms": 73.516041,
+          "max_ms": 75.840958,
+          "noise_fraction": 0.03225792865180514
+        }
+      }
+    },
+    "map-string-book": {
+      "category": "collections",
+      "description": "Dynamic string keys to Book references; construct once, lookup and read title/state/serial.",
+      "parameters": {
+        "size": 32,
+        "rounds": 3
+      },
+      "expected_checksum": 7353,
+      "outcomes": {
+        "marimay-vm": {
+          "status": "passed"
+        }
+      },
+      "expected_stdout": "map-string-book 7353\n",
+      "commands": {
+        "marimay-vm": [
+          "/path/to/Marimay/marimay/build/string-lifetime/mmay",
+          "run",
+          "/path/to/Marimay/algorithm-benchmarks/marimay/catalog",
+          "--engine",
+          "vm",
+          "--max-heap-bytes",
+          "67108864",
+          "--",
+          "map-string-book",
+          "32",
+          "3"
+        ]
+      },
+      "raw_ms": {
+        "marimay-vm": [
+          70.447542,
+          75.456958,
+          74.144625
+        ]
+      },
+      "summary": {
+        "marimay-vm": {
+          "median_ms": 74.144625,
+          "mad_ms": 1.3123329999999953,
+          "q1_ms": 70.447542,
+          "q3_ms": 75.456958,
+          "iqr_ms": 5.009416000000002,
+          "min_ms": 70.447542,
+          "max_ms": 75.456958,
+          "noise_fraction": 0.06756276668740319
+        }
+      }
+    },
+    "set-string-churn": {
+      "category": "collections",
+      "description": "Sliding live window; remove old string, check absence, insert fresh key; verify final membership.",
+      "parameters": {
+        "size": 32,
+        "rounds": 3
+      },
+      "expected_checksum": 3846,
+      "outcomes": {
+        "marimay-vm": {
+          "status": "passed"
+        }
+      },
+      "expected_stdout": "set-string-churn 3846\n",
+      "commands": {
+        "marimay-vm": [
+          "/path/to/Marimay/marimay/build/string-lifetime/mmay",
+          "run",
+          "/path/to/Marimay/algorithm-benchmarks/marimay/catalog",
+          "--engine",
+          "vm",
+          "--max-heap-bytes",
+          "67108864",
+          "--",
+          "set-string-churn",
+          "32",
+          "3"
+        ]
+      },
+      "raw_ms": {
+        "marimay-vm": [
+          74.624291,
+          76.239541,
+          74.348416
+        ]
+      },
+      "summary": {
+        "marimay-vm": {
+          "median_ms": 74.624291,
+          "mad_ms": 0.2758749999999992,
+          "q1_ms": 74.348416,
+          "q3_ms": 76.239541,
+          "iqr_ms": 1.8911250000000024,
+          "min_ms": 74.348416,
+          "max_ms": 76.239541,
+          "noise_fraction": 0.02534194931245648
+        }
+      }
+    },
+    "catalog-match": {
+      "category": "objects",
+      "description": "BookState enum + exhaustive match; Go tagged struct + switch, Rust enum + match.",
+      "parameters": {
+        "size": 32,
+        "rounds": 3
+      },
+      "expected_checksum": 5511,
+      "go_ratio_target": 1.5,
+      "outcomes": {
+        "marimay-vm": {
+          "status": "passed"
+        }
+      },
+      "expected_stdout": "catalog-match 5511\n",
+      "commands": {
+        "marimay-vm": [
+          "/path/to/Marimay/marimay/build/string-lifetime/mmay",
+          "run",
+          "/path/to/Marimay/algorithm-benchmarks/marimay/catalog",
+          "--engine",
+          "vm",
+          "--max-heap-bytes",
+          "67108864",
+          "--",
+          "catalog-match",
+          "32",
+          "3"
+        ]
+      },
+      "raw_ms": {
+        "marimay-vm": [
+          72.873375,
+          171.493333,
+          75.224417
+        ]
+      },
+      "summary": {
+        "marimay-vm": {
+          "median_ms": 75.224417,
+          "mad_ms": 2.3510420000000067,
+          "q1_ms": 72.873375,
+          "q3_ms": 171.493333,
+          "iqr_ms": 98.61995800000001,
+          "min_ms": 72.873375,
+          "max_ms": 171.493333,
+          "noise_fraction": 1.3110099344472155
+        }
+      }
+    },
+    "catalog-dotcall": {
+      "category": "objects",
+      "description": "Concrete Book label call; no per-call result string allocation.",
+      "parameters": {
+        "size": 32,
+        "rounds": 3
+      },
+      "expected_checksum": 1854,
+      "outcomes": {
+        "marimay-vm": {
+          "status": "passed"
+        }
+      },
+      "expected_stdout": "catalog-dotcall 1854\n",
+      "commands": {
+        "marimay-vm": [
+          "/path/to/Marimay/marimay/build/string-lifetime/mmay",
+          "run",
+          "/path/to/Marimay/algorithm-benchmarks/marimay/catalog",
+          "--engine",
+          "vm",
+          "--max-heap-bytes",
+          "67108864",
+          "--",
+          "catalog-dotcall",
+          "32",
+          "3"
+        ]
+      },
+      "raw_ms": {
+        "marimay-vm": [
+          78.951333,
+          73.862959,
+          76.158583
+        ]
+      },
+      "summary": {
+        "marimay-vm": {
+          "median_ms": 76.158583,
+          "mad_ms": 2.2956239999999895,
+          "q1_ms": 73.862959,
+          "q3_ms": 78.951333,
+          "iqr_ms": 5.088374000000002,
+          "min_ms": 73.862959,
+          "max_ms": 78.951333,
+          "noise_fraction": 0.09042804801134455
+        }
+      }
+    },
+    "catalog-interface": {
+      "category": "objects",
+      "description": "Materialized interface array; method-table call and UTF-8 label length.",
+      "parameters": {
+        "size": 32,
+        "rounds": 3
+      },
+      "expected_checksum": 1854,
+      "outcomes": {
+        "marimay-vm": {
+          "status": "passed"
+        }
+      },
+      "expected_stdout": "catalog-interface 1854\n",
+      "commands": {
+        "marimay-vm": [
+          "/path/to/Marimay/marimay/build/string-lifetime/mmay",
+          "run",
+          "/path/to/Marimay/algorithm-benchmarks/marimay/catalog",
+          "--engine",
+          "vm",
+          "--max-heap-bytes",
+          "67108864",
+          "--",
+          "catalog-interface",
+          "32",
+          "3"
+        ]
+      },
+      "raw_ms": {
+        "marimay-vm": [
+          175.258208,
+          76.033125,
+          75.168542
+        ]
+      },
+      "summary": {
+        "marimay-vm": {
+          "median_ms": 76.033125,
+          "mad_ms": 0.8645829999999961,
+          "q1_ms": 75.168542,
+          "q3_ms": 175.258208,
+          "iqr_ms": 100.089666,
+          "min_ms": 75.168542,
+          "max_ms": 175.258208,
+          "noise_fraction": 1.3163955315528593
+        }
+      }
+    },
+    "record-reference-copy": {
+      "category": "objects",
+      "description": "Retain aliases in a growing array; compare every identity and read fields.",
+      "parameters": {
+        "size": 32,
+        "rounds": 3
+      },
+      "expected_checksum": 3438,
+      "outcomes": {
+        "marimay-vm": {
+          "status": "passed"
+        }
+      },
+      "expected_stdout": "record-reference-copy 3438\n",
+      "commands": {
+        "marimay-vm": [
+          "/path/to/Marimay/marimay/build/string-lifetime/mmay",
+          "run",
+          "/path/to/Marimay/algorithm-benchmarks/marimay/catalog",
+          "--engine",
+          "vm",
+          "--max-heap-bytes",
+          "67108864",
+          "--",
+          "record-reference-copy",
+          "32",
+          "3"
+        ]
+      },
+      "raw_ms": {
+        "marimay-vm": [
+          74.677125,
+          77.8325,
+          73.855083
+        ]
+      },
+      "summary": {
+        "marimay-vm": {
+          "median_ms": 74.677125,
+          "mad_ms": 0.8220420000000104,
+          "q1_ms": 73.855083,
+          "q3_ms": 77.8325,
+          "iqr_ms": 3.9774170000000026,
+          "min_ms": 73.855083,
+          "max_ms": 77.8325,
+          "noise_fraction": 0.05326151749950206
+        }
+      }
+    },
+    "record-create": {
+      "category": "objects",
+      "description": "Retain fresh Book objects per batch; same fields, distinct identity; titles/states shared.",
+      "parameters": {
+        "size": 32,
+        "rounds": 3
+      },
+      "expected_checksum": 3342,
+      "outcomes": {
+        "marimay-vm": {
+          "status": "passed"
+        }
+      },
+      "expected_stdout": "record-create 3342\n",
+      "commands": {
+        "marimay-vm": [
+          "/path/to/Marimay/marimay/build/string-lifetime/mmay",
+          "run",
+          "/path/to/Marimay/algorithm-benchmarks/marimay/catalog",
+          "--engine",
+          "vm",
+          "--max-heap-bytes",
+          "67108864",
+          "--",
+          "record-create",
+          "32",
+          "3"
+        ]
+      },
+      "raw_ms": {
+        "marimay-vm": [
+          74.446292,
+          75.399791,
+          74.145458
+        ]
+      },
+      "summary": {
+        "marimay-vm": {
+          "median_ms": 74.446292,
+          "mad_ms": 0.3008339999999947,
+          "q1_ms": 74.145458,
+          "q3_ms": 75.399791,
+          "iqr_ms": 1.2543329999999884,
+          "min_ms": 74.145458,
+          "max_ms": 75.399791,
+          "noise_fraction": 0.02
+        }
+      }
+    },
+    "array-grow": {
+      "category": "collections",
+      "description": "Append integers from empty capacity, then checksum all values.",
+      "parameters": {
+        "size": 32,
+        "rounds": 3
+      },
+      "expected_checksum": 25296,
+      "outcomes": {
+        "marimay-vm": {
+          "status": "passed"
+        }
+      },
+      "expected_stdout": "array-grow 25296\n",
+      "commands": {
+        "marimay-vm": [
+          "/path/to/Marimay/marimay/build/string-lifetime/mmay",
+          "run",
+          "/path/to/Marimay/algorithm-benchmarks/marimay/catalog",
+          "--engine",
+          "vm",
+          "--max-heap-bytes",
+          "67108864",
+          "--",
+          "array-grow",
+          "32",
+          "3"
+        ]
+      },
+      "raw_ms": {
+        "marimay-vm": [
+          75.41175,
+          75.18575,
+          74.0785
+        ]
+      },
+      "summary": {
+        "marimay-vm": {
+          "median_ms": 75.18575,
+          "mad_ms": 0.2259999999999991,
+          "q1_ms": 74.0785,
+          "q3_ms": 75.41175,
+          "iqr_ms": 1.3332499999999925,
+          "min_ms": 74.0785,
+          "max_ms": 75.41175,
+          "noise_fraction": 0.02
+        }
+      }
+    },
+    "array-reserved": {
+      "category": "collections",
+      "description": "Same append trace with one initial reserve.",
+      "parameters": {
+        "size": 32,
+        "rounds": 3
+      },
+      "expected_checksum": 25296,
+      "outcomes": {
+        "marimay-vm": {
+          "status": "passed"
+        }
+      },
+      "expected_stdout": "array-reserved 25296\n",
+      "commands": {
+        "marimay-vm": [
+          "/path/to/Marimay/marimay/build/string-lifetime/mmay",
+          "run",
+          "/path/to/Marimay/algorithm-benchmarks/marimay/catalog",
+          "--engine",
+          "vm",
+          "--max-heap-bytes",
+          "67108864",
+          "--",
+          "array-reserved",
+          "32",
+          "3"
+        ]
+      },
+      "raw_ms": {
+        "marimay-vm": [
+          75.127958,
+          74.171125,
+          75.194208
+        ]
+      },
+      "summary": {
+        "marimay-vm": {
+          "median_ms": 75.127958,
+          "mad_ms": 0.06624999999999659,
+          "q1_ms": 74.171125,
+          "q3_ms": 75.194208,
+          "iqr_ms": 1.0230829999999997,
+          "min_ms": 74.171125,
+          "max_ms": 75.194208,
+          "noise_fraction": 0.02
+        }
+      }
+    },
+    "bfs-int": {
+      "category": "graphs",
+      "description": "Contiguous integer IDs, growing integer queue, distance array, degree 16.",
+      "parameters": {
+        "size": 32,
+        "rounds": 3
+      },
+      "expected_checksum": 5700,
+      "outcomes": {
+        "marimay-vm": {
+          "status": "passed"
+        }
+      },
+      "expected_stdout": "bfs-int 5700\n",
+      "commands": {
+        "marimay-vm": [
+          "/path/to/Marimay/marimay/build/string-lifetime/mmay",
+          "run",
+          "/path/to/Marimay/algorithm-benchmarks/marimay/catalog",
+          "--engine",
+          "vm",
+          "--max-heap-bytes",
+          "67108864",
+          "--",
+          "bfs-int",
+          "32",
+          "3"
+        ]
+      },
+      "raw_ms": {
+        "marimay-vm": [
+          76.377167,
+          74.395042,
+          74.925458
+        ]
+      },
+      "summary": {
+        "marimay-vm": {
+          "median_ms": 74.925458,
+          "mad_ms": 0.5304160000000024,
+          "q1_ms": 74.395042,
+          "q3_ms": 76.377167,
+          "iqr_ms": 1.9821249999999964,
+          "min_ms": 74.395042,
+          "max_ms": 76.377167,
+          "noise_fraction": 0.026454626410158163
+        }
+      }
+    },
+    "bfs-record": {
+      "category": "graphs",
+      "description": "Same edges/distances; Node records and reference queue; edges remain integer IDs.",
+      "parameters": {
+        "size": 32,
+        "rounds": 3
+      },
+      "expected_checksum": 5700,
+      "outcomes": {
+        "marimay-vm": {
+          "status": "passed"
+        }
+      },
+      "expected_stdout": "bfs-record 5700\n",
+      "commands": {
+        "marimay-vm": [
+          "/path/to/Marimay/marimay/build/string-lifetime/mmay",
+          "run",
+          "/path/to/Marimay/algorithm-benchmarks/marimay/catalog",
+          "--engine",
+          "vm",
+          "--max-heap-bytes",
+          "67108864",
+          "--",
+          "bfs-record",
+          "32",
+          "3"
+        ]
+      },
+      "raw_ms": {
+        "marimay-vm": [
+          75.205458,
+          75.781292,
+          75.246375
+        ]
+      },
+      "summary": {
+        "marimay-vm": {
+          "median_ms": 75.246375,
+          "mad_ms": 0.04091700000000742,
+          "q1_ms": 75.205458,
+          "q3_ms": 75.781292,
+          "iqr_ms": 0.5758340000000004,
+          "min_ms": 75.205458,
+          "max_ms": 75.781292,
+          "noise_fraction": 0.02
+        }
+      }
+    },
+    "catalog-pipeline": {
+      "category": "catalog",
+      "description": "Combined title search, title frequency map, and BookState match; 25% missing queries.",
+      "parameters": {
+        "size": 32,
+        "rounds": 3
+      },
+      "expected_checksum": 5097,
+      "outcomes": {
+        "marimay-vm": {
+          "status": "passed"
+        }
+      },
+      "expected_stdout": "catalog-pipeline 5097\n",
+      "commands": {
+        "marimay-vm": [
+          "/path/to/Marimay/marimay/build/string-lifetime/mmay",
+          "run",
+          "/path/to/Marimay/algorithm-benchmarks/marimay/catalog",
+          "--engine",
+          "vm",
+          "--max-heap-bytes",
+          "67108864",
+          "--",
+          "catalog-pipeline",
+          "32",
+          "3"
+        ]
+      },
+      "raw_ms": {
+        "marimay-vm": [
+          74.572333,
+          76.945625,
+          74.797333
+        ]
+      },
+      "summary": {
+        "marimay-vm": {
+          "median_ms": 74.797333,
+          "mad_ms": 0.22499999999999432,
+          "q1_ms": 74.572333,
+          "q3_ms": 76.945625,
+          "iqr_ms": 2.3732920000000064,
+          "min_ms": 74.572333,
+          "max_ms": 76.945625,
+          "noise_fraction": 0.03172963399644218
+        }
+      }
+    },
+    "parse-result": {
+      "category": "errors",
+      "description": "Format/parse decimal tokens, 25% invalid suffixes; propagate Result/error then match.",
+      "parameters": {
+        "size": 32,
+        "rounds": 3
+      },
+      "expected_checksum": 1320,
+      "outcomes": {
+        "marimay-vm": {
+          "status": "passed"
+        }
+      },
+      "expected_stdout": "parse-result 1320\n",
+      "commands": {
+        "marimay-vm": [
+          "/path/to/Marimay/marimay/build/string-lifetime/mmay",
+          "run",
+          "/path/to/Marimay/algorithm-benchmarks/marimay/catalog",
+          "--engine",
+          "vm",
+          "--max-heap-bytes",
+          "67108864",
+          "--",
+          "parse-result",
+          "32",
+          "3"
+        ]
+      },
+      "raw_ms": {
+        "marimay-vm": [
+          74.402666,
+          75.006458,
+          74.939
+        ]
+      },
+      "summary": {
+        "marimay-vm": {
+          "median_ms": 74.939,
+          "mad_ms": 0.06745800000000202,
+          "q1_ms": 74.402666,
+          "q3_ms": 75.006458,
+          "iqr_ms": 0.6037919999999986,
+          "min_ms": 74.402666,
+          "max_ms": 75.006458,
+          "noise_fraction": 0.02
+        }
+      }
+    }
+  },
+  "measurement_order": [
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "title-search-10k",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 72.599834
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "title-search-100k",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 74.081333
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "normalize-title",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 74.372125
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "word-frequency",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 73.252125
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "report-builder",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 74.740125
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "report-concat",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 74.474667
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "map-int",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 74.036917
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "map-string",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 75.840958
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "map-string-book",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 70.447542
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "set-string-churn",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 74.624291
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "catalog-match",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 72.873375
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "catalog-dotcall",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 78.951333
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "catalog-interface",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 175.258208
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "record-reference-copy",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 74.677125
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "record-create",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 74.446292
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "array-grow",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 75.41175
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "array-reserved",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 75.127958
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "bfs-int",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 76.377167
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "bfs-record",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 75.205458
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "catalog-pipeline",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 74.572333
+    },
+    {
+      "phase": "sample",
+      "round": 0,
+      "workload": "parse-result",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 74.402666
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "title-search-10k",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 74.785625
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "parse-result",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 75.006458
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "catalog-pipeline",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 76.945625
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "bfs-record",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 75.781292
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "bfs-int",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 74.395042
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "array-reserved",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 74.171125
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "array-grow",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 75.18575
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "record-create",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 75.399791
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "record-reference-copy",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 77.8325
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "catalog-interface",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 76.033125
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "catalog-dotcall",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 73.862959
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "catalog-match",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 171.493333
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "set-string-churn",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 76.239541
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "map-string-book",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 75.456958
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "map-string",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 74.315125
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "map-int",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 74.603958
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "report-concat",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 75.384916
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "report-builder",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 76.672541
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "word-frequency",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 75.288875
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "normalize-title",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 77.396208
+    },
+    {
+      "phase": "sample",
+      "round": 1,
+      "workload": "title-search-100k",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 74.73175
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "normalize-title",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 75.508875
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "word-frequency",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 73.594417
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "report-builder",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 75.382834
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "report-concat",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 75.480625
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "map-int",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 74.277209
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "map-string",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 73.516041
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "map-string-book",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 74.144625
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "set-string-churn",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 74.348416
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "catalog-match",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 75.224417
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "catalog-dotcall",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 76.158583
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "catalog-interface",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 75.168542
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "record-reference-copy",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 73.855083
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "record-create",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 74.145458
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "array-grow",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 74.0785
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "array-reserved",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 75.194208
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "bfs-int",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 74.925458
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "bfs-record",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 75.246375
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "catalog-pipeline",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 74.797333
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "parse-result",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 74.939
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "title-search-10k",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 74.381292
+    },
+    {
+      "phase": "sample",
+      "round": 2,
+      "workload": "title-search-100k",
+      "participant": "marimay-vm",
+      "status": "passed",
+      "elapsed_ms": 74.752666
+    }
+  ]
+}
