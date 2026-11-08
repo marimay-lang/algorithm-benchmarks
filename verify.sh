@@ -3,7 +3,7 @@
 set -euo pipefail
 
 repository_root=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-mmay_binary=${MMAY:-"$repository_root/../marimay/build/debug/mmay"}
+mmay_binary=${MMAY:-"$repository_root/../../marimay/build/debug/mmay"}
 
 if [[ ! -x "$mmay_binary" ]]; then
   echo "Marimay executable not found: $mmay_binary" >&2
