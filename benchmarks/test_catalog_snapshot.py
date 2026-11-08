@@ -19,6 +19,7 @@ class SnapshotTests(unittest.TestCase):
                 self.assertEqual(compiler_path(repository), Path("/candidate/mmay"))
         with patch.dict("os.environ", {}, clear=True), patch("shutil.which", return_value=None):
             self.assertEqual(compiler_path(repository), Path("/workspace/marimay/build/release/mmay"))
+            self.assertEqual(compiler_path(Path("/workspace/benchmarks/algorithm-benchmarks")), Path("/workspace/marimay/build/release/mmay"))
 
     def fixture(self, root, installed=False):
         prefix = root / "origin"

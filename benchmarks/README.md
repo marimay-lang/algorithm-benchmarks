@@ -68,7 +68,9 @@ Linux arm64, macOS arm64, macOS x86_64 and Windows x86_64. Checkpoint-21
 completion therefore does not establish full public-alpha Tier 1 readiness.
 `make benchmark-validate-platform` separately validates the Linux baseline.
 
-The default compiler is `../marimay/build/release/mmay`. Since checkpoint 13,
+Set `MMAY` to choose a compiler explicitly. In the grouped workspace, the default
+is `../../marimay/build/release/mmay`; the original sibling
+`../marimay/build/release/mmay` layout remains supported. Since checkpoint 13,
 the requested output profile selects a matching Release runtime independently
 of the compiler executable's build profile. The harness checks the runtime
 manifest rather than inferring its profile from the compiler path.

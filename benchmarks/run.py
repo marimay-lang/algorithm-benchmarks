@@ -31,7 +31,7 @@ from local_participants import (
     load_and_validate as load_and_validate_local,
     manifest_sha256 as local_manifest_sha256,
 )
-from marimay_toolchain import validate_executable
+from marimay_toolchain import resolve_compiler, validate_executable
 from perf_environment import capture_metadata, finish_metadata, git_revision
 from perf_protocol import (
     ALGORITHM_RESULT_SCHEMA,
@@ -415,8 +415,7 @@ def main() -> None:
         output = repository / output
     build_dir = repository / "benchmarks" / ".build"
     build_dir.mkdir(parents=True, exist_ok=True)
-    default_mmay = repository.parent / "marimay" / "build" / "release" / "mmay"
-    mmay_binary = pathlib.Path(os.environ.get("MMAY", str(default_mmay))).resolve()
+    mmay_binary = resolve_compiler(repository)
     if "marimay" in args.languages:
         validate_executable(repository, mmay_binary)
     max_heap_bytes = protocol["resource"]["max_heap_bytes"]

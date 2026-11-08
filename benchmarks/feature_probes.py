@@ -17,7 +17,7 @@ from feature_manifest import (
     manifest_sha256,
     source_tree_sha256,
 )
-from marimay_toolchain import validate_executable
+from marimay_toolchain import resolve_compiler, validate_executable
 from perf_environment import capture_metadata, finish_metadata, git_revision, run_checked
 from perf_protocol import (
     PROBE_RESULT_SCHEMA,
@@ -156,8 +156,7 @@ def main() -> None:
         raise SystemExit("feature probe --output must use the .json suffix")
     build_directory = repository / "benchmarks" / ".build" / "features"
     build_directory.mkdir(parents=True, exist_ok=True)
-    default_mmay = repository.parent / "marimay" / "build" / "release" / "mmay"
-    mmay_binary = pathlib.Path(os.environ.get("MMAY", str(default_mmay))).resolve()
+    mmay_binary = resolve_compiler(repository)
     validate_executable(repository, mmay_binary)
     max_heap_bytes = protocol["resource"]["max_heap_bytes"]
     commands = (

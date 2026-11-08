@@ -9,7 +9,9 @@ Historical manifests, the Tier 1 registry and reviewed budgets remain unchanged.
 
 Run from the `algorithm-benchmarks` root with Go, Rust, Bun and a Release
 Marimay compiler. Compiler discovery checks `MMAY`, then `PATH` (the same
-`mmay` used by the shell), then the sibling `marimay/build/release/mmay`.
+`mmay` used by the shell), then `../../marimay/build/release/mmay` in the
+grouped workspace. The original sibling `../marimay/build/release/mmay`
+layout remains supported when the grouped compiler is absent.
 Bun is selected by `BUN=/absolute/path/to/bun` or `PATH`. Missing Bun in the
 full matrix is a preparation failure; its column is not silently skipped.
 

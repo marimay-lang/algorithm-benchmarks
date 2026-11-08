@@ -2,20 +2,17 @@
 from __future__ import annotations
 
 import json
-import os
 from pathlib import Path
 import re
 import shutil
 import tempfile
 
+from marimay_toolchain import resolve_compiler
 from perf_protocol import ProtocolError, sha256_file
 
 
 def compiler_path(repository: Path) -> Path:
-    selected = os.environ.get("MMAY")
-    if selected is None:
-        selected = shutil.which("mmay") or str(repository.parent / "marimay/build/release/mmay")
-    return Path(selected).resolve()
+    return resolve_compiler(repository, prefer_installed=True)
 
 
 def create_workspace(root: Path) -> Path:

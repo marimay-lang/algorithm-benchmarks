@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import copy
 import pathlib
+import tempfile
 import unittest
+from unittest.mock import patch
 
-from marimay_toolchain import load_contract, validate_contract, validate_version
+from marimay_toolchain import load_contract, resolve_compiler, validate_contract, validate_version
 from perf_protocol import ProtocolError
 
 
@@ -21,6 +23,26 @@ class MarimayToolchainTests(unittest.TestCase):
             "standardLibrary": {"version": cls.contract["standard_library"]},
             "commands": {"available": cls.contract["required_commands"]},
         }
+
+    def test_compiler_discovery_supports_grouped_and_sibling_workspaces(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary, patch.dict("os.environ", {}, clear=True):
+            root = pathlib.Path(temporary)
+            repository = root / "benchmarks/algorithm-benchmarks"
+            repository.mkdir(parents=True)
+            grouped = root / "marimay/build/release/mmay"
+            sibling = repository.parent / "marimay/build/release/mmay"
+            for binary in (grouped, sibling):
+                binary.parent.mkdir(parents=True)
+                binary.write_bytes(b"compiler fixture")
+            self.assertEqual(resolve_compiler(repository), grouped.resolve())
+            with patch.dict("os.environ", {"MMAY": str(root / "candidate/mmay")}):
+                self.assertEqual(resolve_compiler(repository), (root / "candidate/mmay").resolve())
+            grouped.unlink()
+            self.assertEqual(resolve_compiler(repository), sibling.resolve())
+            sibling.unlink()
+            self.assertEqual(resolve_compiler(repository), grouped.resolve())
+            grouped.write_bytes(b"compiler fixture")
+            self.assertEqual(resolve_compiler(root / "algorithm-benchmarks"), grouped.resolve())
 
     def test_committed_contract_accepts_matching_version(self) -> None:
         validate_version(self.contract, self.version)

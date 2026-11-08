@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import json
+import os
 import pathlib
+import shutil
 import subprocess
 from collections.abc import Mapping
 from typing import Any
@@ -18,6 +20,27 @@ STRING_FIELDS = (
     "language",
     "standard_library",
 )
+
+
+
+def resolve_compiler(
+    repository: pathlib.Path, *, prefer_installed: bool = False
+) -> pathlib.Path:
+    """Locate a compiler in a grouped workspace or the original sibling layout."""
+    selected = os.environ.get("MMAY")
+    if selected is not None:
+        return pathlib.Path(selected).resolve()
+    if prefer_installed:
+        installed = shutil.which("mmay")
+        if installed is not None:
+            return pathlib.Path(installed).resolve()
+    sibling = repository.parent / "marimay/build/release/mmay"
+    grouped = repository.parent.parent / "marimay/build/release/mmay"
+    candidates = (grouped, sibling) if repository.parent.name == "benchmarks" else (sibling, grouped)
+    for candidate in candidates:
+        if candidate.is_file():
+            return candidate.resolve()
+    return candidates[0].resolve()
 
 
 def validate_contract(contract: Mapping[str, Any]) -> None:
